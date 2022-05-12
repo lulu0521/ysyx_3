@@ -14,7 +14,7 @@ module exe_stage(
   output reg  [`REG_BUS]rd_data
 );
 
-assign inst_type_o = inst_type_i;
+assign inst_type_o = inst_type_i ;
 
 always@( * )
 begin
