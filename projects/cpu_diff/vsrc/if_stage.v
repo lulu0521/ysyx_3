@@ -1,8 +1,4 @@
-
-//--xuezhen--
-
 `include "defines.v"
-
 
 module if_stage(
   input wire clk,

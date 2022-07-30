@@ -1,6 +1,3 @@
-
-//--xuezhen--
-
 `include "defines.v"
 
 module SimTop(
