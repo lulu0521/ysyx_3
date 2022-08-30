@@ -43,9 +43,9 @@ git submodule update --init --recursive
 
 ```shell
 # 使用你的编号和姓名拼音代替双引号中内容
-git config --global user.name "4021110045-Miao Heng"
+git config --global user.name "ysyx_22041071-MJL"
 # 使用你的邮箱代替双引号中内容
-git config --global user.email "1098011272@qq.com"
+git config --global user.email "majianlu_0521@163.com"
 ```
 
 # 例程
