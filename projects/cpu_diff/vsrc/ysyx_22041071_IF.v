@@ -16,7 +16,7 @@ module ysyx_22041071_IF(input  wire 						  clk	  	,
 
 RAMHelper IRAMHelper(.clk   (clk					),
   					 .en    (1						),
-  					 .rIdx  ((PC1 - `START_ADDR) >> 2),
+  					 .rIdx  ((PC1 - `START_ADDR) >> 3),
   					 .rdata (INS_					),
   					 .wIdx  (0						),
   					 .wdata (0						),
