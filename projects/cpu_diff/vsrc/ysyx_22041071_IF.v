@@ -51,7 +51,7 @@ RAMHelper IRAMHelper(.clk   (clk					),
 				if(handshake)begin
 					valid2 <= valid1	;
 					PC2	   <= PC1		;
-					Ins	   <= Ins_		;
+					Ins	   <= Ins_32	;
 				end
 			end
 		end
