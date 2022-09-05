@@ -16,20 +16,27 @@ module ysyx_22041071_IF(input  wire 						  clk	  	,
 
 RAMHelper IRAMHelper(.clk   (clk					),
   					 .en    (1						),
-  					 .rIdx  ((PC1 - `START_ADDR-4) >> 2),
-  					 .rdata (INS_					),
+  					 .rIdx  ((PC1 - `START_ADDR-4) >> 3),
+  					 .rdata (Ins_					),
   					 .wIdx  (0						),
   					 .wdata (0						),
   					 .wmask (0						),
   					 .wen   (0						));
 
-	reg [`ysyx_22041071_INS_BUS ] INS_;			 
+	reg [64:0					] Ins_	;
+	reg [`ysyx_22041071_INS_BUS ] Ins_32;			 
 	reg handshake;
 	
 	always@(*)begin
 		ready1	  = ready2			;
 		handshake = valid1 & ready2	;
 		SNPC   	  = PC1 + 64'h4		;
+
+		if(PC1[3])begin
+			Ins_32 = Ins_[63:32];
+		end else begin
+			Ins_32 = Ins_[31:0 ];
+		end
 	end
 	
 	always@(posedge clk)begin
@@ -44,7 +51,7 @@ RAMHelper IRAMHelper(.clk   (clk					),
 				if(handshake)begin
 					valid2 <= valid1	;
 					PC2	   <= PC1		;
-					Ins	   <= INS_		;
+					Ins	   <= Ins_		;
 				end
 			end
 		end
