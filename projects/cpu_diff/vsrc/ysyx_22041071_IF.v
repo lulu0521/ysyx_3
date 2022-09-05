@@ -32,7 +32,7 @@ RAMHelper IRAMHelper(.clk   (clk					),
 		handshake = valid1 & ready2	;
 		SNPC   	  = PC1 + 64'h4		;
 
-		if(PC1[3])begin
+		if(PC1[2])begin
 			Ins_32 = Ins_[63:32];
 		end else begin
 			Ins_32 = Ins_[31:0 ];
