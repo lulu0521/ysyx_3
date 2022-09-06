@@ -78,7 +78,8 @@ module ysyx_22041071_ID(
 		if(opcode==7'b110_1111 || opcode==7'b110_0111 || opcode==7'b110_0011)begin//Jal and jalr B
 			bubble21 = 1'b1;
 		end else begin
-			bubble21 = 1'b0;
+			bubble21 = 1'b0	;
+
 		end
 /*====================================R TYPE============================================*/
 		if(opcode==7'b011_0011 || opcode==7'b011_1011)begin
@@ -280,6 +281,15 @@ module ysyx_22041071_ID(
 					default:ALU_ctrl = 5'h1f;
 				endcase
 			end	
+			7'b110_1111:begin//J TYPE
+				ALU_ctrl = 5'd0;
+			end
+			7'b011_0111:begin//lui
+				ALU_ctrl = 5'd0;
+			end
+			7'b001_0111:begin
+				ALU_ctrl = 5'd0;//auipc
+			end
 			default: ALU_ctrl = 5'h1f;
 		endcase
 	end

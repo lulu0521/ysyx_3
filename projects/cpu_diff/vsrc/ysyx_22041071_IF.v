@@ -2,6 +2,8 @@
 module ysyx_22041071_IF(input  wire 						  clk	  	,
 						input  wire							  reset	  	,
 						input  wire [`ysyx_22041071_ADDR_BUS] PC1	  	,
+						input  wire							  Brch_sel1 ,
+						input  wire [`ysyx_22041071_ADDR_BUS] PC5		,
 						input  wire							  bubble21	,
 						input  wire							  bubble22	,
 						input  wire							  bubble23	,
@@ -14,14 +16,14 @@ module ysyx_22041071_IF(input  wire 						  clk	  	,
 						output reg  [`ysyx_22041071_ADDR_BUS] SNPC		);
 	
 
-RAMHelper IRAMHelper(.clk   (clk					),
-  					 .en    (1						),
-  					 .rIdx  ((PC1 - `START_ADDR-4) >> 3),
-  					 .rdata (Ins_					),
-  					 .wIdx  (0						),
-  					 .wdata (0						),
-  					 .wmask (0						),
-  					 .wen   (0						));
+RAMHelper IRAMHelper(.clk   (clk						),
+  					 .en    (1							),
+  					 .rIdx  ((PC1 - `START_ADDR-4) >> 3	),
+  					 .rdata (Ins_						),
+  					 .wIdx  (0							),
+  					 .wdata (0							),
+  					 .wmask (0							),
+  					 .wen   (0							));
 
 	reg [64:0					] Ins_	;
 	reg [`ysyx_22041071_INS_BUS ] Ins_32;			 
@@ -30,7 +32,12 @@ RAMHelper IRAMHelper(.clk   (clk					),
 	always@(*)begin
 		ready1	  = ready2			;
 		handshake = valid1 & ready2	;
-		SNPC   	  = PC1 + 64'h4		;
+		
+		if(bubble23==1'b1 && Brch_sel1==0)begin
+			SNPC = PC5 + 64'h4;
+		end else begin
+			SNPC = PC1 + 64'h4;
+		end
 
 		if(PC1[2])begin
 			Ins_32 = Ins_[63:32];
