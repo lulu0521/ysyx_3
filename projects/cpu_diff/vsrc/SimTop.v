@@ -231,7 +231,7 @@ ysyx_22041071_ID2 ID2(
 					.WB_data2 	(WB_data2	 ), //WB得到的结果
 					.reg_w_en3_	(reg_w_en3_	 ),
 					.rdest1_  	(rdest2_   	 ), //EX阶段寄存器
-					.result   	(ALU_result  ),//EX得到的结果		
+					.result   	(ALU_result  ), //EX得到的结果		
 					.reg_w_en4_ (reg_w_en4_	 ),
 					.rdest2	  	(rdest3_	 ),//MEM阶段寄存器
 					.WB_data  	(WB_data1_	 ),//MEM得到的结果
