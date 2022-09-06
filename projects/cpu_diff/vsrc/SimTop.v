@@ -362,6 +362,11 @@ ysyx_22041071_WB WB(.clk		(clock		),
 
 
 //Difftest
+reg [`ysyx_22041071_ADDR_BUS] PC7_				;	
+reg [`ysyx_22041071_INS_BUS ] Ins6_				;				
+reg 						  reg_w_en5_		;			
+reg [ 4:0 					] rdest4_			;				
+reg [`ysyx_22041071_DATA_BUS] WB_data2_			;	
 reg 						  CMT_valid 		;
 reg [`ysyx_22041071_ADDR_BUS] CMT_pc			;
 reg [`ysyx_22041071_INS_BUS ] CMT_inst			;
@@ -375,7 +380,16 @@ reg [63:0					] instrCnt			;
 wire						  INST_valid		;
 reg [`ysyx_22041071_DATA_BUS] REGS_diff [0:31]	;
 
-assign INST_valid = Ins6 != 0;
+always@(posedge clock)begin
+	PC7_		<= PC7 		 ;
+	Ins6_		<= Ins6		 ;
+	reg_w_en5_	<= reg_w_en5 ;
+	rdest4_		<= rdest4	 ; 
+	WB_data2_	<= WB_data2	 ;
+
+end
+
+assign INST_valid = Ins6_ != 0;
 always@(negedge clock)begin
 	if(reset)begin
 		CMT_valid 	   <= 1'b0	;
@@ -422,12 +436,12 @@ always@(negedge clock)begin
 		REGS_diff[31]  <= 64'h0 ;	
 	end else if(~TRAP) begin
 		CMT_valid 	<= INST_valid			;
-		CMT_pc		<= PC7					;
-		CMT_inst	<= Ins6					;
-		CMT_reg_w_en<= reg_w_en5			;
-		CMT_rdest	<= rdest4				;
-		CMT_WB_data	<= WB_data2				;
-		TRAP		<= Ins6[6:0] == 7'h6b	;
+		CMT_pc		<= PC7_					;
+		CMT_inst	<= Ins6_				;
+		CMT_reg_w_en<= reg_w_en5_			;
+		CMT_rdest	<= rdest4_				;
+		CMT_WB_data	<= WB_data2_			;
+		TRAP		<= Ins6_[6:0] == 7'h6b	;
 		TRAP_code	<= REGS_diff[10][7:0]	;
 		cycleCnt	<= cycleCnt + 1			;
 		instrCnt	<= instrCnt + INST_valid;
