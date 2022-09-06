@@ -3,7 +3,7 @@ module ysyx_22041071_IF(input  wire 						  clk	  	,
 						input  wire							  reset	  	,
 						input  wire [`ysyx_22041071_ADDR_BUS] PC1	  	,
 						input  wire							  Brch_sel1 ,
-						input  wire [`ysyx_22041071_ADDR_BUS] PC5		,
+						input  wire [`ysyx_22041071_ADDR_BUS] PC4		,
 						input  wire							  bubble21	,
 						input  wire							  bubble22	,
 						input  wire							  bubble23	,
@@ -34,7 +34,7 @@ RAMHelper IRAMHelper(.clk   (clk						),
 		handshake = valid1 & ready2	;
 		
 		if(bubble23==1'b1 && Brch_sel1==0)begin
-			SNPC = PC5 + 64'h4;
+			SNPC = PC4 + 64'h4;
 		end else begin
 			SNPC = PC1 + 64'h4;
 		end
