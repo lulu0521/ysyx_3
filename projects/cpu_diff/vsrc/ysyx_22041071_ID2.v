@@ -185,15 +185,17 @@ module ysyx_22041071_ID2(
 		endcase
 		
 		//确定src1_sel
-		if(rs1 == rdest1_ && reg_w_en3_ == 1'b1)
-			src1_sel = 3'd1;
-		else if(rs1 == rdest2 && reg_w_en4_ == 1'b1)
-			src1_sel = 3'd2;
-		else if(rs1 == rdest4 && reg_w_en5 == 1'b1)
-			src1_sel = 3'd3;
-		else
-			src1_sel = src1_sel1;
-			
+		if(opcode1!=7'b011_0111 && opcode1!=7'b001_0111 && opcode1!=7'b110_1111)begin//U and J
+			if(rs1 == rdest1_ && reg_w_en3_ == 1'b1)
+				src1_sel = 3'd1;
+			else if(rs1 == rdest2 && reg_w_en4_ == 1'b1)
+				src1_sel = 3'd2;
+			else if(rs1 == rdest4 && reg_w_en5 == 1'b1)
+				src1_sel = 3'd3;
+			else
+				src1_sel = src1_sel1;
+		end
+
 		case(src1_sel)//选择src_1,0-data1;1-result;2-WB_data;3-WB_data2;4-0;5-PC
 			3'd0:src_1 = reg_file[rs1]	;
 			3'd1:src_1 = result		;
@@ -205,15 +207,17 @@ module ysyx_22041071_ID2(
 		endcase
 		
 		//确定src2_sel
-		if(rt1 == rdest1_ && reg_w_en3_ == 1'b1)
-			src2_sel = 3'd2;
-		else if(rt1 == rdest2 && reg_w_en4_ == 1'b1)
-			src2_sel = 3'd3;
-		else if(rt1 == rdest4 && reg_w_en5 == 1'b1)
-			src2_sel = 3'd4;
-		else 
-			src2_sel = src2_sel1;
-			
+		if(opcode1==7'b011_0011 || opcode1==7'b011_1011 || opcode1==7'b010_0011 || opcode1==7'b110_0011)begin//R S B
+			if(rt1 == rdest1_ && reg_w_en3_ == 1'b1)
+				src2_sel = 3'd2;
+			else if(rt1 == rdest2 && reg_w_en4_ == 1'b1)
+				src2_sel = 3'd3;
+			else if(rt1 == rdest4 && reg_w_en5 == 1'b1)
+				src2_sel = 3'd4;
+			else 
+				src2_sel = src2_sel1;
+		end
+		
 		case(src2_sel)//选择src_2,0-data2;1-Imm;2-result;3-WB_data;4-WB_data1;5-4
 			3'd0:src_2 = reg_file[rt1];
 			3'd1:src_2 = Imm		  ;
