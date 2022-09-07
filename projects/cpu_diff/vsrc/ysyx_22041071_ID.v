@@ -249,7 +249,7 @@ module ysyx_22041071_ID(
 			end	
 			7'b001_1011:begin
 				case(funct3)
-					3'b000: ALU_ctrl = 5'd0 ;//addiw
+					3'b000: ALU_ctrl = 5'd1 ;//addiw
 					3'b001: ALU_ctrl = 5'd3 ;//slliw
 					3'b101: if( Ins1[30]) ALU_ctrl = 5'd5; else ALU_ctrl = 5'd7;//sraiw,srliw
 					default: ALU_ctrl = 5'h1f;
