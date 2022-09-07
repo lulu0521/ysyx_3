@@ -187,14 +187,14 @@ module ysyx_22041071_ID2(
 		
 		//确定src1_sel
 		if(opcode1!=7'b011_0111 && opcode1!=7'b001_0111 && opcode1!=7'b110_1111)begin//U and J
-			if(rs1 == rdest1_ && reg_w_en3_ == 1'b1)
+			if(rs1 == 5'd0)
+				src1_sel = 3'd4;
+			else if(rs1 == rdest1_ && reg_w_en3_ == 1'b1)
 				src1_sel = 3'd1;
 			else if(rs1 == rdest2 && reg_w_en4_ == 1'b1)
 				src1_sel = 3'd2;
 			else if(rs1 == rdest4 && reg_w_en5 == 1'b1)
 				src1_sel = 3'd3;
-			else if(rs1 == 5'd0)
-				src1_sel = 3'd4;
 			else
 				src1_sel = src1_sel1;
 		end else begin
@@ -213,14 +213,14 @@ module ysyx_22041071_ID2(
 		
 		//确定src2_sel
 		if(opcode1==7'b011_0011 || opcode1==7'b011_1011 || opcode1==7'b010_0011 || opcode1==7'b110_0011)begin//R S B
-			if(rt1 == rdest1_ && reg_w_en3_ == 1'b1)
+			if(rt1 == 5'd0)
+				src2_sel = 3'd6;
+			else if(rt1 == rdest1_ && reg_w_en3_ == 1'b1)
 				src2_sel = 3'd2;
 			else if(rt1 == rdest2 && reg_w_en4_ == 1'b1)
 				src2_sel = 3'd3;
 			else if(rt1 == rdest4 && reg_w_en5 == 1'b1)
 				src2_sel = 3'd4;
-			else if(rt1 == 5'd0)
-				src2_sel = 3'd6;
 			else 
 				src2_sel = src2_sel1;
 		end else begin
