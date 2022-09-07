@@ -73,7 +73,7 @@ module ysyx_22041071_EX(
 			end	
 			5'd1 	:begin  		
 					result 	 = src_a[31:0] + src_b[31:0]					;
-					ALU_result = {{32{1'b0}},result}					;
+					ALU_result = {{32{result[31]}},result}					;
 			end              		
 			5'd2 	:begin
 					result 	   = 0											;
