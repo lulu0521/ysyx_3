@@ -43,7 +43,7 @@ module ysyx_22041071_ID(
 	wire [11:0 ]	SImm				;
 	wire [20:1 ]	JImm				;
 	wire [12:1 ]	BImm				;
-	wire [31:12]	UImm				;
+	wire [19:0 ]	UImm				;
 	reg  [ 2:0 ]	src1_sel			;
 	reg  [ 2:0 ]	src2_sel			;
 	reg  [ 1:0 ]	Imm_sel 			;
@@ -67,7 +67,7 @@ module ysyx_22041071_ID(
 	assign SImm  [11: 0] = {Ins1[31:25],Ins1[11:7]}							;
 	assign JImm  [20: 1] = {Ins1[31   ],Ins1[19:12],Ins1[20   ],Ins1[30:21]};
 	assign BImm	 [12: 1] = {Ins1[31   ],Ins1[7    ],Ins1[30:25],Ins1[11: 8]};
-	assign UImm  [31:12] =  Ins1[31:12]										; 
+	assign UImm  [19:0 ] =  Ins1[31:12]										; 
 	
 
 	always@(*)begin
