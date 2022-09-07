@@ -51,7 +51,7 @@ RAMHelper IRAMHelper(.clk   (clk					),
 	
 	always@(posedge clk)begin
 		if(reset)begin
-			PC6			 <= 64'h0;
+			PC6			 <= PC5	 ;
 			Ins5		 <= 32'h0;	
 			valid6		 <= 1'b0 ;
 			reg_w_en4    <= 1'd0 ;

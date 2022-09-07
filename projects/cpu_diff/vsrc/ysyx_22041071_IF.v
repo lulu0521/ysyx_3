@@ -48,7 +48,8 @@ RAMHelper IRAMHelper(.clk   (clk						),
 	
 	always@(posedge clk)begin
 		if(reset)begin
-			valid2 <= 1'b0		 	;
+			valid2 <= 1'b0	;
+			Ins	   <= 32'b0 ;
 		end else begin
 			if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
 				valid2 <= 1'b1		 ;
