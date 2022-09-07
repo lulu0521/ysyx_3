@@ -58,7 +58,7 @@ module ysyx_22041071_EX(
 	always@(*)begin
 		ready4		= ready5 						;
 		handshake 	= valid4 & ready5				;
-		BPC1		= PC4 + {{52{BImm2[11]}},BImm2};
+		BPC1		= PC4 + {{51{BImm2[12]}},BImm2,1'b0};
 		
 		if(Ins3[6:0]==7'b110_0011)begin//B
 			bubble23 = 1'b1;
