@@ -79,7 +79,6 @@ module ysyx_22041071_ID(
 			bubble21 = 1'b1;
 		end else begin
 			bubble21 = 1'b0	;
-
 		end
 /*====================================R TYPE============================================*/
 		if(opcode==7'b011_0011 || opcode==7'b011_1011)begin
@@ -97,19 +96,19 @@ module ysyx_22041071_ID(
 /*=======================================I TYPE==============================================*/	
 /*=========================1-jalr   2-ld    3-32位运算    4-64位运算=========================*/
 		else if(opcode==7'b110_0111 || opcode==7'b000_0011 || opcode==7'b001_1011 || opcode==7'b001_0011)begin
-			
 			Imm_sel  = 2'd0;
 			JPC_sel	 = 1'b0;
 			Brch	 = 1'b0;
 			MEM_W_en = 1'b0;
+			WB_sel 	 = 1'b0;
 			reg_w_en = 1'b1;
 			dset_sel = 1'b0;
 /*================ld 类===================*/
-			if(opcode==7'b000_0011)begin
-				WB_sel = 1'b1;
-			end else begin
-				WB_sel = 1'b0;
-			end
+			//if(opcode==7'b000_0011)begin
+			//	WB_sel = 1'b1;
+			//end else begin
+			//	WB_sel = 1'b0;
+			//end
 /*================jalr 类===================*/	
 			if(opcode==7'b110_0111)begin
 				JRPC_sel = 1'b1;
