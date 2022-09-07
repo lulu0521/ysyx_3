@@ -117,6 +117,7 @@ module ysyx_22041071_ID2(
 	assign rt 		= rt1			;
 	assign BImm 	= BImm1			;
 	assign rt_data  = reg_file[rt1] ;
+	assign reg_file[0]= 64'b0		;
 	assign reg_file0  = reg_file[0 ];
 	assign reg_file1  = reg_file[1 ];
 	assign reg_file2  = reg_file[2 ];
