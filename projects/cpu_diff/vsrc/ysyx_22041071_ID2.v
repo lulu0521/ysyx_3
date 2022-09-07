@@ -194,6 +194,8 @@ module ysyx_22041071_ID2(
 				src1_sel = 3'd3;
 			else
 				src1_sel = src1_sel1;
+		end else begin
+			src1_sel = src1_sel1;
 		end
 
 		case(src1_sel)//选择src_1,0-data1;1-result;2-WB_data;3-WB_data2;4-0;5-PC
