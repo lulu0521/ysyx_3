@@ -193,6 +193,8 @@ module ysyx_22041071_ID2(
 				src1_sel = 3'd2;
 			else if(rs1 == rdest4 && reg_w_en5 == 1'b1)
 				src1_sel = 3'd3;
+			else if(rs1 == 5'd0)
+				src1_sel = 3'd4;
 			else
 				src1_sel = src1_sel1;
 		end else begin
@@ -217,19 +219,22 @@ module ysyx_22041071_ID2(
 				src2_sel = 3'd3;
 			else if(rt1 == rdest4 && reg_w_en5 == 1'b1)
 				src2_sel = 3'd4;
+			else if(rt1 == 5'd0)
+				src2_sel = 3'd6;
 			else 
 				src2_sel = src2_sel1;
 		end else begin
 			src2_sel = src2_sel1;
 		end
 		
-		case(src2_sel)//选择src_2,0-data2;1-Imm;2-result;3-WB_data;4-WB_data1;5-4
+		case(src2_sel)//选择src_2,0-data2;1-Imm;2-result;3-WB_data;4-WB_data1;5-4;6-0
 			3'd0:src_2 = reg_file[rt1];
 			3'd1:src_2 = Imm		  ;
 			3'd2:src_2 = result	  ;
 			3'd3:src_2 = WB_data	  ;
 			3'd4:src_2 = WB_data2	  ;
 			3'd5:src_2 = 4			  ;
+			3'd6:src_2 = 0			  ;
 			default:src_2 = 64'h0	  ;
 		endcase	
 	end
