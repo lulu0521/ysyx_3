@@ -235,19 +235,51 @@ module ysyx_22041071_ID2(
 	
 	always@(posedge clk)begin
 		if(reset)begin
-			valid4	   <= 1'b0 ;
-			PC4	  	   <= PC3  ;
-			Ins3	   <= 32'b0;
-			Brch2	   <= 1'd0 ;
-			MEM_W_en2  <= 1'd0 ;
-			WB_sel2    <= 1'd0 ;
-			ALU_ctrl2  <= 5'd0 ;
-			reg_w_en2  <= 1'd0 ;
-			rt_data1   <= 64'd0;
-			rdest1	   <= 5'd0 ;
-			src_a	   <= 64'd0;
-			src_b	   <= 64'd0;
-			BImm2	   <= 12'd0;
+			valid4	   	 <= 1'b0 ;
+			PC4	  	   	 <= PC3  ;
+			Ins3	   	 <= 32'b0;
+			Brch2	   	 <= 1'd0 ;
+			MEM_W_en2  	 <= 1'd0 ;
+			WB_sel2    	 <= 1'd0 ;
+			ALU_ctrl2  	 <= 5'd0 ;
+			reg_w_en2  	 <= 1'd0 ;
+			rt_data1   	 <= 64'd0;
+			rdest1	   	 <= 5'd0 ;
+			src_a	   	 <= 64'd0;
+			src_b	   	 <= 64'd0;
+			BImm2	   	 <= 12'd0;
+			reg_file[0 ] <= 64'h0;
+			reg_file[1 ] <= 64'h0;
+			reg_file[2 ] <= 64'h0;
+			reg_file[3 ] <= 64'h0;
+			reg_file[4 ] <= 64'h0;
+			reg_file[5 ] <= 64'h0;
+			reg_file[6 ] <= 64'h0;
+			reg_file[7 ] <= 64'h0;
+			reg_file[8 ] <= 64'h0;
+			reg_file[9 ] <= 64'h0;
+			reg_file[10] <= 64'h0;
+			reg_file[11] <= 64'h0;
+			reg_file[12] <= 64'h0;
+			reg_file[13] <= 64'h0;
+			reg_file[14] <= 64'h0;
+			reg_file[15] <= 64'h0;
+			reg_file[16] <= 64'h0;
+			reg_file[17] <= 64'h0;
+			reg_file[18] <= 64'h0;
+			reg_file[19] <= 64'h0;
+			reg_file[20] <= 64'h0;
+			reg_file[21] <= 64'h0;
+			reg_file[22] <= 64'h0;
+			reg_file[23] <= 64'h0;
+			reg_file[24] <= 64'h0;
+			reg_file[25] <= 64'h0;
+			reg_file[26] <= 64'h0;
+			reg_file[27] <= 64'h0;
+			reg_file[28] <= 64'h0;
+			reg_file[29] <= 64'h0;
+			reg_file[30] <= 64'h0;
+			reg_file[31] <= 64'h0;
 		end else begin
 			if(bubble4)begin
 				valid4	   <= 1'b1 ;
@@ -281,7 +313,7 @@ module ysyx_22041071_ID2(
 				end	  	
 			end  
 		end 
-		if(reg_w_en5)begin 
+		if(reg_w_en5 && rdest4 !=0)begin 
 			reg_file[rdest4] <= WB_data2; 
 		end
 	end
