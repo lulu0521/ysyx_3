@@ -230,7 +230,7 @@ module ysyx_22041071_ID2(
 		case(src2_sel)//选择src_2,0-data2;1-Imm;2-result;3-WB_data;4-WB_data1;5-4;6-0
 			3'd0:src_2 = reg_file[rt1];
 			3'd1:src_2 = Imm		  ;
-			3'd2:src_2 = result	  ;
+			3'd2:src_2 = result	  	  ;
 			3'd3:src_2 = WB_data	  ;
 			3'd4:src_2 = WB_data2	  ;
 			3'd5:src_2 = 4			  ;
