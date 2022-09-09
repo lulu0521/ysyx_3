@@ -152,16 +152,16 @@ module ysyx_22041071_ID2(
 	assign reg_file31 = reg_file[31];
 
 	always@(*)begin
-		handshake = valid3 & ready4				    	 ;
+		handshake = valid3 & ready4				    ;
 		if(rs1==0 )
-			JRPC1 = 0 + {{52{Imm1[11]}},Imm1};
+			JRPC1 = 0 + {{52{Imm1[11]}},Imm1}		;
 		else if(rs1==rdest1_) 
-			JRPC1 = result + {{52{Imm1[11]}},Imm1};	
+			JRPC1 = result + {{52{Imm1[11]}},Imm1}	;	
 		else if(rs1==rdest2)
-			JRPC1 = WB_data + {{52{Imm1[11]}},Imm1};
+			JRPC1 = WB_data + {{52{Imm1[11]}},Imm1}	;
 		else if(rs1==rdest4)
 			JRPC1 = WB_data2 + {{52{Imm1[11]}},Imm1};
-
+			
 		if(opcode1==7'b110_0111 || opcode1==7'b110_0011)begin//jalr and B
 			bubble22 = 1'b1;
 		end else begin

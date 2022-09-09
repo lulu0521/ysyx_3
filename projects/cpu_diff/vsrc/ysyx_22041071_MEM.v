@@ -25,9 +25,9 @@ module ysyx_22041071_MEM(
 	
 RAMHelper IRAMHelper(.clk   (clk					),
   					 .en    (1						),
-  					 .rIdx  (ALU_result1			),
+  					 .rIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}),
   					 .rdata (MEM_data				),
-  					 .wIdx  (ALU_result1			), //write addr
+  					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}			), //write addr
   					 .wdata (rt_data2				), //write data
   					 .wmask (0						), //mask
   					 .wen   (MEM_W_en3				));//write enable
@@ -42,6 +42,7 @@ RAMHelper IRAMHelper(.clk   (clk					),
 	always@(*)begin
 		ready5	  = ready6			;
 		handshake = valid5 & ready6	;
+
 		if(WB_sel3)begin
 			WB_data1_ = MEM_data;
 		end else begin 
