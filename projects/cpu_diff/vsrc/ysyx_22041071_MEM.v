@@ -46,11 +46,27 @@ RAMHelper IRAMHelper(.clk   (clk									),
 		if(WB_sel3)begin
 			if(Ins4[6:0]==7'b000_0011)begin
 				case(Ins4[14:12])
-					3'b000:WB_data1_ = {{56{MEM_data[7]}},MEM_data[7:0]};//lb
-					default:WB_data1_ = 64'h0;
+					3'b000://lb
+						case(ALU_result1[2:0])
+							3'b000:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[7 :0 ]};
+							3'b001:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[15:8 ]};
+							3'b010:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[23:16]};
+							3'b011:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[31:24]};
+							3'b100:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[39:32]};
+							3'b101:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[47:40]};
+							3'b110:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[55:48]};
+							3'b111:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[63:56]};
+						endcase
+					3'b001:WB_data1_ = {{48{MEM_data[15]}},MEM_data[15:0]};//lh
+					3'b010:WB_data1_ = {{32{MEM_data[31]}},MEM_data[31:0]};//lw
+					3'b011:WB_data1_ = MEM_data							  ;//ld
+					3'b100:WB_data1_ = {56'h0			  ,MEM_data[7:0] };//lbu
+					3'b101:WB_data1_ = {48'h0			  ,MEM_data[15:0]};//lhu
+					3'b110:WB_data1_ = {32'h0			  ,MEM_data[31:0]};//lwu
+					default:WB_data1_ = 64'h0							  ;
 				endcase
 			end else begin
-			
+				WB_data1_ = 64'h0							  ;
 			end	
 		end else begin 
 			WB_data1_ = ALU_result1;
