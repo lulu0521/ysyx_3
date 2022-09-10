@@ -44,7 +44,14 @@ RAMHelper IRAMHelper(.clk   (clk									),
 		handshake = valid5 & ready6	;
 
 		if(WB_sel3)begin
-			WB_data1_ = MEM_data;
+			if(Ins4[6:0]==7'b000_0011)begin
+				case(Ins4[14:12])
+					3'b000:WB_data1_ = {{56{MEM_data[7]}},MEM_data[7:0]};//lb
+					default:WB_data1_ = 64'h0;
+				endcase
+			end else begin
+			
+			end	
 		end else begin 
 			WB_data1_ = ALU_result1;
 		end
