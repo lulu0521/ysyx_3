@@ -6,6 +6,7 @@ module ysyx_22041071_MEM(
                         input  wire [`ysyx_22041071_INS_BUS ] Ins4	      ,
 						input  wire [`ysyx_22041071_INS_BUS ] Ins5_	      ,
 						input  wire [`ysyx_22041071_DATA_BUS] rt_data3_   ,
+						input  wire [`ysyx_22041071_DATA_BUS] wmask1_	  ,
 						input  wire 						  MEM_W_en3   ,
 						input  wire							  WB_sel3     ,//0-result;1-MEM_data
 						input  wire 						  reg_w_en3   ,
@@ -19,6 +20,7 @@ module ysyx_22041071_MEM(
 						output reg  [`ysyx_22041071_ADDR_BUS] PC6		  ,
 						output reg  [`ysyx_22041071_INS_BUS ] Ins5	      ,
 						output reg  [`ysyx_22041071_DATA_BUS] rt_data3    ,
+						output reg  [`ysyx_22041071_DATA_BUS] wmask1	  ,
 						output reg  						  reg_w_en4   ,
 						output reg  [ 4:0 ]					  rdest3	  ,
 						output reg  [`ysyx_22041071_DATA_BUS] WB_data1	  ,
@@ -50,7 +52,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 		handshake = valid5 & ready6	;
 
 		if(Ins4[6:0]==7'b000_0011 && Ins5_[6:0]==7'b010_0011)begin//now is L type and last is S type
-			MEM_data_ = rt_data3;
+			MEM_data_ = MEM_data &(~wmask1_) | rt_data3 & wmask1_;
 		end else begin
 			MEM_data_ = MEM_data;
 		end
@@ -197,6 +199,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 			PC6			 <= PC5	 ;
 			Ins5		 <= 32'h0;	
 			rt_data3	 <= 64'h0;
+			wmask1		 <=	64'h0;
 			valid6		 <= 1'b0 ;
 			reg_w_en4    <= 1'd0 ;
 			rdest3	     <= 5'd0 ; 
@@ -206,6 +209,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 				PC6			 <= PC5			;
 				Ins5		 <= Ins4		;
 				rt_data3	 <= rt_data2	;
+				wmask1		 <= wmask		;
 				valid6		 <= valid5		;
 				reg_w_en4    <= reg_w_en3	;
 				rdest3	     <= rdest2		;
