@@ -141,11 +141,27 @@ RAMHelper IRAMHelper(.clk   (clk									),
 							wmask = 64'hff00_0000_0000_0000				;
 						end
 					endcase
-					
 				end
 				3'b001: begin//sh
-					wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;
-					wmask = 64'h0000_0000_0000_ffff				;
+					case(ALU_result1[2:1])
+						2'b00:begin
+							wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;
+							wmask = 64'h0000_0000_0000_ffff				;
+						end
+						2'b01:begin
+							wdata = {{48{rt_data2[31]}},rt_data2[31:16]};
+							wmask = 64'h0000_0000_ffff_0000				;
+						end
+						2'b10:begin
+							wdata = {{48{rt_data2[47]}},rt_data2[47:32]};
+							wmask = 64'h0000_ffff_0000_0000				;
+						end
+						2'b11:begin
+							wdata = {{48{rt_data2[63]}},rt_data2[63:48]};
+							wmask = 64'hffff_0000_0000_0000				;
+						end
+					endcase
+					
 				end	
 				3'b010: begin//sw
 					wdata = {{32{rt_data2[31]}},rt_data2[31:0]}	;
