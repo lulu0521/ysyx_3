@@ -29,7 +29,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
   					 .rdata (MEM_data								),
   					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}), //write addr
   					 .wdata (wdata									), //write data
-  					 .wmask (0										), //mask
+  					 .wmask (wmask									), //mask
   					 .wen   (MEM_W_en3								));//write enable
 
 	reg [`ysyx_22041071_DATA_BUS] MEM_data	;
