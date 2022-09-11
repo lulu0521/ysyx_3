@@ -48,7 +48,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 				case(Ins4[14:12])
 					3'b000://lb
 						case(ALU_result1[2:0])
-							3'b000:WB_data1_ = {{56{MEM_data[7]}} ,MEM_data[7 :0 ]};
+							3'b000:WB_data1_ = {{56{MEM_data[7 ]}} ,MEM_data[7 :0 ]};
 							3'b001:WB_data1_ = {{56{MEM_data[15]}} ,MEM_data[15:8 ]};
 							3'b010:WB_data1_ = {{56{MEM_data[23]}} ,MEM_data[23:16]};
 							3'b011:WB_data1_ = {{56{MEM_data[31]}} ,MEM_data[31:24]};

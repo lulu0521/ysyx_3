@@ -169,7 +169,7 @@ module ysyx_22041071_ID2(
 		end
 		
 		if(Ins31[6:0]==7'b000_0011 && ((opcode1==7'b011_0011 || opcode1==7'b011_1011)&&(rs1==rdest1_ || rt1==rdest1_)
-		|| (opcode1==7'b110_0111 || opcode1==7'b000_0011 || opcode1==7'b001_1011 || opcode1==7'b001_1011)&&rs1==rdest1_
+		|| (opcode1==7'b110_0111 || opcode1==7'b000_0011 || opcode1==7'b001_1011 || opcode1==7'b001_0011)&&rs1==rdest1_
 		|| opcode1==7'b010_0011 && (rs1==rdest1_ || rt1==rdest1_)
 		|| opcode1==7'b110_0011 && (rs1==rdest1_ || rt1==rdest1_)))begin
 			ready3 	= 1'b0	;
