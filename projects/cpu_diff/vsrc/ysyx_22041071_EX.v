@@ -88,7 +88,7 @@ module ysyx_22041071_EX(
 					ALU_result = $signed(src_a) >>> src_b[5:0]		 		;
 			end
 			5'd5 	:begin		
-					result	 = src_a[31:0] >>> src_b[4:0]					;
+					result	 = $signed(src_a[31:0]) >>> src_b[4:0]					;
 					ALU_result = {{32{result[31]}},result} 					;
 			end		
 			5'd6 	:begin
