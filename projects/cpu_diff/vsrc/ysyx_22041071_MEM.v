@@ -36,6 +36,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 	reg							  valid		;
 	reg							  handshake	;
 	reg [`ysyx_22041071_DATA_BUS] wdata		;
+	reg [`ysyx_22041071_DATA_BUS] wmask		;
 	
 	assign reg_w_en4_ = reg_w_en3;
 	assign rdest3_	  = rdest2	 ;
@@ -105,11 +106,26 @@ RAMHelper IRAMHelper(.clk   (clk									),
 
 		if(MEM_W_en3)begin 
 			case(Ins4[14:12])
-				3'b000: wdata = {{56{rt_data2[7 ]}},rt_data2[7 :0]}	;//sb
-				3'b001:	wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;//sh
-				3'b010: wdata = {{32{rt_data2[31]}},rt_data2[31:0]}	;//sw
-				3'b011: wdata = rt_data2							;//sd
-				default:wdata = 64'h0								;
+				3'b000: begin
+					wdata = {{56{rt_data2[7 ]}},rt_data2[7 :0]}	;//sb
+					wmask = 64'h0000_0000_0000_00ff				;
+				end
+				3'b001: begin
+					wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;//sh
+					wmask = 64'h0000_0000_0000_ffff				;
+				end	
+				3'b010: begin
+					wdata = {{32{rt_data2[31]}},rt_data2[31:0]}	;//sw
+					wmask = 64'h0000_0000_ffff_ffff				;	
+				end 
+				3'b011: begin
+					wdata = rt_data2							;//sd
+					wmask = 64'hffff_ffff_ffff_ffff				;
+				end 
+				default:begin
+					wdata = 64'h0								;
+					wmask = 64'h0								;
+				end 
 			endcase
 		end else begin
 			wdata = 64'h0								;
