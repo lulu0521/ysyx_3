@@ -104,22 +104,55 @@ RAMHelper IRAMHelper(.clk   (clk									),
 			WB_data1_ = ALU_result1;
 		end
 
-		if(MEM_W_en3)begin 
+		if(MEM_W_en3)begin //S type
 			case(Ins4[14:12])
-				3'b000: begin
-					wdata = {{56{rt_data2[7 ]}},rt_data2[7 :0]}	;//sb
-					wmask = 64'h0000_0000_0000_00ff				;
+				3'b000: begin//sb
+					case(ALU_result1[2:0])
+						3'b000:begin
+							wdata = {{56{rt_data2[7 ]}},rt_data2[7 :0]}	;
+							wmask = 64'h0000_0000_0000_00ff				;
+						end
+						3'b001:begin
+							wdata = {{56{rt_data2[15]}},rt_data2[15:8]}	;
+							wmask = 64'h0000_0000_0000_ff00				;
+						end
+						3'b010:begin
+							wdata = {{56{rt_data2[23]}},rt_data2[23:16]};
+							wmask = 64'h0000_0000_00ff_0000				;
+						end
+						3'b011:begin
+							wdata = {{56{rt_data2[31]}},rt_data2[31:24]};
+							wmask = 64'h0000_0000_ff00_0000				;
+						end
+						3'b100:begin
+							wdata = {{56{rt_data2[39]}},rt_data2[39:32]};
+							wmask = 64'h0000_00ff_0000_0000				;
+						end
+						3'b101:begin
+							wdata = {{56{rt_data2[47]}},rt_data2[47:40]};
+							wmask = 64'h0000_ff00_0000_0000				;
+						end
+						3'b110:begin
+							wdata = {{56{rt_data2[55]}},rt_data2[55:48]};
+							wmask = 64'h00ff_0000_0000_0000				;
+						end
+						3'b111:begin
+							wdata = {{56{rt_data2[55]}},rt_data2[63:56]};
+							wmask = 64'hff00_0000_0000_0000				;
+						end
+					endcase
+					
 				end
-				3'b001: begin
-					wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;//sh
+				3'b001: begin//sh
+					wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;
 					wmask = 64'h0000_0000_0000_ffff				;
 				end	
-				3'b010: begin
-					wdata = {{32{rt_data2[31]}},rt_data2[31:0]}	;//sw
+				3'b010: begin//sw
+					wdata = {{32{rt_data2[31]}},rt_data2[31:0]}	;
 					wmask = 64'h0000_0000_ffff_ffff				;	
 				end 
-				3'b011: begin
-					wdata = rt_data2							;//sd
+				3'b011: begin//sd
+					wdata = rt_data2							;
 					wmask = 64'hffff_ffff_ffff_ffff				;
 				end 
 				default:begin
@@ -129,6 +162,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 			endcase
 		end else begin
 			wdata = 64'h0								;
+			wmask = 64'h0								;
 		end
 	end
 	
