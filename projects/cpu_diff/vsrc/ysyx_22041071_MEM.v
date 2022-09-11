@@ -60,18 +60,17 @@ RAMHelper IRAMHelper(.clk   (clk									),
 					3'b001://lh
 						case(ALU_result1[2:1])
 							2'b00:WB_data1_ = {{48{MEM_data[15]}} ,MEM_data[15:0 ]};
-							//3'b001:WB_data1_ = {{48{MEM_data[23]}} ,MEM_data[23:8 ]};
 							2'b01:WB_data1_ = {{48{MEM_data[31]}} ,MEM_data[31:16]};
-							//3'b011:WB_data1_ = {{48{MEM_data[39]}} ,MEM_data[39:24]};
 							2'b10:WB_data1_ = {{48{MEM_data[47]}} ,MEM_data[47:32]};
-							//3'b101:WB_data1_ = {{48{MEM_data[55]}} ,MEM_data[55:40]};
 							2'b11:WB_data1_ = {{48{MEM_data[63]}} ,MEM_data[63:48]};
-							//3'b111:WB_data1_ = 64'h0								;
-						
 						endcase
-					3'b010:WB_data1_ = {{32{MEM_data[31]}},MEM_data[31:0]};//lw
+					3'b010://lw
+						case(ALU_result1[2])
+							1'b0:WB_data1_ = {{32{MEM_data[31]}},MEM_data[31:0]};
+							1'b1:WB_data1_ = {{32{MEM_data[63]}},MEM_data[63:32]};
+						endcase 
 					3'b011:WB_data1_ = MEM_data							  ;//ld
-					3'b100:
+					3'b100://lbu
 						case(ALU_result1[2:0])
 							3'b000:WB_data1_ = {56'h0,MEM_data[7 :0 ]};
 							3'b001:WB_data1_ = {56'h0,MEM_data[15:8 ]};
@@ -82,9 +81,19 @@ RAMHelper IRAMHelper(.clk   (clk									),
 							3'b110:WB_data1_ = {56'h0,MEM_data[55:48]};
 							3'b111:WB_data1_ = {56'h0,MEM_data[63:56]};
 						endcase
-					3'b101:WB_data1_ = {48'h0			  ,MEM_data[15:0]};//lhu
-					3'b110:WB_data1_ = {32'h0			  ,MEM_data[31:0]};//lwu
-					default:WB_data1_ = 64'h0							  ;
+					3'b101://lhu
+						case(ALU_result1[2:1])
+							2'b00:WB_data1_ = {48'h0,MEM_data[15:0 ]};
+							2'b01:WB_data1_ = {48'h0,MEM_data[31:16]};
+							2'b10:WB_data1_ = {48'h0,MEM_data[47:32]};
+							2'b11:WB_data1_ = {48'h0,MEM_data[63:48]};
+						endcase 
+					3'b110://lwu
+						case(ALU_result1[2])
+							1'b0:WB_data1_ = {32'h0,MEM_data[31:0]};
+							1'b1:WB_data1_ = {32'h0,MEM_data[63:32]};
+						endcase 
+					default:WB_data1_ = 64'h0;
 				endcase
 			end else begin
 				WB_data1_ = 64'h0							  ;
