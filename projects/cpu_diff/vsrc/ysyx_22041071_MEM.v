@@ -28,7 +28,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
   					 .rIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}),
   					 .rdata (MEM_data								),
   					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}), //write addr
-  					 .wdata (										), //write data
+  					 .wdata (wdata									), //write data
   					 .wmask (0										), //mask
   					 .wen   (MEM_W_en3								));//write enable
 

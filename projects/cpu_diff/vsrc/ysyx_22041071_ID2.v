@@ -219,7 +219,7 @@ module ysyx_22041071_ID2(
 		endcase
 		
 		//确定src2_sel
-		if(opcode1==7'b011_0011 || opcode1==7'b011_1011 || opcode1==7'b010_0011 || opcode1==7'b110_0011)begin//R S B
+		if(opcode1==7'b011_0011 || opcode1==7'b011_1011 || opcode1==7'b110_0011)begin//R S B
 			if(rt1 == 5'd0)
 				src2_sel = 3'd6;
 			else if(rt1 == rdest1_ && reg_w_en3_ == 1'b1)
