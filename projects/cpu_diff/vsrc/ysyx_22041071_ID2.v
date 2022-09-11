@@ -95,7 +95,7 @@ module ysyx_22041071_ID2(
 	wire							 reg_w_en	;
 	wire [ 4:0					 ]	 rt		 	;
 	wire [12:1					 ]	 BImm	 	;
-	wire [`ysyx_22041071_DATA_BUS]	 rt_data 	;
+	reg  [`ysyx_22041071_DATA_BUS]	 rt_data 	;
 	reg  [2:0					 ]	 src1_sel	;
 	reg  [2:0					 ]	 src2_sel	;
 	reg  [ 4:0 ]					 rdest	 	;
@@ -116,7 +116,6 @@ module ysyx_22041071_ID2(
 	assign reg_w_en = reg_w_en1		;
 	assign rt 		= rt1			;
 	assign BImm 	= BImm1			;
-	assign rt_data  = reg_file[rt1] ;
 	assign reg_file[0]= 64'b0		;
 	assign reg_file0  = reg_file[0 ];
 	assign reg_file1  = reg_file[1 ];
@@ -161,6 +160,8 @@ module ysyx_22041071_ID2(
 			JRPC1 = WB_data + {{52{Imm1[11]}},Imm1}	;
 		else if(rs1==rdest4)
 			JRPC1 = WB_data2 + {{52{Imm1[11]}},Imm1};
+		else 
+			JRPC1 = reg_file[rs1] + {{52{Imm1[11]}},Imm1};
 			
 		if(opcode1==7'b110_0111 || opcode1==7'b110_0011)begin//jalr and B
 			bubble22 = 1'b1;
@@ -179,6 +180,17 @@ module ysyx_22041071_ID2(
 			bubble4 = 1'b0	; 
 		end
 		
+		if(rt1==0)//select the rt_data
+			rt_data = 64'h0; 
+		else if(rt1==rdest1_)
+			rt_data = result;
+		else if(rt1==rdest2)
+			rt_data = WB_data;
+		else if(rt1==rdest4)
+			rt_data = WB_data2;
+		else
+			rt_data = reg_file[rt1];
+
 		if(dset_sel1)begin//选择目的寄存器
 			rdest = rt1;
 		end else begin

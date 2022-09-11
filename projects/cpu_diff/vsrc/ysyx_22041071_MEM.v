@@ -103,7 +103,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 			WB_data1_ = ALU_result1;
 		end
 
-		//if(MEM_W_en3)begin 
+		if(MEM_W_en3)begin 
 			case(Ins4[14:12])
 				3'b000: wdata = {{56{rt_data2[7 ]}},rt_data2[7 :0]}	;//sb
 				3'b001:	wdata = {{48{rt_data2[15]}},rt_data2[15:0]}	;//sh
@@ -111,9 +111,9 @@ RAMHelper IRAMHelper(.clk   (clk									),
 				3'b011: wdata = rt_data2							;//sd
 				default:wdata = 64'h0								;
 			endcase
-		//end else begin
-		//	wdata = 64'h0								;
-		//end
+		end else begin
+			wdata = 64'h0								;
+		end
 	end
 	
 	always@(posedge clk)begin
