@@ -126,8 +126,6 @@ wire							  ready5	 ;
 wire							  valid6	 ; 
 wire  [`ysyx_22041071_ADDR_BUS]   PC6		 ;
 wire  [`ysyx_22041071_INS_BUS ]   Ins5		 ; 
-wire  [`ysyx_22041071_DATA_BUS]	  rt_data3	 ;
-wire  [`ysyx_22041071_DATA_BUS]	  wmask1	 ;
 wire  						      reg_w_en4  ;   
 wire  [ 4:0 ]					  rdest3	 ;    
 wire  [`ysyx_22041071_DATA_BUS]   WB_data1   ; 
@@ -329,8 +327,6 @@ ysyx_22041071_MEM MEM(.clk		  (clock		),
 					  .PC5	      (PC5	 	    ),
                       .Ins4	      (Ins4	 	    ),
 					  .Ins5_	  (Ins5			), 
-					  .rt_data3_  (rt_data3		),
-					  .wmask1_	  (wmask1		),	
 					  .MEM_W_en3  (MEM_W_en3   	),
 					  .WB_sel3    (WB_sel3     	),
 					  .reg_w_en3  (reg_w_en3   	),
@@ -343,8 +339,6 @@ ysyx_22041071_MEM MEM(.clk		  (clock		),
 					  .valid6	  (valid6		),
 					  .PC6		  (PC6			),
 					  .Ins5		  (Ins5			),
-					  .rt_data3	  (rt_data3		),
-					  .wmask1	  (wmask1		),
 					  .reg_w_en4  (reg_w_en4	),
 					  .rdest3	  (rdest3	  	),
 					  .WB_data1	  (WB_data1		),
