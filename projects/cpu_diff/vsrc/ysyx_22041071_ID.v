@@ -215,7 +215,7 @@ module ysyx_22041071_ID(
 					end
 					3'b111: if(~Ins1[25]) ALU_ctrl = 5'd8 ; else ALU_ctrl = 5'd28;//and,remu
 					3'b011: if(~Ins1[25]) ALU_ctrl = 5'd12; else ALU_ctrl = 5'd21;//sltu,mulhu
-					3'b010: ALU_ctrl = 5'b11;//slt
+					3'b010: ALU_ctrl = 5'd11;//slt
 					3'b001: if(~Ins1[25]) ALU_ctrl = 5'd2 ; else ALU_ctrl = 5'd20;//sll,mulh
 					3'b101: begin
 							if(~Ins1[30]) ALU_ctrl = 5'd6 ; else ALU_ctrl = 5'd4 ;//srl,sra
