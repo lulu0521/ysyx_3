@@ -112,7 +112,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 		if(MEM_W_en3)begin //S type
 			case(Ins4[14:12])
 				3'b000:begin//sb
-					rt_data2_ = rt_data2 << ALU_result1[2:0];
+					rt_data2_ = rt_data2 << ALU_result1[2:0]*8;
 					case(ALU_result1[2:0])
 						3'b000:begin
 							wmask = 64'h0000_0000_0000_00ff	;
