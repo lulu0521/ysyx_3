@@ -29,11 +29,12 @@ RAMHelper IRAMHelper(.clk   (clk									),
   					 .rIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}),
   					 .rdata (MEM_data								),
   					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}), //write addr
-  					 .wdata (rt_data2								), //write data
+  					 .wdata (rt_data2_								), //write data
   					 .wmask (wmask									), //mask
   					 .wen   (MEM_W_en3								));//write enable  
 
 	reg [`ysyx_22041071_DATA_BUS] MEM_data	;
+	reg [`ysyx_22041071_DATA_BUS] rt_data2_	;
 	reg							  valid		;
 	reg							  handshake	;
 	reg [`ysyx_22041071_DATA_BUS] wmask		;
@@ -110,10 +111,12 @@ RAMHelper IRAMHelper(.clk   (clk									),
 
 		if(MEM_W_en3)begin //S type
 			case(Ins4[14:12])
-				3'b000://sb
+				3'b000:begin//sb
+					rt_data2_ = rt_data2 << ALU_result1[2:0];
 					case(ALU_result1[2:0])
-						3'b000:
+						3'b000:begin
 							wmask = 64'h0000_0000_0000_00ff	;
+						end
 						3'b001:
 							wmask = 64'h0000_0000_0000_ff00	;
 						3'b010:
@@ -129,6 +132,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 						3'b111:
 							wmask = 64'hff00_0000_0000_0000	;
 					endcase
+				end
 				3'b001: //sh
 					case(ALU_result1[2:1])
 						2'b00:
