@@ -146,14 +146,17 @@ RAMHelper IRAMHelper(.clk   (clk									),
 							wmask = 64'hffff_0000_0000_0000	;
 					endcase
 				end
-				3'b010: //sw
+				3'b010: begin//sw
+					rt_data2_ = rt_data2 << ALU_result1[2]*8*4;
 					case(ALU_result1[2])
 						1'b0:wmask = 64'h0000_0000_ffff_ffff;	
 						1'b1:wmask = 64'hffff_ffff_0000_0000;	
 					endcase
-					
-				3'b011: //sd
+				end	
+				3'b011: begin//sd
+					rt_data2_ = rt_data2;
 					wmask = 64'hffff_ffff_ffff_ffff	;
+				end
 				default:
 					wmask = 64'h0					;
 			endcase
