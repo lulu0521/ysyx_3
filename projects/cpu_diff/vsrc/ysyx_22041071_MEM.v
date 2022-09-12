@@ -29,13 +29,13 @@ module ysyx_22041071_MEM(
 						output reg  [`ysyx_22041071_DATA_BUS] WB_data1_	  );
 	
 RAMHelper IRAMHelper(.clk   (clk									),
-  					 .en    (WB_sel3								),
+  					 .en    (1										),
   					 .rIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}),
   					 .rdata (MEM_data								),
   					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}), //write addr
   					 .wdata (rt_data2								), //write data
   					 .wmask (wmask									), //mask
-  					 .wen   (Ins4[6:0]==7'b010_0011								));//write enable  MEM_W_en3
+  					 .wen   (Ins4[6:0]==7'b010_0011					));//write enable  MEM_W_en3
 
 	reg [`ysyx_22041071_DATA_BUS] MEM_data	;
 	reg [`ysyx_22041071_DATA_BUS] MEM_data_	;
