@@ -50,11 +50,11 @@ RAMHelper IRAMHelper(.clk   (clk									),
 		ready5	  = ready6			;
 		handshake = valid5 & ready6	;
 
-		if(Ins4[6:0]==7'b000_0011 && Ins5_[6:0]==7'b010_0011)begin//now is L type and last is S type
-			MEM_data_ = MEM_data &(~wmask1_) | rt_data3 & wmask1_;
-		end else begin
+		///if(Ins4[6:0]==7'b000_0011 && Ins5_[6:0]==7'b010_0011)begin//now is L type and last is S type
+		///	MEM_data_ = MEM_data &(~wmask1_) | rt_data3 & wmask1_;
+		///end else begin
 			MEM_data_ = MEM_data;
-		end
+		//end
 
 		if(WB_sel3)begin//L type
 			if(Ins4[6:0]==7'b000_0011)begin
