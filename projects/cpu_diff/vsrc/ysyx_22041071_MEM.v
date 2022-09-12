@@ -61,15 +61,15 @@ RAMHelper IRAMHelper(.clk   (clk									),
 							3'b111:WB_data1_ = {{56{MEM_data[63]}} ,MEM_data[63:56]};
 						endcase
 					3'b001://lh
-						case(ALU_result1[2:0])
-							3'b000:WB_data1_ = {{48{MEM_data[15]}} ,MEM_data[15:0 ]};
-							3'b001:WB_data1_ = {{48{MEM_data[23]}} ,MEM_data[23:8 ]};
-							3'b010:WB_data1_ = {{48{MEM_data[31]}} ,MEM_data[31:16]};
-							3'b011:WB_data1_ = {{48{MEM_data[39]}} ,MEM_data[39:24]};
-							3'b100:WB_data1_ = {{48{MEM_data[47]}} ,MEM_data[47:32]};
-							3'b101:WB_data1_ = {{48{MEM_data[55]}} ,MEM_data[55:40]};
-							3'b110:WB_data1_ = {{48{MEM_data[63]}} ,MEM_data[63:48]};
-							default:WB_data1_ = 64'h0;
+						case(ALU_result1[2:1])
+							2'b00:WB_data1_ = {{48{MEM_data[15]}} ,MEM_data[15:0 ]};
+							//3'b001:WB_data1_ = {{48{MEM_data[23]}} ,MEM_data[23:8 ]};
+							2'b01:WB_data1_ = {{48{MEM_data[31]}} ,MEM_data[31:16]};
+							//3'b011:WB_data1_ = {{48{MEM_data[39]}} ,MEM_data[39:24]};
+							2'b10:WB_data1_ = {{48{MEM_data[47]}} ,MEM_data[47:32]};
+							//3'b101:WB_data1_ = {{48{MEM_data[55]}} ,MEM_data[55:40]};
+							2'b11:WB_data1_ = {{48{MEM_data[63]}} ,MEM_data[63:48]};
+							//default:WB_data1_ = 64'h0;
 						endcase
 					3'b010://lw
 						case(ALU_result1[2])
@@ -133,7 +133,8 @@ RAMHelper IRAMHelper(.clk   (clk									),
 							wmask = 64'hff00_0000_0000_0000	;
 					endcase
 				end
-				3'b001: //sh
+				3'b001: begin//sh
+					rt_data2_ = rt_data2 << ALU_result1[2:1]*8*2;
 					case(ALU_result1[2:1])
 						2'b00:
 							wmask = 64'h0000_0000_0000_ffff	;
@@ -144,6 +145,7 @@ RAMHelper IRAMHelper(.clk   (clk									),
 						2'b11:
 							wmask = 64'hffff_0000_0000_0000	;
 					endcase
+				end
 				3'b010: //sw
 					case(ALU_result1[2])
 						1'b0:wmask = 64'h0000_0000_ffff_ffff;	
