@@ -341,6 +341,8 @@ module ysyx_22041071_ID2(
 		if(reg_w_en5 && rdest4 !=5'd0)begin 
 			reg_file[rdest4] <= WB_data2; 
 		end
+		$display("=================WB_data2 = %x ",WB_data2);	
+		$display("======================== rdest4 = %x",rdest4 );	
 	end
 
 endmodule
