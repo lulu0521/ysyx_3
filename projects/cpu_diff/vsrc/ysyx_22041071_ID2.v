@@ -338,7 +338,7 @@ module ysyx_22041071_ID2(
 				end	  	
 			end  
 		end 
-		if(reg_w_en5 && rdest4 !=0)begin 
+		if(reg_w_en5 && rdest4 !=5'd0)begin 
 			reg_file[rdest4] <= WB_data2; 
 		end
 	end
