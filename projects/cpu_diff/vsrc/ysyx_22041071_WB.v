@@ -26,7 +26,7 @@ module ysyx_22041071_WB(
 		reg_w_en5 = reg_w_en4	;	
 		rdest4	  = rdest3	  	;	 		
 		WB_data2  = WB_data1 	;
-		$display("*******************************WB_data2 = %lx  rdest4 = %x",WB_data1,rdest4 );		
+		$display("*******************************WB_data2 = %lx  rdest4 = %x",WB_data1,    rdest4 );		
 	end
 	
 endmodule
