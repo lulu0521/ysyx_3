@@ -73,7 +73,7 @@ module ysyx_22041071_ID(
 	always@(*)begin
 		ready2	  = ready3								;
 		handshake = valid2 & ready3						;
-		JPC1 	  = PC2 + {{43{1'b0}},{JImm[20:1]},1'b0};
+		JPC1 	  = PC2 + {{43{JImm[20]}},{JImm[20:1]},1'b0};
 		
 		if(opcode==7'b110_1111 || opcode==7'b110_0111 || opcode==7'b110_0011)begin//Jal and jalr B
 			bubble21 = 1'b1;
