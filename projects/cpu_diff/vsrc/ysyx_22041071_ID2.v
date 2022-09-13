@@ -182,11 +182,11 @@ module ysyx_22041071_ID2(
 		
 		if(rt1==0)//select the rt_data
 			rt_data = 64'h0; 
-		else if(rt1==rdest1_)
+		else if(rt1==rdest1_ && reg_w_en3_ == 1'b1)
 			rt_data = result;
-		else if(rt1==rdest2)
+		else if(rt1==rdest2 && reg_w_en4_ == 1'b1)
 			rt_data = WB_data;
-		else if(rt1==rdest4)
+		else if(rt1==rdest4 && reg_w_en5 == 1'b1)
 			rt_data = WB_data2;
 		else
 			rt_data = reg_file[rt1];

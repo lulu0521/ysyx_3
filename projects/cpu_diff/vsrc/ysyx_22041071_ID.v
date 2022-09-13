@@ -66,7 +66,7 @@ module ysyx_22041071_ID(
 	assign Imm   [11: 0] =  Ins1[31:20]										;
 	assign SImm  [11: 0] = {Ins1[31:25],Ins1[11:7]}							;
 	assign JImm  [20: 1] = {Ins1[31   ],Ins1[19:12],Ins1[20   ],Ins1[30:21]};
-	assign BImm	 [12:1 ]  = {Ins1[31   ],Ins1[7    ],Ins1[30:25],Ins1[11: 8]};
+	assign BImm	 [12:1 ] = {Ins1[31   ],Ins1[7    ],Ins1[30:25],Ins1[11: 8]};
 	assign UImm  [19:0 ] =  Ins1[31:12]										; 
 	
 
