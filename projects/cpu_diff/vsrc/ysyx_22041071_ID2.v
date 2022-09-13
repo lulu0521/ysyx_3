@@ -138,16 +138,16 @@ module ysyx_22041071_ID2(
 	assign reg_file18 = reg_file[18];
 	assign reg_file19 = reg_file[19];
 	assign reg_file20 = reg_file[20];
-	assign reg_file22 = reg_file[21];
-	assign reg_file23 = reg_file[22];
-	assign reg_file24 = reg_file[23];
-	assign reg_file25 = reg_file[24];
-	assign reg_file26 = reg_file[25];
-	assign reg_file27 = reg_file[26];
-	assign reg_file28 = reg_file[27];
-	assign reg_file29 = reg_file[28];
-	assign reg_file30 = reg_file[29];
-	assign reg_file31 = reg_file[30];
+	assign reg_file21 = reg_file[21];
+	assign reg_file22 = reg_file[22];
+	assign reg_file23 = reg_file[23];
+	assign reg_file24 = reg_file[24];
+	assign reg_file25 = reg_file[25];
+	assign reg_file26 = reg_file[26];
+	assign reg_file27 = reg_file[27];
+	assign reg_file28 = reg_file[28];
+	assign reg_file29 = reg_file[29];
+	assign reg_file30 = reg_file[30];
 	assign reg_file31 = reg_file[31];
 
 	always@(*)begin
