@@ -39,6 +39,7 @@ module ysyx_22041071_ID2(
 						output reg							  bubble22  	,
 						output reg  [`ysyx_22041071_ADDR_BUS] PC4	    	,
 						output reg  [`ysyx_22041071_INS_BUS ] Ins3	    	,
+						output reg  [`ysyx_22041071_INS_BUS ] Ins3_	    	,
 						output reg  						  JRPC_sel2 	,
 						output reg	[`ysyx_22041071_ADDR_BUS] JRPC1	    	,
 						output reg  						  Brch2	    	,
@@ -116,6 +117,7 @@ module ysyx_22041071_ID2(
 	assign reg_w_en = reg_w_en1		;
 	assign rt 		= rt1			;
 	assign BImm 	= BImm1			;
+	assign Ins3_	= Ins3			;
 	assign reg_file[0]= 64'b0		;
 	assign reg_file0  = reg_file[0 ];
 	assign reg_file1  = reg_file[1 ];
