@@ -48,6 +48,11 @@ RAMHelper IRAMHelper(.clk   (clk						),
 		end else begin
 			Ins_32 = Ins_[31:0 ];
 		end
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ PC1 = %x",PC1);
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ Ins1 = %x",Ins);
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ready3 = %x",ready2);
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ valid2 = %x",valid1);
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ handshake = %x",handshake);
 	end
 	
 	always@(posedge clk)begin
