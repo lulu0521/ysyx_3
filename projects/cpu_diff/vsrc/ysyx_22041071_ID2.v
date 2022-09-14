@@ -51,6 +51,7 @@ module ysyx_22041071_ID2(
 						output reg  [`ysyx_22041071_DATA_BUS] src_a	    	,
 						output reg	[`ysyx_22041071_DATA_BUS] src_b	    	,
 						output reg  [12:1 ]					  BImm2	    	,
+						output reg							  bubble4		,
 						output reg  [`ysyx_22041071_DATA_BUS] reg_file0 	,
 						output reg  [`ysyx_22041071_DATA_BUS] reg_file1 	,
 						output reg  [`ysyx_22041071_DATA_BUS] reg_file2 	,
@@ -104,7 +105,6 @@ module ysyx_22041071_ID2(
 	reg  [63:0 ]					 Imm	 	;
 	reg								 valid	 	;
 	reg								 handshake	;
-	reg								 bubble4	;
 
 	assign PC	  	= PC3	  		;
 	assign Ins	  	= Ins2			;

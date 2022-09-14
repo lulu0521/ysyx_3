@@ -7,6 +7,8 @@ module ysyx_22041071_IF(input  wire 						  clk	  	,
 						input  wire							  bubble21	,
 						input  wire							  bubble22	,
 						input  wire							  bubble23	,
+						input  wire [`ysyx_22041071_ADDR_BUS] PC3		,
+						input  wire							  bubble4	,
 						input  wire							  valid1	,
 						input  wire							  ready2	,
 						output reg							  ready1	,
@@ -35,6 +37,8 @@ RAMHelper IRAMHelper(.clk   (clk						),
 		
 		if(bubble23==1'b1 && Brch_sel1==0)begin
 			SNPC = PC4 + 64'h4;
+		end else if(bubble4) begin
+			SNPC = PC3 + 64'd12;
 		end else begin
 			SNPC = PC1 + 64'h4;
 		end

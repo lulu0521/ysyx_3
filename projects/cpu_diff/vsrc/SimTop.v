@@ -70,6 +70,7 @@ wire  [ 4:0 ]					  rdest1	;
 wire  [`ysyx_22041071_DATA_BUS]   src_a	  	;
 wire  [`ysyx_22041071_DATA_BUS]   src_b	  	;
 wire  [12:1 ]					  BImm2	  	;
+wire							  bubble4	;
 wire  [`ysyx_22041071_DATA_BUS] reg_file0 	;
 wire  [`ysyx_22041071_DATA_BUS] reg_file1 	;
 wire  [`ysyx_22041071_DATA_BUS] reg_file2 	;
@@ -164,6 +165,8 @@ ysyx_22041071_IF IF(.clk	  (clock      ),
 				    .bubble21 (bubble21   ),
 				    .bubble22 (bubble22   ),
 				    .bubble23 (bubble23   ),
+					.PC3	  (PC3		  ),
+					.bubble4  (bubble4	  ),
 				    .valid1	  (valid1     ),
 				    .ready2	  (ready2     ),
 				    .ready1	  (ready1	  ),
@@ -256,6 +259,7 @@ ysyx_22041071_ID2 ID2(
 					.src_a	  	(src_a	 	 ),
 					.src_b	  	(src_b	 	 ),
 					.BImm2	  	(BImm2	 	 ),
+					.bubble4	(bubble4	 ),
 					.reg_file0  (reg_file0 	 ),
 					.reg_file1  (reg_file1 	 ),
 					.reg_file2  (reg_file2 	 ),
