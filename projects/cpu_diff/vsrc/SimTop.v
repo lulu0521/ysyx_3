@@ -58,7 +58,6 @@ wire							  valid4	;
 wire							  bubble22  ;
 wire  [`ysyx_22041071_ADDR_BUS]   PC4	    ;
 wire  [`ysyx_22041071_INS_BUS ]   Ins3	  	;
-wire  [`ysyx_22041071_INS_BUS ]   Ins3_		;
 wire  						      JRPC_sel2 ;
 wire  [`ysyx_22041071_ADDR_BUS]   JRPC1	  	;
 wire  						      Brch2	  	;
@@ -213,7 +212,7 @@ ysyx_22041071_ID2 ID2(
 					.reset    	(reset		 ),
 					.PC3	  	(PC3	     ),
 					.Ins2	  	(Ins2	     ),
-					.Ins31	  	(Ins3_	     ),
+					.Ins31	  	(Ins3	     ),
 					.opcode1  	(opcode1     ),
 					.rs1	  	(rs1		 ),
 					.rt1	  	(rt1		 ),
@@ -248,7 +247,6 @@ ysyx_22041071_ID2 ID2(
 					.bubble22 	(bubble22  	 ),
 					.PC4	  	(PC4	     ),
 					.Ins3	  	(Ins3	     ),
-					.Ins3_		(Ins3_		 ),
 					.JRPC_sel2	(JRPC_sel2 	 ),
 					.JRPC1	  	(JRPC1	 	 ),
 					.Brch2	  	(Brch2	 	 ),

@@ -39,7 +39,6 @@ module ysyx_22041071_ID2(
 						output reg							  bubble22  	,
 						output reg  [`ysyx_22041071_ADDR_BUS] PC4	    	,
 						output reg  [`ysyx_22041071_INS_BUS ] Ins3	    	,
-						output reg  [`ysyx_22041071_INS_BUS ] Ins3_	    	,
 						output reg  						  JRPC_sel2 	,
 						output reg	[`ysyx_22041071_ADDR_BUS] JRPC1	    	,
 						output reg  						  Brch2	    	,
@@ -89,7 +88,6 @@ module ysyx_22041071_ID2(
 	reg [63:0] reg_file [0:31];
 	
 	wire [`ysyx_22041071_ADDR_BUS]	 PC	  	 	;
-	wire [`ysyx_22041071_INS_BUS ]	 Ins	 	;
 	wire  							 Brch	 	;
 	wire							 MEM_W_en	;
 	wire							 WB_sel  	;
@@ -108,7 +106,6 @@ module ysyx_22041071_ID2(
 	reg								 handshake	;
 
 	assign PC	  	= PC3	  		;
-	assign Ins	  	= Ins2			;
 	assign JRPC_sel2= JRPC_sel1		;
 	assign Brch	  	= Brch1			;
 	assign MEM_W_en = MEM_W_en1		;
@@ -117,7 +114,6 @@ module ysyx_22041071_ID2(
 	assign reg_w_en = reg_w_en1		;
 	assign rt 		= rt1			;
 	assign BImm 	= BImm1			;
-	assign Ins3_	= Ins3			;
 	assign reg_file[0]= 64'b0		;
 	assign reg_file0  = reg_file[0 ];
 	assign reg_file1  = reg_file[1 ];
@@ -326,7 +322,7 @@ module ysyx_22041071_ID2(
 				if(handshake)begin
 					valid4	   <= valid3	  ;		
 					PC4	  	   <= PC	  	  ;
-					Ins3	   <= Ins	 	  ;
+					Ins3	   <= Ins2	 	  ;
 					Brch2	   <= Brch		  ;
 					MEM_W_en2  <= MEM_W_en	  ;
 					WB_sel2    <= WB_sel  	  ;
