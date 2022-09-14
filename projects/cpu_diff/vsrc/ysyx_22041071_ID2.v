@@ -161,7 +161,7 @@ module ysyx_22041071_ID2(
 		else 
 			JRPC1 = reg_file[rs1] + {{52{Imm1[11]}},Imm1};
 			
-		if(opcode1==7'b110_0111 || opcode1==7'b110_0011)begin//jalr and B
+		if((opcode1==7'b110_0111 || opcode1==7'b110_0011) && (handshake == 1'b1))begin//jalr and B
 			bubble22 = 1'b1;
 		end else begin
 			bubble22 = 1'b0;
