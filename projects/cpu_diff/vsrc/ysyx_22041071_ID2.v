@@ -150,6 +150,7 @@ module ysyx_22041071_ID2(
 
 	always@(*)begin
 		handshake = valid3 & ready4				    ;
+/*=========================JRPC target addr==================================*/
 		if(rs1==0 )
 			JRPC1 = 0 + {{52{Imm1[11]}},Imm1}		;
 		else if(rs1==rdest1_) 
@@ -160,13 +161,15 @@ module ysyx_22041071_ID2(
 			JRPC1 = WB_data2 + {{52{Imm1[11]}},Imm1};
 		else 
 			JRPC1 = reg_file[rs1] + {{52{Imm1[11]}},Imm1};
-			
+
+/*=========================JALR and B need  bubble==================================*/			
 		if((opcode1==7'b110_0111 || opcode1==7'b110_0011) && (handshake == 1'b1))begin//jalr and B
 			bubble22 = 1'b1;
 		end else begin
 			bubble22 = 1'b0;
 		end
-		
+
+/*=========================ld write reg is needed by other instruction==================================*/				
 		if(Ins31[6:0]==7'b000_0011 && ((opcode1==7'b011_0011 || opcode1==7'b011_1011)&&(rs1==rdest1_ || rt1==rdest1_)
 		|| (opcode1==7'b110_0111 || opcode1==7'b000_0011 || opcode1==7'b001_1011 || opcode1==7'b001_0011)&&rs1==rdest1_
 		|| opcode1==7'b010_0011 && (rs1==rdest1_ || rt1==rdest1_)

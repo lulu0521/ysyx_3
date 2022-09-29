@@ -41,7 +41,6 @@ module ysyx_22041071_EX(
 	reg								valid		;
 	reg								handshake	;
 	reg  [31:0]						result		;
-	
 	assign PC 		 = PC4							;
 	assign Ins 		 = Ins3						  	;
 	assign MEM_W_en  = MEM_W_en2				  	;
@@ -50,114 +49,395 @@ module ysyx_22041071_EX(
 	assign rt_data	 = rt_data1				  		;
 	assign rdest2_	 = rdest1					  	;
 	assign Brch_sel1 = ALU_result && Brch2			; 
+//div
+	reg							  div_valid ;//为高表示输入数据有效
+	reg						 	  div_signed;//为高表示有符号除法
+	reg						 	  divw		;//32位除法
+	reg							  div_ready	;//为高除法器处于空闲状态
+	reg							  out_valid	;//为高输出有效
+	reg [`ysyx_22041071_DATA_BUS] rema		;//余数
+	reg [`ysyx_22041071_DATA_BUS] quot 	  	;//商*/
+
+	ysyx_22041071_DIV my_DIV(
+							.clk		(clk		),
+							.reset		(reset		),
+							.flush		(1'b0		),//取消除法
+							.div_valid 	(div_valid 	),//为高表示输入数据有效
+							.div_signed	(div_signed	),//为高表示有符号除法
+							.divw		(divw	 	),//32位除法
+							.dividend	(src_a		),//被除数
+							.divisor	(src_b		),//除数
+							.div_ready	(div_ready  ),//为高除法器处于空闲状态
+							.out_valid	(out_valid  ),//为高输出有效
+							.rema		(rema		),//余数
+							.quot 	  	(quot 	    ));//商
+//mul
+	reg		  	flush		;//取消乘法
+	reg		  	mul_valid	;//高表示输入数据有效
+	reg		  	mulw		;//为1表示32位乘法
+	reg [1 :0]	mul_signed 	;//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
+	reg 		mul_ready	;//高表示乘法器准备好了
+	reg 		out_valid_m	;//高表示输出结果有效
+	reg [63:0] 	result_h	;
+	reg [63:0] 	result_l	;
+
+	ysyx_22041071_MUL my_MUL(
+							.flush		(1'b0		),//取消乘法
+							.mul_valid	(mul_valid	),//高表示输入数据有效
+							.mulw		(mulw		),//为1表示32位乘法
+							.mul_signed (mul_signed ),//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
+							.mul_1		(src_a		),//被乘数
+							.mul_2		(src_b		),//乘数
+							.mul_ready	(mul_ready	),//高表示乘法器准备好了
+							.out_valid	(out_valid_m),//高表示输出结果有效
+							.result_h	(result_h	),
+							.result_l	(result_l	));
 
 /*======0:64位+  1:32位+  2:64位左移    3:32位左移   4:64位算术右移    5:32位算术右移
 		6:64位逻辑右移    7:32位逻辑右移   8:64位&     9:64位|       10:64位^   
 		11:64位有符号<   12:64位无符号<   13:64位==  14:64位！=   15:64位有符号>=    16:64位无符号>=  
-		17:64位无符号-   18:有符号32位-     19:64位*取低64位     20:有符号64位*取高64位   21:无符号64位*取高64位     22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展   27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
+		17:64位无符号-   18:有符号32位-     19:64位*取低64位     20:有符号64位*取高64位   21:无符号64位*取高64位    
+		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
+		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
 	always@(*)begin
-		ready4		= ready5 						;
+		if(~div_valid)begin
+			ready4 = 1'b0;
+		end else begin
+			ready4 = ready5;
+		end
 		handshake 	= valid4 & ready5				;
 		BPC1		= PC4 + {{51{BImm2[12]}},BImm2,1'b0};
+	end	
 		
+	always@(*)begin	
 		if((Ins3[6:0]==7'b110_0011) && (handshake == 1'b1))begin//B
 			bubble23 = 1'b1;
 		end else begin
 			bubble23 = 1'b0;
 		end
-		
+	end	
+
+	always@(*)begin
 		case(ALU_ctrl2)
 			5'd0 	:begin
-					result 	   = 0											;
-					ALU_result = src_a + src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a + src_b							;
 			end	
-			5'd1 	:begin  		
-					result 	 = src_a[31:0] + src_b[31:0]					;
-					ALU_result = {{32{result[31]}},result}					;
+			5'd1 	:begin 
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									; 		
+					result 	 = src_a[31:0] + src_b[31:0]				;
+					ALU_result = {{32{result[31]}},result}				;
 			end              		
 			5'd2 	:begin
-					result 	   = 0											;
-					ALU_result = src_a << src_b[5:0]		 				;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a << src_b[5:0]		 			;
 			end
-			5'd3 	:begin  		
-					result 	 = src_a[31:0] << src_b[4:0]					;
-					ALU_result = {{32{result[31]}},result}					;
+			5'd3 	:begin  
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;		
+					result 	 = src_a[31:0] << src_b[4:0]				;
+					ALU_result = {{32{result[31]}},result}				;
 			end              		
 			5'd4 	:begin
-					result 	   = 0											;
-					ALU_result = $signed(src_a) >>> src_b[5:0]		 		;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = $signed(src_a) >>> src_b[5:0]		 	;
 			end
-			5'd5 	:begin		
-					result	 = $signed(src_a[31:0]) >>> src_b[4:0]			;
-					ALU_result = {{32{result[31]}},result} 					;
+			5'd5 	:begin	
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;	
+					result	 = $signed(src_a[31:0]) >>> src_b[4:0]		;
+					ALU_result = {{32{result[31]}},result} 				;
 			end		
 			5'd6 	:begin
-					result 	   = 0											;
-					ALU_result = src_a >> src_b[5:0]		  				;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a >> src_b[5:0]		  			;
 			end
-			5'd7 	:begin		
-					result 	 = src_a[31:0] >> src_b[4:0]					;
-					ALU_result = {{32{result[31]}},result}					;
+			5'd7 	:begin	
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;	
+					result 	 = src_a[31:0] >> src_b[4:0]				;
+					ALU_result = {{32{result[31]}},result}				;
 			end		
 			5'd8 	:begin
-					result 	   = 0											;
-					ALU_result = src_a & src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a & src_b							;
 			end 
 			5'd9 	:begin
-					result 	   = 0											;
-					ALU_result = src_a | src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a | src_b							;
 			end 
 			5'd10	:begin
-					result 	   = 0											;
-					ALU_result = src_a ^ src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a ^ src_b							;
 			end 
 			5'd11	:begin
-					result 	   = 0											;
-					ALU_result = $signed(src_a) < $signed(src_b)			;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = $signed(src_a) < $signed(src_b)		;
 			end	 
 			5'd12	:begin
-					result 	   = 0											;
-					ALU_result = src_a < src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a < src_b							;
 			end 
 			5'd13	:begin
-					result 	   = 0											;
-					ALU_result = src_a == src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a == src_b							;
 			end 
 			5'd14	:begin
-					result 	   = 0											;
-					ALU_result = src_a != src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a != src_b							;
 			end 
 			5'd15	:begin
-					result 	   = 0											;
-					ALU_result = $signed(src_a) >= $signed(src_b)			;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = $signed(src_a) >= $signed(src_b)		;
 			end 
 			5'd16	:begin
-					result 	   = 0											;
-					ALU_result = src_a >= src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a >= src_b							;
 			end 
 			5'd17	:begin
-					result 	   = 0											;
-					ALU_result = src_a - src_b								;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	   = 0										;
+					ALU_result = src_a - src_b							;
 			end
 			5'd18	: begin
-					result = $signed(src_a[31:0]) - $signed(src_b[31:0])	;
-					ALU_result = {{32{result[31]}},result}					;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result = $signed(src_a[31:0]) - $signed(src_b[31:0]);
+					ALU_result = {{32{result[31]}},result}				;
 			end
-			//5'd19	: ALU_result <= src_a  src_b;
-			//5'd20	: ALU_result <= src_a  src_b;
-			//5'd21	: ALU_result <= src_a  src_b;
-			//5'd22	: ALU_result <= src_a  src_b;
-			//5'd23	: ALU_result <= src_a  src_b;
-			//5'd24	: ALU_result <= src_a  src_b;
-			//5'd25	: ALU_result <= src_a  src_b;
-			//5'd26	: ALU_result <= src_a  src_b;
-			//5'd27	: ALU_result <= src_a  src_b;
-			//5'd28	: ALU_result <= src_a  src_b;
-			//5'd29	: ALU_result <= src_a  src_b;
-			//5'd30	: ALU_result <= src_a  src_b;
+			5'd19	: begin//64位*取低64位
+					mul_valid	= 1'b1    								;
+					mulw		= 1'b0    								;
+					mul_signed  = 2'b00   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 0										;
+					ALU_result  = result_l								;
+			end
+			5'd20	: begin//有符号64位*取高64位
+					mul_valid	= 1'b1    								;
+					mulw		= 1'b0    								;
+					mul_signed  = 2'b11   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 0										;
+					ALU_result  = result_h								;
+			end
+			5'd21	: begin//无符号64位*取高64位
+					mul_valid	= 1'b1    								;
+					mulw		= 1'b0    								;
+					mul_signed  = 2'b00   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 0										;
+					ALU_result  = result_h;
+			end
+			5'd22	: begin//32位有符号乘法取低32位符号扩展 
+					mul_valid	= 1'b1    								;
+					mulw		= 1'b1    								;
+					mul_signed  = 2'b11   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 0										;
+					ALU_result  = {{32{result_l[31]}},result_l[31:0]};
+			end
+			5'd23	: begin//64有符号除法
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b1									;
+					divw	    = 1'b0									;
+					result 	    = 0										;	
+					ALU_result  = quot									;
+			end
+			5'd24	: begin//64无符号除法
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;	
+					result 	    = 0										;
+					ALU_result  = quot									;
+			end
+			5'd25	: begin//有符号32位除法符号扩展
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b1									;
+					divw	    = 1'b1									;	
+					result 	    = 0										;
+					ALU_result  = quot									;
+			end
+			5'd26	: begin//32位无符号除法有符号扩展
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b0									;
+					divw	    = 1'b1									;
+					result 	    = 0										;	
+					ALU_result  = quot									;
+			end
+			5'd27	: begin//64有符号取余
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b1									;
+					divw	    = 1'b0									;
+					result 	    = 0										;	
+					ALU_result  = rema									;
+			end
+			5'd28	: begin//64无符号取余 
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 0										;	
+					ALU_result  = rema									;
+			end
+			5'd29	: begin//32位无符号取余有符号扩展
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b0									;
+					divw	    = 1'b1									;
+					result 	    = 0										;	
+					ALU_result  = rema									;
+			end
+			5'd30	: begin//32位有符号取余有符号扩展
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = div_ready & ~out_valid				;
+					div_signed  = 1'b1									;
+					divw	    = 1'b1									;
+					result 	    = 0										;	
+					ALU_result  = rema									;
+			end
 			default	: begin
-					result 	   = 32'h0	;
-					ALU_result = 64'd0	;
+					mul_valid	= 1'b0   								;
+					mulw		= 1'b0   								;
+					mul_signed  = 2'b0   								;
+					div_valid   = 1'b0									;
+					div_signed  = 1'b0									;
+					divw	    = 1'b0									;
+					result 	    = 32'h0									;
+					ALU_result  = 64'd0									;	
 			end
 		endcase
 	end
@@ -188,12 +468,5 @@ module ysyx_22041071_EX(
 		end
 	
 	end
-	
-	
-	
-	
-	
-	
-	
 
 endmodule
