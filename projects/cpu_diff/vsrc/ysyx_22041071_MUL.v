@@ -36,8 +36,8 @@ module ysyx_22041071_MUL(
 				    multiplier	 = {{34 {1'b0}},{mul_2[31:0]},{1'b0}};  
 				end
 				2'b10:begin
-					multiplicand = {{100{1'b0	  }},{mul_1[31:0]}};
-				    multiplier	 = {{34 {mul_2[31]}},{mul_2[31:0]},{1'b0}};  
+					multiplicand = {{100{mul_1[31]}},{mul_1[31:0]}};
+					multiplier	 = {{34 {1'b0}},{mul_2[31:0]},{1'b0}}; 
 				end
 				2'b11:begin
 					multiplicand = {{100{mul_1[31]}},{mul_1[31:0]}};
@@ -55,8 +55,8 @@ module ysyx_22041071_MUL(
 				    multiplier	 = {{2 {1'b0}},{mul_2[63:0]},{1'b0}};  
 				end
 				2'b10:begin
-					multiplicand = {{68{1'b0	 }},{mul_1[63:0]}};
-				    multiplier	 = {{2 {mul_2[63]}},{mul_2[63:0]},{1'b0}};  
+					multiplicand = {{68{mul_1[63]}},{mul_1[63:0]}};
+					multiplier	 = {{2 {1'b0}},{mul_2[63:0]},{1'b0}};  
 				end
 				2'b11:begin
 					multiplicand = {{68{mul_1[63]}},{mul_1[63:0]}};
