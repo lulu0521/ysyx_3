@@ -392,6 +392,7 @@ module ysyx_22041071_EX(
 					ALU_result  = {{32{result_l[31]}},result_l[31:0]};
 			end
 			5'd23	: begin//64有符号除法
+				$display("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 					mul_valid1	= 1'b0   								;
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
