@@ -36,6 +36,9 @@ module ysyx_22041071_DIV(
 /*=====================确定除数和被除数 === 商和余数的符号位========================*/
 	always@(*)begin
 		if(in_valid)begin
+			$display("###################################");
+				$display("dividend=%x",dividend);
+				$display("divisor=%x",divisor);
 			if(div_signed)begin
 				if(divw)begin
 					if(dividend[31])begin
@@ -188,9 +191,6 @@ module ysyx_22041071_DIV(
 			end else begin
 				rema = x_abs_ex[126:63];
 			end
-				$display("###################################");
-				$display("dividend=%x",dividend);
-				$display("divisor=%x",divisor);
 		end else begin
 			quot = 64'h0;
 			rema = 64'h0;
