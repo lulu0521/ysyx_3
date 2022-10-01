@@ -58,7 +58,7 @@ module ysyx_22041071_DIV(
 						x_abs = ~dividend + 1;
 					end else begin
 						x_abs_ = 32'b0		 ;
-						x_abs = dividend;
+						x_abs = dividend	 ;
 					end
 					if(divisor[63])begin
 						y_abs_ = 32'b0		;
@@ -151,7 +151,7 @@ module ysyx_22041071_DIV(
 					y_abs_ex <= {1 'b0,y_abs,63'b0};
 				end
 				QR:
-					if(x_abs_ex>=y_abs_ex)begin
+					if(x_abs_ex>=y_abs_ex && x_abs_ex!=0)begin
 						q <= {q[62:0],1'b1};
 						x_abs_ex <= x_abs_ex - y_abs_ex; 
 					end else begin
