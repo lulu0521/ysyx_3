@@ -35,6 +35,8 @@ module ysyx_22041071_DIV(
 	
 /*=====================确定除数和被除数 === 商和余数的符号位========================*/
 	always@(*)begin
+		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		$display("in_valid=%x",in_valid);
 		if(in_valid)begin
 			$display("###################################");
 				$display("dividend=%x",dividend);
