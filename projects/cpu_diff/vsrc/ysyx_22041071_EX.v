@@ -119,7 +119,7 @@ module ysyx_22041071_EX(
 		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
 		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
 	always@(*)begin
-		if(div_valid || mul_valid2)begin
+		if(div_ready || mul_valid2)begin
 			ready4 = 1'b0;
 		end else begin
 			ready4 = ready5;
@@ -392,7 +392,6 @@ module ysyx_22041071_EX(
 					ALU_result  = {{32{result_l[31]}},result_l[31:0]};
 			end
 			5'd23	: begin//64有符号除法
-				$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 					mul_valid1	= 1'b0   								;
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
