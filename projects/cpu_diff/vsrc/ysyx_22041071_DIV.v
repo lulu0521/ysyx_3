@@ -37,6 +37,8 @@ module ysyx_22041071_DIV(
 	always@(*)begin
 		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 		$display("in_valid=%x",in_valid);
+		$display("div_ready=%x",div_ready);
+		$display("out_valid=%x",out_valid);
 		if(in_valid)begin
 			$display("###################################");
 				$display("dividend=%x",dividend);
