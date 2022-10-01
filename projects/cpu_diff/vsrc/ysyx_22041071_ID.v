@@ -223,7 +223,7 @@ module ysyx_22041071_ID(
 							if(~Ins1[30]) ALU_ctrl = 5'd6 ; else ALU_ctrl = 5'd4 ;//srl,sra
 							if( Ins1[25]) ALU_ctrl = 5'd24;//divu
 					end
-					3'b100: if(~Ins1[30]) ALU_ctrl = 5'd10; else ALU_ctrl = 5'd23;//xor,div
+					3'b100: if(~Ins1[25]) ALU_ctrl = 5'd10; else ALU_ctrl = 5'd23;//xor,div
 					3'b110: if(~Ins1[25]) ALU_ctrl = 5'd9 ; else ALU_ctrl = 5'd27;//or,rem
 				endcase
 				$display("**************************************");
