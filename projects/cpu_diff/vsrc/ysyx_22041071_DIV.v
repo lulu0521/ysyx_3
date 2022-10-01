@@ -34,7 +34,7 @@ module ysyx_22041071_DIV(
 	end
 /*=====================确定除数和被除数 === 商和余数的符号位========================*/
 	always@(*)begin
-		$display("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		$display("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 		$display("in_valid=%x",in_valid);
 		$display("div_ready=%x",div_ready);
 		$display("out_valid=%x",out_valid);
