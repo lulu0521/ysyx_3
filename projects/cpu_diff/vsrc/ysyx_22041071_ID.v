@@ -226,6 +226,8 @@ module ysyx_22041071_ID(
 					3'b100: if(~Ins1[30]) ALU_ctrl = 5'd10; else ALU_ctrl = 5'd23;//xor,div
 					3'b110: if(~Ins1[25]) ALU_ctrl = 5'd9 ; else ALU_ctrl = 5'd27;//or,rem
 				endcase
+				$display("**************************************");
+				$display("ALU_ctrl=%x",ALU_ctrl);
 			end
 			7'b011_1011:begin
 				case(funct3)
