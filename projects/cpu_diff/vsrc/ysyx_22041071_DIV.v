@@ -188,7 +188,8 @@ module ysyx_22041071_DIV(
 			end else begin
 				rema = x_abs_ex[126:63];
 			end
-					$display("dividend=%x",dividend);
+				$display("###################################");
+				$display("dividend=%x",dividend);
 				$display("divisor=%x",divisor);
 		end else begin
 			quot = 64'h0;
