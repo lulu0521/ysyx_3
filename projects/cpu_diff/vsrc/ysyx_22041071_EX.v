@@ -403,6 +403,9 @@ module ysyx_22041071_EX(
 					divw	    = 1'b0									;
 					result 	    = 0										;	
 					ALU_result  = quot									;
+					$display("================================");
+					$display("src_a=%x",src_a);
+					$display("src_b=%x",src_b);
 			end
 			5'd24	: begin//64无符号除法
 					mul_valid1	= 1'b0   								;
