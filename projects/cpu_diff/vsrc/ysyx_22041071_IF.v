@@ -39,8 +39,10 @@ RAMHelper IRAMHelper(.clk   (clk						),
 			SNPC = PC4 + 64'h4;
 		end else if(bubble4==1'b1) begin
 			SNPC = PC3 + 64'd12;
-		end else begin
+		end else if(handshake)begin
 			SNPC = PC1 + 64'h4;
+		end else begin 
+			SNPC = PC1;
 		end
 
 		if(PC1[2])begin
