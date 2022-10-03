@@ -510,7 +510,7 @@ module ysyx_22041071_EX(
 			rdest2	    <= 5'd0			;
 			ALU_result1 <= 64'd0		;
 		end else begin
-			if(div_busy)begin
+			if(div_valid || div_busy)begin
 				valid5		 <= 1'b0		;
 				PC5	      	 <= PC			;
 				Ins4	     <= 32'b0		;
