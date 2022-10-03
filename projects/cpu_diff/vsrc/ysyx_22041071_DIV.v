@@ -174,7 +174,7 @@ module ysyx_22041071_DIV(
 	
 	assign div_ready = c_stats == IDLE;
 	assign out_valid = c_stats == DONE;
-	assign div_busy  = c_stats != QR  ;
+	assign div_busy  = c_stats != IDLE;
 	always@(*)begin
 		if(out_valid)begin
 			if(quot_s)begin
