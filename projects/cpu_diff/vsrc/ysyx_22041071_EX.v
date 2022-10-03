@@ -510,17 +510,29 @@ module ysyx_22041071_EX(
 			rdest2	    <= 5'd0			;
 			ALU_result1 <= 64'd0		;
 		end else begin
-			if(handshake)begin
-				valid5		 <= valid4		;
+			if(div_busy)begin
+				valid5		 <= 1'b0		;
 				PC5	      	 <= PC			;
-				Ins4	     <= Ins			;
-				MEM_W_en3    <= MEM_W_en	;
-				WB_sel3      <= WB_sel		;
-				reg_w_en3    <= reg_w_en2	;
-				rt_data2     <= rt_data		;
-				rdest2	     <= rdest1		;
-				ALU_result1  <= ALU_result	;
-			end
+				Ins4	     <= 32'b0		;
+				MEM_W_en3    <= 1'd0		;
+				WB_sel3      <= 1'd0		;
+				reg_w_en3    <= 1'd0		;
+				rt_data2     <= 64'd0		;
+				rdest2	     <= 5'd0		;
+				ALU_result1  <= 64'd0		;
+			end else begin
+				if(handshake)begin
+					valid5		 <= valid4		;
+					PC5	      	 <= PC			;
+					Ins4	     <= Ins			;
+					MEM_W_en3    <= MEM_W_en	;
+					WB_sel3      <= WB_sel		;
+					reg_w_en3    <= reg_w_en2	;
+					rt_data2     <= rt_data		;
+					rdest2	     <= rdest1		;
+					ALU_result1  <= ALU_result	;
+				end
+			end	
 		end
 	
 	end

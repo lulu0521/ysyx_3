@@ -39,7 +39,7 @@ module ysyx_22041071_PC(input  wire 						   clk      ,
 			if(handshake)begin
 				valid1 <= valid;
 				PC	   <= DNPC ;
-				$display("PC=%x",PC);
+				//$display("PC=%x",PC);
 			end
 		end
 	end
