@@ -10,6 +10,7 @@ module ysyx_22041071_DIV(
 				input 	   [`ysyx_22041071_DATA_BUS] divisor	,//除数
 				output								 div_ready	,//为高除法器处于空闲状态
 				output								 out_valid	,//为高输出有效
+				output								 div_busy	,
 				output reg [`ysyx_22041071_DATA_BUS] rema		,//余数
 				output reg [`ysyx_22041071_DATA_BUS] quot 	  	);//商
 	
@@ -173,7 +174,7 @@ module ysyx_22041071_DIV(
 	
 	assign div_ready = c_stats == IDLE;
 	assign out_valid = c_stats == DONE;
-	
+	assign div_busy  = c_stats == QR || c_stats == LLS || c_stats == DONE;
 	always@(*)begin
 		if(out_valid)begin
 			if(quot_s)begin

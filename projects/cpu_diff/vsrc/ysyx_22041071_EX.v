@@ -55,6 +55,7 @@ module ysyx_22041071_EX(
 	reg						 	  divw		;//32位除法
 	reg							  div_ready	;//为高除法器处于空闲状态
 	reg							  out_valid	;//为高输出有效
+	reg							  div_busy  ;
 	reg [`ysyx_22041071_DATA_BUS] rema		;//余数
 	reg [`ysyx_22041071_DATA_BUS] quot 	  	;//商*/
 
@@ -69,6 +70,7 @@ module ysyx_22041071_EX(
 							.divisor	(src_b		),//除数
 							.div_ready	(div_ready  ),//为高除法器处于空闲状态
 							.out_valid	(out_valid  ),//为高输出有效
+							.div_busy   (div_busy 	),
 							.rema		(rema		),//余数
 							.quot 	  	(quot 	    ));//商
 
@@ -119,7 +121,7 @@ module ysyx_22041071_EX(
 		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
 		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
 	always@(*)begin
-		if(div_ready || mul_valid2)begin
+		if(div_valid || mul_valid2)begin
 			ready4 = 1'b0;
 		end else begin
 			ready4 = ready5;
@@ -396,7 +398,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b1									;
 					divw	    = 1'b0									;
 					result 	    = 0										;	
@@ -407,7 +409,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b0									;
 					divw	    = 1'b0									;	
 					result 	    = 0										;
@@ -418,7 +420,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b1									;
 					divw	    = 1'b1									;	
 					result 	    = 0										;
@@ -429,7 +431,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b0									;
 					divw	    = 1'b1									;
 					result 	    = 0										;	
@@ -440,7 +442,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b1									;
 					divw	    = 1'b0									;
 					result 	    = 0										;	
@@ -451,7 +453,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b0									;
 					divw	    = 1'b0									;
 					result 	    = 0										;	
@@ -462,7 +464,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b0									;
 					divw	    = 1'b1									;
 					result 	    = 0										;	
@@ -473,7 +475,7 @@ module ysyx_22041071_EX(
 					mul_valid2	= 1'b0   								;
 					mulw		= 1'b0   								;
 					mul_signed  = 2'b0   								;
-					div_valid   = div_ready & ~out_valid				;
+					div_valid   = div_busy								;
 					div_signed  = 1'b1									;
 					divw	    = 1'b1									;
 					result 	    = 0										;	
