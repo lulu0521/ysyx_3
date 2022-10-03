@@ -511,7 +511,7 @@ module ysyx_22041071_EX(
 			ALU_result1 <= 64'd0		;
 		end else begin
 			if(div_valid || div_busy)begin
-				valid5		 <= 1'b0		;
+				valid5		 <= 1'b1		;
 				PC5	      	 <= PC			;
 				Ins4	     <= 32'b0		;
 				MEM_W_en3    <= 1'd0		;
