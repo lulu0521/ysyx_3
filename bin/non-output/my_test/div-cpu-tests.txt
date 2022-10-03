@@ -53,7 +53,7 @@ Disassembly of section .text:
     800000a4:	00100793          	li	a5,1
     800000a8:	02f74733          	div	a4,a4,a5
     800000ac:	00178793          	addi	a5,a5,1
-    800000b0:	fed79ce3          	bne	a5,a3,800000a8 <main+0x80>
+    800000b0:	fed79ce3          	bne	a5,a3,<800000a8 main+0x80>
     800000b4:	00e63023          	sd	a4,0(a2)
     800000b8:	00860613          	addi	a2,a2,8
     800000bc:	feb612e3          	bne	a2,a1,800000a0 <main+0x78>

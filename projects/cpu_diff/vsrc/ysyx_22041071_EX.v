@@ -76,14 +76,14 @@ module ysyx_22041071_EX(
 
 
 
-	reg			mul_valid1  ;//高表示输入数据有效
-	reg			mul_valid2  ;
-	reg		  	mulw		;//为1表示32位乘法
-	reg [1 :0]	mul_signed 	;//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
-	reg 		mul_ready	;//高表示乘法器准备好了
-	reg 		out_valid_m	;//高表示输出结果有效
-	reg [63:0] 	result_h	;
-	reg [63:0] 	result_l	;
+	reg							  mul_valid1 ;//高表示输入数据有效
+	reg							  mul_valid2 ;
+	reg		  					  mulw		 ;//为1表示32位乘法
+	reg [1 :0					] mul_signed ;//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
+	reg 						  mul_ready	 ;//高表示乘法器准备好了
+	reg 						  out_valid_m;//高表示输出结果有效
+	reg [`ysyx_22041071_DATA_BUS] result_h	 ;
+	reg [`ysyx_22041071_DATA_BUS] result_l	 ;
 //mul_booth+walloc
 	`ifdef BOOTH_WALLOC
 	ysyx_22041071_MUL my_MUL0(
