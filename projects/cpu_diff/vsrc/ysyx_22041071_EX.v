@@ -50,7 +50,6 @@ module ysyx_22041071_EX(
 	assign rdest2_	 = rdest1					  	;
 	assign Brch_sel1 = ALU_result && Brch2			; 
 //div
-	reg							  div_busy	;
 	reg							  div_valid ;//为高表示输入数据有效
 	reg						 	  div_signed;//为高表示有符号除法
 	reg						 	  divw		;//32位除法
