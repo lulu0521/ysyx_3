@@ -157,33 +157,31 @@ module ysyx_22041071_MUL_64(
 	
 	always@(posedge clk)begin
 		if(reset)begin
-			multiplicand_ = 128'h0	;
-			multiply_	  = 64'h0	;
-			result		  = 128'h0	;
-			counter		  = 6'h0	;
-			mul_ready	  = 1'b0;
-			out_valid_m   = 1'b0;
+			multiplicand_ <= 128'h0	;
+			multiply_	  <= 64'h0	;
+			result		  <= 128'h0	;
+			counter		  <= 6'h0	;
 		end else begin
 			case(c_state)
 				IDLE :begin
-					multiplicand_= multiplicand;
-					multiply_	 = multiply	   ;  
+					multiplicand_ <= multiplicand ;
+					multiply_	  <= multiply	  ;  
 				end
 				SUM  :begin
-					if(multiply[0])begin
-						result = result + multiplicand_;
+					if(multiply_[0])begin
+						result <= result + multiplicand_;
 					end else begin 
-						result = result + 0			   ;
+						result <= result + 0			;
 					end
 				end
 				LLS  :
 					if(counter<63)begin
-						multiplicand_ = multiplicand_ << 1'b1;
-						multiply_	  = multiply_	  >> 1'b1;
-						counter = counter + 1;
+						multiplicand_ <= multiplicand_ << 1'b1;
+						multiply_	  <= multiply_	  >> 1'b1;
+						counter <= counter + 1;
 					end
 				DONE :begin
-					counter = 6'h0;
+					counter <= 6'h0;
 				end
 			endcase
 		end
