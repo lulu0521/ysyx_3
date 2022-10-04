@@ -57,7 +57,7 @@ module ysyx_22041071_EX(
 	reg							  div_ready	;//为高除法器处于空闲状态
 	reg							  out_valid	;//为高输出有效
 	reg [`ysyx_22041071_DATA_BUS] rema		;//余数
-	reg [`ysyx_22041071_DATA_BUS] quot 	  	;//商*/
+	reg [`ysyx_22041071_DATA_BUS] quot 	  	;//商
 
 	ysyx_22041071_DIV my_DIV(
 							.clk		(clk		),
@@ -80,7 +80,8 @@ module ysyx_22041071_EX(
 	reg		  					  mulw		 ;//为1表示32位乘法
 	reg [1 :0					] mul_signed ;//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
 	reg 						  mul_ready	 ;//高表示乘法器准备好了
-	reg 						  out_valid_m;//高表示输出结果有效
+	reg 						  out_valid_m1;//高表示输出结果有效
+	reg 						  out_valid_m2;//高表示输出结果有效
 	reg [`ysyx_22041071_DATA_BUS] result_h	 ;
 	reg [`ysyx_22041071_DATA_BUS] result_l	 ;
 //mul_booth+walloc
@@ -93,7 +94,7 @@ module ysyx_22041071_EX(
 							.mul_1		(src_a		),//被乘数
 							.mul_2		(src_b		),//乘数
 							.mul_ready	(mul_ready	),//高表示乘法器准备好了
-							.out_valid	(out_valid_m),//高表示输出结果有效
+							.out_valid	(out_valid_m1),//高表示输出结果有效
 							.result_h	(result_h	),
 							.result_l	(result_l	));
 //mul
@@ -108,7 +109,7 @@ module ysyx_22041071_EX(
 							.mul1		(src_a		),//被乘法
 							.mul2		(src_b		),//乘法
 							.mul_ready	(mul_ready	),//为高乘法器处于空闲状态
-							.out_valid_m(out_valid_m),//为高输出有效
+							.out_valid_m(out_valid_m2),//为高输出有效
 							.result_h	(result_h	),
 							.result_l	(result_l	));//乘法结果
 	`endif
@@ -120,7 +121,7 @@ module ysyx_22041071_EX(
 		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
 		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
 	always@(*)begin
-		if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
+		if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop
 			ready4 = 1'b0;
 		end else begin
 			ready4 = ready5;
@@ -350,7 +351,7 @@ module ysyx_22041071_EX(
 			end
 			5'd19	: begin//64位*取低64位
 					mul_valid1	= 1'b1    								;
-					mul_valid2	= mul_ready & ~out_valid_m  			;	
+					mul_valid2	= mul_ready & ~out_valid_m2  			;	
 					mulw		= 1'b0    								;
 					mul_signed  = 2'b00   								;
 					div_valid   = 1'b0									;
@@ -361,7 +362,7 @@ module ysyx_22041071_EX(
 			end
 			5'd20	: begin//有符号64位*取高64位
 					mul_valid1	= 1'b1    								;
-					mul_valid2	= mul_ready & ~out_valid_m  			;	
+					mul_valid2	= mul_ready & ~out_valid_m2  			;	
 					mulw		= 1'b0    								;
 					mul_signed  = 2'b11   								;
 					div_valid   = 1'b0									;
@@ -372,7 +373,7 @@ module ysyx_22041071_EX(
 			end
 			5'd21	: begin//无符号64位*取高64位
 					mul_valid1	= 1'b1    								;
-					mul_valid2	= mul_ready & ~out_valid_m  			;	
+					mul_valid2	= mul_ready & ~out_valid_m2 			;	
 					mulw		= 1'b0    								;
 					mul_signed  = 2'b00   								;
 					div_valid   = 1'b0									;
@@ -383,7 +384,7 @@ module ysyx_22041071_EX(
 			end
 			5'd22	: begin//32位有符号乘法取低32位符号扩展 
 					mul_valid1	= 1'b1    								;
-					mul_valid2	= mul_ready & ~out_valid_m  			;	
+					mul_valid2	= mul_ready & ~out_valid_m2  			;	
 					mulw		= 1'b1    								;
 					mul_signed  = 2'b11   								;
 					div_valid   = 1'b0									;
@@ -402,9 +403,6 @@ module ysyx_22041071_EX(
 					divw	    = 1'b0									;
 					result 	    = 0										;	
 					ALU_result  = quot									;
-					$display("================================");
-					$display("src_a=%x",src_a);
-					$display("src_b=%x",src_b);
 			end
 			5'd24	: begin//64无符号除法
 					mul_valid1	= 1'b0   								;
@@ -509,7 +507,7 @@ module ysyx_22041071_EX(
 			rdest2	    <= 5'd0			;
 			ALU_result1 <= 64'd0		;
 		end else begin
-			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
+			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin
 				valid5		 <= 1'b1	;
 				PC5	      	 <= PC		;
 				Ins4	     <= 32'b0	;
