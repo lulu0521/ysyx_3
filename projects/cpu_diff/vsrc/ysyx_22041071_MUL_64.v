@@ -161,6 +161,8 @@ module ysyx_22041071_MUL_64(
 			multiply_	  = 64'h0	;
 			result		  = 128'h0	;
 			counter		  = 6'h0	;
+			mul_ready	  = 1'b0;
+			out_valid_m   = 1'b0;
 		end else begin
 			case(c_state)
 				IDLE :begin
