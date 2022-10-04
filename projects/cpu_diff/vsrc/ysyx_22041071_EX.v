@@ -85,19 +85,6 @@ module ysyx_22041071_EX(
 	reg [`ysyx_22041071_DATA_BUS] result_l	 ;
 //mul_booth+walloc
 	`ifdef BOOTH_WALLOC
-	ysyx_22041071_MUL my_MUL0(
-							.flush		(1'b0		),//取消乘法
-							.mul_valid	(mul_valid1	),//高表示输入数据有效
-							.mulw		(mulw		),//为1表示32位乘法
-							.mul_signed (mul_signed ),//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
-							.mul_1		(src_a		),//被乘数
-							.mul_2		(src_b		),//乘数
-							.mul_ready	(mul_ready	),//高表示乘法器准备好了
-							.out_valid	(out_valid_m1),//高表示输出结果有效
-							.result_h	(result_h	),
-							.result_l	(result_l	));
-//mul
-	`else
 	ysyx_22041071_MUL_64 my_MUL1(
 							.clk		(clk		),
 							.reset		(reset		),
@@ -111,6 +98,20 @@ module ysyx_22041071_EX(
 							.out_valid_m(out_valid_m2),//为高输出有效
 							.result_h	(result_h	),
 							.result_l	(result_l	));//乘法结果
+//mul
+	`else
+	ysyx_22041071_MUL my_MUL0(
+							.flush		(1'b0		),//取消乘法
+							.mul_valid	(mul_valid1	),//高表示输入数据有效
+							.mulw		(mulw		),//为1表示32位乘法
+							.mul_signed (mul_signed ),//2’b11(s x s);2’b10(s x uns);2’b00(uns x uns)；
+							.mul_1		(src_a		),//被乘数
+							.mul_2		(src_b		),//乘数
+							.mul_ready	(mul_ready	),//高表示乘法器准备好了
+							.out_valid	(out_valid_m1),//高表示输出结果有效
+							.result_h	(result_h	),
+							.result_l	(result_l	));
+	
 	`endif
 
 /*======0:64位+  1:32位+  2:64位左移    3:32位左移   4:64位算术右移    5:32位算术右移
