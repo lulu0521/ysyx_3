@@ -179,7 +179,7 @@ module ysyx_22041071_MUL_64(
 				LLS  :
 					if(counter<63)begin
 						multiplicand_ = multiplicand_ << 1'b1;
-						multiply	  = multiply	  >> 1'b1;
+						multiply_	  = multiply_	  >> 1'b1;
 						counter = counter + 1;
 					end
 				DONE :begin
