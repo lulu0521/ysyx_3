@@ -120,7 +120,7 @@ module ysyx_22041071_EX(
 		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
 		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
 	always@(*)begin
-		if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop
+		if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) )begin//div and mul make stop || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2)
 			ready4 = 1'b0;
 		end else begin
 			ready4 = ready5;
@@ -506,7 +506,7 @@ module ysyx_22041071_EX(
 			rdest2	    <= 5'd0			;
 			ALU_result1 <= 64'd0		;
 		end else begin
-			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin
+			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) )begin//|| (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2)
 				valid5		 <= 1'b1	;
 				PC5	      	 <= PC		;
 				Ins4	     <= 32'b0	;
