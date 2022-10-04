@@ -114,7 +114,7 @@ module ysyx_22041071_MUL_64(
 		end else begin
 			multiplicand = 128'h0							;
 			multiply 	 = 64'h0							;
-			result_s	 = 1'b0								;
+			result_s	 = result_s							;
 		end
 	end
 	
