@@ -17,7 +17,6 @@ module ysyx_22041071_DIV(
 	reg [`ysyx_22041071_DATA_BUS] x_abs 	;
 	reg [31:0				    ] x_abs_	;
 	reg [127:0				    ] x_abs_ex	;
-	reg [127:0				    ] x_abs_ex_	;
 	reg [`ysyx_22041071_DATA_BUS] y_abs 	;
 	reg [31:0				    ] y_abs_	;
 	reg [127:0				    ] y_abs_ex	;
@@ -158,14 +157,14 @@ module ysyx_22041071_DIV(
 				QR:
 					if(x_abs_ex>=y_abs_ex && x_abs_ex!=0)begin
 						q <= {q[62:0],1'b1};
-						x_abs_ex_ <= x_abs_ex - y_abs_ex; 
+						x_abs_ex <= x_abs_ex - y_abs_ex; 
 					end else begin
 						q <= {q[62:0],1'b0};
-					    x_abs_ex_ <= x_abs_ex; 
+					    x_abs_ex <= x_abs_ex; 
 					end
 				LLS:
 					if(counter<63)begin
-						x_abs_ex <= x_abs_ex_ <<1'b1;
+						x_abs_ex <= x_abs_ex <<1'b1;
 						counter <= counter + 1;
 					end
 				DONE:
