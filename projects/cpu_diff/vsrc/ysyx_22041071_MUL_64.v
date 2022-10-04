@@ -164,11 +164,12 @@ module ysyx_22041071_MUL_64(
 		end else begin
 			case(c_state)
 				IDLE :begin
+					result		  <= 128'h0	;
 					multiplicand_ <= multiplicand ;
 					multiply_	  <= multiply	  ;  
 				end
 				SUM  :begin
-					if(multiply_[0])begin
+					if(multiply_[0]==1'b1)begin
 						result <= result + multiplicand_;
 					end else begin 
 						result <= result + 0			;
