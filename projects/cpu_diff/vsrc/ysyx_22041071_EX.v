@@ -120,16 +120,30 @@ module ysyx_22041071_EX(
 		11:64位有符号<   12:64位无符号<   13:64位==  14:64位！=   15:64位有符号>=    16:64位无符号>=  
 		17:64位无符号-   18:有符号32位-     19:64位*取低64位     20:有符号64位*取高64位   21:无符号64位*取高64位    
 		22:32位有符号乘法取低32位符号扩展    23:64有符号除法    24:64无符号除法  25:有符号32位除法符号扩展   26:32位无符号除法有符号扩展  
-		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/	
+		27:64有符号取余  28:64无符号取余      29:32位无符号取余有符号扩展    30:32位有符号取余有符号扩展*/
+	`ifdef BOOTH_WALLOC
+		always@(*)begin
+			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin//div and mul make stop 
+				ready4 = 1'b0;
+			end else begin
+				ready4 = ready5;
+			end
+		end	
+	`else 
+		always@(*)begin
+			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop 
+				ready4 = 1'b0;
+			end else begin
+				ready4 = ready5;
+			end
+		end	
+	`endif	
+
 	always@(*)begin
-		if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop 
-			ready4 = 1'b0;
-		end else begin
-			ready4 = ready5;
-		end
 		handshake 	= valid4 & ready5				;
 		BPC1		= PC4 + {{51{BImm2[12]}},BImm2,1'b0};
-	end	
+	end
+	
 		
 	always@(*)begin	
 		if((Ins3[6:0]==7'b110_0011) && (handshake == 1'b1))begin//B
@@ -508,16 +522,29 @@ module ysyx_22041071_EX(
 			rdest2	    <= 5'd0			;
 			ALU_result1 <= 64'd0		;
 		end else begin
+		`ifdef BOOTH_WALLOC
+			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin//
+			valid5		 <= 1'b1	;
+			PC5	      	 <= PC		;
+			Ins4	     <= 32'b0	;
+			MEM_W_en3    <= 1'd0	;
+			WB_sel3      <= 1'd0	;
+			reg_w_en3    <= 1'd0	;
+			rt_data2     <= 64'd0	;
+			rdest2	     <= 5'd0	;
+			ALU_result1  <= 64'd0	;
+		`else 
 			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//
-				valid5		 <= 1'b1	;
-				PC5	      	 <= PC		;
-				Ins4	     <= 32'b0	;
-				MEM_W_en3    <= 1'd0	;
-				WB_sel3      <= 1'd0	;
-				reg_w_en3    <= 1'd0	;
-				rt_data2     <= 64'd0	;
-				rdest2	     <= 5'd0	;
-				ALU_result1  <= 64'd0	;
+			valid5		 <= 1'b1	;
+			PC5	      	 <= PC		;
+			Ins4	     <= 32'b0	;
+			MEM_W_en3    <= 1'd0	;
+			WB_sel3      <= 1'd0	;
+			reg_w_en3    <= 1'd0	;
+			rt_data2     <= 64'd0	;
+			rdest2	     <= 5'd0	;
+			ALU_result1  <= 64'd0	;
+		`endif	
 			end else begin
 				if(handshake)begin
 					valid5		 <= valid4		;
