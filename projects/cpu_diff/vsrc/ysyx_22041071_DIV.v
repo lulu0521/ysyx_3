@@ -148,8 +148,9 @@ module ysyx_22041071_DIV(
 		end else begin
 			case(c_stats)
 				IDLE:begin
-					x_abs_ex <= {64'b0,x_abs	  };
-					y_abs_ex <= {1 'b0,y_abs,63'b0};
+					q		 <= 64'h0				;
+					x_abs_ex <= {64'b0,x_abs	  }	;
+					y_abs_ex <= {1 'b0,y_abs,63'b0}	;
 				end
 				QR:
 					if(x_abs_ex>=y_abs_ex && x_abs_ex!=0)begin

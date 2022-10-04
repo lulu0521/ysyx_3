@@ -164,7 +164,7 @@ module ysyx_22041071_MUL_64(
 		end else begin
 			case(c_state)
 				IDLE :begin
-					result		  <= 128'h0	;
+					result		  <= 128'h0		  ;
 					multiplicand_ <= multiplicand ;
 					multiply_	  <= multiply	  ;  
 				end
