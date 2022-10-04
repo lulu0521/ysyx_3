@@ -56,7 +56,7 @@ module ysyx_22041071_MUL_64(
 							multiplicand = {{64{1'b0}},mul1_}		; 
 						end else begin	
 							mul1_ = mul1				    		;
-							multiplicand = {{64{1'b0}},mul1 } 		; 
+							multiplicand = {{64{1'b0}},mul1_ } 		; 
 						end	
 						if(mul2[63])begin	
 							mul2_	 = ~mul2 + 1'b1					;
