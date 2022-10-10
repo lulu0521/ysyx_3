@@ -195,14 +195,14 @@ module axi_rw # (
 
 
     // ------------------Process Data------------------
-    parameter ALIGNED_WIDTH = $clog2(AXI_DATA_WIDTH / 8);
-    parameter OFFSET_WIDTH  = $clog2(AXI_DATA_WIDTH);
-    parameter AXI_SIZE      = $clog2(AXI_DATA_WIDTH / 8);
-    parameter MASK_WIDTH    = AXI_DATA_WIDTH * 2;
+    parameter ALIGNED_WIDTH = $clog2(AXI_DATA_WIDTH / 8);//8 aligned 3bit
+    parameter OFFSET_WIDTH  = $clog2(AXI_DATA_WIDTH);//6bit
+    parameter AXI_SIZE      = $clog2(AXI_DATA_WIDTH / 8);// 8bit(max 128 byte)
+    parameter MASK_WIDTH    = AXI_DATA_WIDTH * 2;//128bit
     parameter TRANS_LEN     = RW_DATA_WIDTH / AXI_DATA_WIDTH;
     parameter BLOCK_TRANS   = TRANS_LEN > 1 ? 1'b1 : 1'b0;
 
-    wire aligned            = BLOCK_TRANS | rw_addr_i[ALIGNED_WIDTH-1:0] == 0;
+    wire aligned            = BLOCK_TRANS | rw_addr_i[ALIGNED_WIDTH-1:0] == 0;//aligned yes or no?
     wire size_b             = rw_size_i == `SIZE_B;
     wire size_h             = rw_size_i == `SIZE_H;
     wire size_w             = rw_size_i == `SIZE_W;
@@ -214,7 +214,7 @@ module axi_rw # (
                                 | ({4{size_d}} & {4'b111})
                                 ;
     wire [3:0] addr_end     = addr_op1 + addr_op2;
-    wire overstep           = addr_end[3:ALIGNED_WIDTH] != 0;
+    wire overstep           = addr_end[3:ALIGNED_WIDTH] != 0;//over 4 byte
 
     wire [7:0] axi_len      = aligned ? TRANS_LEN - 1 : {{7{1'b0}}, overstep};
     wire [2:0] axi_size     = AXI_SIZE[2:0];
