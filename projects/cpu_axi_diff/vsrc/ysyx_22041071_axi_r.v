@@ -190,11 +190,10 @@ module ysyx_22041071_axi_r(
 	end
 	
 	always@(*)begin
-		$display("======================22222222222===========cpu_ar_ready		=%x",cpu_ar_ready		);
-		
-		$display("======================22222222222===========axi_ar_addr_o		=%x",axi_ar_addr_o		);
-		$display("======================22222222222===========axi_ar_len_o		=%d",axi_ar_len_o		);
-		$display("======================22222222222===========axi_ar_size_o		=%d",axi_ar_size_o		);
+		$display("======================33333333333333===========cpu_ar_ready		=%x",cpu_ar_ready		);
+		$display("======================33333333333333===========axi_ar_addr_o		=%x",axi_ar_addr_o		);
+		$display("======================33333333333333===========axi_ar_len_o		=%d",axi_ar_len_o		);
+		$display("======================33333333333333===========axi_ar_size_o		=%d",axi_ar_size_o		);
 	end
 
 endmodule
