@@ -52,7 +52,6 @@ module ysyx_22041071_axi_r(
 	wire [`ysyx_22041071_AXI_QOS_WIDTH-1:0		  ] axi_ar_qos_o_	;	
     wire [`ysyx_22041071_AXI_REGION_WIDTH-1:0	  ] axi_ar_region_o_;
 	wire						   					axi_r_ready_o_	;
-	reg [`ysyx_22041071_AXI_ADDR_WIDTH-1:0		  ] addr_			;
 	
 	wire	  ar_handshake	;//handshake
 	wire	  r_handshake	;
@@ -79,9 +78,8 @@ module ysyx_22041071_axi_r(
 	assign ar_handshake		= axi_ar_valid_o_ & axi_ar_ready_i	;
 	assign r_handshake		= axi_r_valid_i   & axi_r_ready_o_	;
 	assign r_done			= r_handshake	  & axi_r_last_i	;
-	assign cpu_ar_ready		= ar_ready_			;
-	assign axi_r_ready_o	= axi_r_ready_o_		;
-
+	assign cpu_ar_ready		= ar_ready_							;
+	assign axi_r_ready_o	= axi_r_ready_o_					;
 
 	always@(*)begin
 		case(cpu_size)
@@ -178,6 +176,12 @@ module ysyx_22041071_axi_r(
             	axi_ar_cache_o	<= axi_ar_cache_o_	;
             	axi_ar_qos_o	<= axi_ar_qos_o_	;	
 				axi_ar_region_o	<= axi_ar_region_o_	;
+				$display("======================22222222222===========axi_ar_valid_o_	=%x",axi_ar_valid_o_	);
+		$display("======================22222222222===========axi_ar_ready_i	=%x",axi_ar_ready_i		);
+		$display("======================22222222222===========ar_handshake		=%x",ar_handshake		);
+		$display("======================22222222222===========axi_ar_addr_o_	=%x",axi_ar_addr_o_		);
+		$display("======================22222222222===========axi_ar_len_o_		=%d",axi_ar_len_o_		);
+		$display("======================22222222222===========axi_ar_size_o_	=%d",axi_ar_size_o_		);
 			end
 			if(r_handshake)begin
 				cpu_r_resp	    <= resp_			;
@@ -187,12 +191,7 @@ module ysyx_22041071_axi_r(
 	
 	always@(*)begin
 		$display("======================22222222222===========cpu_ar_ready		=%x",cpu_ar_ready		);
-		$display("======================22222222222===========axi_ar_valid_o_	=%x",axi_ar_valid_o_	);
-		$display("======================22222222222===========axi_ar_ready_i	=%x",axi_ar_ready_i		);
-		$display("======================22222222222===========ar_handshake		=%x",ar_handshake		);
-		$display("======================22222222222===========axi_ar_addr_o_	=%x",axi_ar_addr_o_		);
-		$display("======================22222222222===========axi_ar_len_o_		=%d",axi_ar_len_o_		);
-		$display("======================22222222222===========axi_ar_size_o_	=%d",axi_ar_size_o_		);
+		
 		$display("======================22222222222===========axi_ar_addr_o		=%x",axi_ar_addr_o		);
 		$display("======================22222222222===========axi_ar_len_o		=%d",axi_ar_len_o		);
 		$display("======================22222222222===========axi_ar_size_o		=%d",axi_ar_size_o		);
