@@ -74,6 +74,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 				PC2	   <= PC1		 ;
 				Ins	   <= 32'b0		 ;
 			end else begin
+				
 				if(handshake1)begin
 					//$display("====================================PC1=%x",PC1);
 					cpu_ar_valid <= 1'b1								;	
@@ -82,8 +83,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 					cpu_size	 <= `ysyx_22041071_SIZE_D				;	
 				end
 				if(handshake2)begin
-
-					valid2 <= cpu_r_valid	;
+					valid2 <= cpu_r_valid;
 					PC2	   <= PC1		;
 					Ins	   <= Ins_32	;
 				end
