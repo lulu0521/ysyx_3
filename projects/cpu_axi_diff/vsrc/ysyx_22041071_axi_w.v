@@ -115,20 +115,28 @@ module ysyx_22041071_axi_w(
 		end
 	end
 	
-	always@(posedge clk)begin
+	always@(*)begin
 		case(c_state)
 			W_IDLE:
 				if(cpu_aw_valid)
 					n_state = W_ADDR;
+				else 
+					n_state = W_IDLE;
 		    W_ADDR:
 				if(aw_handshake)
 					n_state = W_DATA;
+				else
+					n_state = W_ADDR;
 		    W_DATA:
 				if(w_done)
 					n_state = W_DONE;
+				else 
+					n_state = W_DATA;
 		    W_DONE:
 				if(bw_handshake)
 					n_state = W_IDLE;
+				else
+					n_state = W_DONE;
 		endcase
 	end
 	
