@@ -168,31 +168,31 @@ module SimTop(
 			.axi_r_last_i		(r_last         ),
 			.axi_r_id_i			(r_id           ),
 			.axi_r_user_i		(r_user         ),
-			.axi_aw_ready_i		(/*aw_ready	    */),//AW
-			.axi_aw_valid_o		(/*aw_valid	    */),
-			.axi_aw_id_o		(/*aw_id 	    */    ),
-			.axi_aw_addr_o		(/*aw_addr	    */),
-			.axi_aw_len_o		(/*aw_len	    */    ),
-			.axi_aw_size_o		(/*aw_size	    */),
-			.axi_aw_burst_o		(/*aw_burst	    */),
-			.axi_aw_prot_o		(/*aw_prot	    */),
-			.axi_aw_user_o		(/*aw_user	    */),
-			.axi_aw_lock_o		(/*aw_lock	    */),
-			.axi_aw_cache_o		(/*aw_cache	    */),
-			.axi_aw_qos_o		(/*aw_qos	    */    ),
-			.axi_aw_region_o	(/*aw_region	*/    ),
-			.axi_w_id_o			(/*w_id  	    */    ),//W
-			.axi_w_data_o		(/*w_data	    */    ),
-			.axi_w_wstrb_o		(/*w_wstrb	    */),
-			.axi_w_last_o		(/*w_last	    */    ),
-			.axi_w_user_o		(/*w_user	    */    ),
-			.axi_w_valid_o		(/*w_valid	    */),
-			.axi_w_ready_i		(/*w_ready	    */),
-			.axi_bw_id_i		(/*bw_id	    */    ),//BW
-			.axi_bw_resp_i		(/*bw_resp	    */),
-			.axi_bw_user_i		(/*bw_user	    */),	
-			.axi_bw_valid_i		(/*bw_valid	    */),
-			.axi_bw_ready_o		(/*bw_ready     */  ));
+			.axi_aw_ready_i		(aw_ready	    ),//AW
+			.axi_aw_valid_o		(aw_valid	    ),
+			.axi_aw_id_o		(aw_id          ),
+			.axi_aw_addr_o		(aw_addr	    ),
+			.axi_aw_len_o		(aw_len	        ),
+			.axi_aw_size_o		(aw_size	    ),
+			.axi_aw_burst_o		(aw_burst	    ),
+			.axi_aw_prot_o		(aw_prot	    ),
+			.axi_aw_user_o		(aw_user	    ),
+			.axi_aw_lock_o		(aw_lock	    ),
+			.axi_aw_cache_o		(aw_cache	    ),
+			.axi_aw_qos_o		(aw_qos	        ),
+			.axi_aw_region_o	(aw_region	    ),
+			.axi_w_id_o			(w_id  	        ),//W
+			.axi_w_data_o		(w_data	        ),
+			.axi_w_wstrb_o		(w_wstrb	    ),
+			.axi_w_last_o		(w_last	        ),
+			.axi_w_user_o		(w_user	        ),
+			.axi_w_valid_o		(w_valid	    ),
+			.axi_w_ready_i		(w_ready	    ),
+			.axi_bw_id_i		(bw_id	        ),//BW
+			.axi_bw_resp_i		(bw_resp	    ),
+			.axi_bw_user_i		(bw_user	    ),	
+			.axi_bw_valid_i		(bw_valid	    ),
+			.axi_bw_ready_o		(bw_ready       ));
 
     ysyx_22041071_CPU CPU(
 			.clock     	    (clock          ),
