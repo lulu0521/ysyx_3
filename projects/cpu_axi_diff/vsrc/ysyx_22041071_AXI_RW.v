@@ -59,6 +59,10 @@ module ysyx_22041071_AXI_RW(
 			input		                           				  	  axi_bw_valid_i	,
 			output reg												  axi_bw_ready_o	);
 
+	
+
+	
+
 	ysyx_22041071_axi_r my_axi_r(
 			.clk	 			(clk								),
 			.reset_n			(reset_n							),

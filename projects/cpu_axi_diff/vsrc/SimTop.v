@@ -67,7 +67,7 @@ module SimTop(
     wire [`ysyx_22041071_AXI_DATA_WIDTH-1:0		    ] cpu_r_data    ;		
     wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0    ] cpu_resp	    ;		
 	wire					  				  	      cpu_aw_ready  ;	
-    wire 										  	  ar_ready      ;//AR	
+    wire 										  	  ar_ready_      ;//AR	
     wire 											  ar_valid      ;	
     wire [`ysyx_22041071_AXI_ID_WIDTH-1:0			] ar_id         ;	
     wire [`ysyx_22041071_AXI_ADDR_WIDTH-1:0			] ar_addr       ;	
@@ -113,7 +113,7 @@ module SimTop(
 	wire                            				  bw_valid	    ;
 	wire 											  bw_ready      ;	
 
-    assign ar_ready                           = `AXI_TOP_INTERFACE(ar_ready       );
+    assign ar_ready_                           = `AXI_TOP_INTERFACE(ar_ready       );
     assign `AXI_TOP_INTERFACE(ar_valid      ) = ar_valid                           ;
     assign `AXI_TOP_INTERFACE(ar_bits_addr  ) = ar_addr                            ;
     assign `AXI_TOP_INTERFACE(ar_bits_prot  ) = ar_prot                            ;
@@ -148,7 +148,7 @@ module SimTop(
 			.cpu_r_data 		(cpu_r_data     ),
 			.cpu_resp	 		(cpu_resp	    ),
 			.cpu_aw_ready		(cpu_aw_ready   ),
-			.axi_ar_ready_i		(ar_ready       ),//AR
+			.axi_ar_ready_i		(ar_ready_       ),//AR
 			.axi_ar_valid_o		(ar_valid       ),
 			.axi_ar_id_o		(ar_id          ),
 			.axi_ar_addr_o		(ar_addr        ),
