@@ -169,7 +169,7 @@ module ysyx_22041071_axi_r(
 			$display("======================22222222222===========axi_ar_addr_o_	=%x",axi_ar_addr_o_		);
 			$display("======================22222222222===========axi_ar_len_o_		=%d",axi_ar_len_o_		);
 			$display("======================22222222222===========axi_ar_size_o_	=%d",axi_ar_size_o_		);
-			if(ar_handshake)begin
+			//if(ar_handshake)begin
 				$display("########################");
             	axi_ar_id_o		<= axi_ar_id_o_		;
             	axi_ar_addr_o	<= axi_ar_addr_o_	;	
@@ -182,7 +182,7 @@ module ysyx_22041071_axi_r(
             	axi_ar_cache_o	<= axi_ar_cache_o_	;
             	axi_ar_qos_o	<= axi_ar_qos_o_	;	
 				axi_ar_region_o	<= axi_ar_region_o_	;
-			end
+			//end
 			if(r_handshake)begin
 				cpu_r_resp	    <= resp_			;
 			end
