@@ -186,6 +186,7 @@ module ysyx_22041071_axi_r(
 		end
 	end
 	always@(*)begin
+		$display("======================22222222222===========cpu_ar_ready		=%x",cpu_ar_ready		);
 		$display("======================22222222222===========axi_ar_valid_o_	=%x",axi_ar_valid_o_	);
 		$display("======================22222222222===========axi_ar_ready_i	=%x",axi_ar_ready_i		);
 		$display("======================22222222222===========ar_handshake		=%x",ar_handshake		);
