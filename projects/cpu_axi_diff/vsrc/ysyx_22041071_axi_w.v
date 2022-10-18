@@ -203,27 +203,31 @@ module ysyx_22041071_axi_w(
             axi_w_user_o	<= {`ysyx_22041071_AXI_USER_WIDTH		 {1'b0}};	
 			axi_w_valid_o	<= 1'b0											;
 		end else begin
-			
-			cpu_w_resp      <= resp_			;
-			axi_aw_valid_o	<= axi_aw_valid_o_	;
-			axi_aw_id_o		<= axi_aw_id_o_		;
-			axi_aw_addr_o	<= axi_aw_addr_o_	;
-			axi_aw_len_o	<= axi_aw_len_o_	;
-			axi_aw_size_o	<= axi_aw_size_o_	;
-			axi_aw_burst_o	<= axi_aw_burst_o_	;
-			axi_aw_prot_o	<= axi_aw_prot_o_	;
-			axi_aw_user_o	<= axi_aw_user_o_	;
-			axi_aw_lock_o	<= axi_aw_lock_o_	;
-			axi_aw_cache_o	<= axi_aw_cache_o_	;
-			axi_aw_qos_o	<= axi_aw_qos_o_	;
-			axi_aw_region_o	<= axi_aw_region_o_	;
-			axi_w_id_o		<= axi_w_id_o_		;
-			axi_w_data_o	<= axi_w_data_o_	;
-			axi_w_wstrb_o	<= axi_w_wstrb_o_	;
-			axi_w_last_o	<= axi_w_last_o_	;
-			axi_w_user_o	<= axi_w_user_o_	;
-			axi_w_valid_o	<= axi_w_valid_o_	;
-              
+			if(aw_handshake)begin
+				axi_aw_valid_o	<= axi_aw_valid_o_	;
+				axi_aw_id_o		<= axi_aw_id_o_		;
+				axi_aw_addr_o	<= axi_aw_addr_o_	;
+				axi_aw_len_o	<= axi_aw_len_o_	;
+				axi_aw_size_o	<= axi_aw_size_o_	;
+				axi_aw_burst_o	<= axi_aw_burst_o_	;
+				axi_aw_prot_o	<= axi_aw_prot_o_	;
+				axi_aw_user_o	<= axi_aw_user_o_	;
+				axi_aw_lock_o	<= axi_aw_lock_o_	;
+				axi_aw_cache_o	<= axi_aw_cache_o_	;
+				axi_aw_qos_o	<= axi_aw_qos_o_	;
+				axi_aw_region_o	<= axi_aw_region_o_	;
+			end
+			if(w_handshake)begin
+				axi_w_valid_o	<= axi_w_valid_o_	;
+				axi_w_id_o		<= axi_w_id_o_		;
+				axi_w_data_o	<= axi_w_data_o_	;
+				axi_w_wstrb_o	<= axi_w_wstrb_o_	;
+				axi_w_last_o	<= axi_w_last_o_	;
+				axi_w_user_o	<= axi_w_user_o_	;
+			end
+			if(bw_handshake)begin
+				cpu_w_resp      <= resp_			;
+			end  
 		end                    	
 	end                        	                          
 endmodule                      	
