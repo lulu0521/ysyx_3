@@ -186,13 +186,15 @@ module ysyx_22041071_axi_r(
 		end
 	end
 	always@(*)begin
-		$display("======================22222222222===========ar_handshake	=%x",ar_handshake		);
-		$display("======================22222222222===========axi_ar_addr_o_=%x",axi_ar_addr_o_	);
-		$display("======================22222222222===========axi_ar_len_o_	=%d",axi_ar_len_o_		);
-		$display("======================22222222222===========axi_ar_size_o_=%d",axi_ar_size_o_	);
-		$display("======================22222222222===========axi_ar_addr_o	=%x",axi_ar_addr_o		);
-		$display("======================22222222222===========axi_ar_len_o	=%d",axi_ar_len_o		);
-		$display("======================22222222222===========axi_ar_size_o	=%d",axi_ar_size_o		);
+		$display("======================22222222222===========axi_ar_valid_o_	=%x",axi_ar_valid_o_	);
+		$display("======================22222222222===========axi_ar_ready_i	=%x",axi_ar_ready_i		);
+		$display("======================22222222222===========ar_handshake		=%x",ar_handshake		);
+		$display("======================22222222222===========axi_ar_addr_o_	=%x",axi_ar_addr_o_		);
+		$display("======================22222222222===========axi_ar_len_o_		=%d",axi_ar_len_o_		);
+		$display("======================22222222222===========axi_ar_size_o_	=%d",axi_ar_size_o_		);
+		$display("======================22222222222===========axi_ar_addr_o		=%x",axi_ar_addr_o		);
+		$display("======================22222222222===========axi_ar_len_o		=%d",axi_ar_len_o		);
+		$display("======================22222222222===========axi_ar_size_o		=%d",axi_ar_size_o		);
 	end
 
 endmodule
