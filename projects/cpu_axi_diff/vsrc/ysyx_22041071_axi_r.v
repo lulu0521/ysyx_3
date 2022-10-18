@@ -148,6 +148,7 @@ module ysyx_22041071_axi_r(
 	end
 //=========================其他信号时序输出=============================//
 	always@(posedge clk)begin
+		$display("=================================reset_n		=%x",reset_n		);
 		if(~reset_n)begin
 		    cpu_r_resp	    <= {`ysyx_22041071_AXI_RESP_TYPE_WIDTH 	 {1'b0}};
 			axi_ar_valid_o	<= 1'b0											;
