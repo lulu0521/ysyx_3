@@ -160,8 +160,8 @@ module ysyx_22041071_axi_r(
 		end else begin
 			cpu_ar_ready	<= ar_ready_			;
 			axi_r_ready_o	<= axi_r_ready_o_		;
+			axi_ar_valid_o	<= axi_ar_valid_o_		;
 			if(ar_handshake)begin
-				axi_ar_valid_o	<= axi_ar_valid_o_	;
             	axi_ar_id_o		<= axi_ar_id_o_		;
             	axi_ar_addr_o	<= axi_ar_addr_o_	;	
             	axi_ar_len_o	<= axi_ar_len_o_	;	
@@ -177,7 +177,6 @@ module ysyx_22041071_axi_r(
 			if(r_handshake)begin
 				cpu_r_resp	    <= resp_			;
 			end
-
 		end
 	end
 
