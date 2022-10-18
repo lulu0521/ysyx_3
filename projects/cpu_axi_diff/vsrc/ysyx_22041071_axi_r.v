@@ -196,9 +196,6 @@ module ysyx_22041071_axi_r(
 		$display("======================22222222222===========axi_ar_addr_o		=%x",axi_ar_addr_o		);
 		$display("======================22222222222===========axi_ar_len_o		=%d",axi_ar_len_o		);
 		$display("======================22222222222===========axi_ar_size_o		=%d",axi_ar_size_o		);
-		$monitor("======================22222222222===========xxxxaxi_ar_addr_o		=%x",axi_ar_addr_o		);
-		$monitor("======================22222222222===========xxxxaxi_ar_len_o		=%d",axi_ar_len_o		);
-		$monitor("======================22222222222===========xxxxaxi_ar_size_o		=%d",axi_ar_size_o		);
 	end
 
 endmodule
