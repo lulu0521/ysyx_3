@@ -90,5 +90,9 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			end
 		end
 	end
-
+	always@(*)begin
+		$display("======================111111===========%x",cpu_addr	);
+		$display("======================111111===========%d",cpu_len	);
+		$display("======================111111===========%d",cpu_size	);
+	end
 endmodule

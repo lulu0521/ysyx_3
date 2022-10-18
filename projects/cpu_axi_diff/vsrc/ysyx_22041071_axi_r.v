@@ -179,5 +179,9 @@ module ysyx_22041071_axi_r(
 			end
 		end
 	end
-
+	always@(*)begin
+		$display("======================22222222222===========%x",axi_ar_addr_o_	);
+		$display("======================22222222222===========%d",axi_ar_len_o_		);
+		$display("======================22222222222===========%d",axi_ar_size_o_	);
+	end
 endmodule
