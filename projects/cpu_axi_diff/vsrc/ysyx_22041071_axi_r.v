@@ -8,7 +8,7 @@ module ysyx_22041071_axi_r(
 			input  		[`ysyx_22041071_ADDR_BUS					] cpu_addr	 		,
 			input		[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len			,
 			input  		[1:0	  									] cpu_size	 		,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
-			output reg 							  				  	  cpu_ar_ready		,
+			output  							  				  	  cpu_ar_ready		,
 			output reg 												  cpu_r_valid		,
 			output reg 	[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 		,
 			output reg 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_r_resp	 	,
@@ -25,7 +25,7 @@ module ysyx_22041071_axi_r(
 			output reg 	[`ysyx_22041071_AXI_AXCACHE_WIDTH-1:0		] axi_ar_cache_o	,
 			output reg 	[`ysyx_22041071_AXI_QOS_WIDTH-1:0			] axi_ar_qos_o		,
 			output reg 	[`ysyx_22041071_AXI_REGION_WIDTH-1:0		] axi_ar_region_o	,
-			output reg                            				  	  axi_r_ready_o		,//R
+			output 	                            				  	  axi_r_ready_o		,//R
 			input                             				  		  axi_r_valid_i		,
 			input  		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0  	] axi_r_resp_i		,
 			input  		[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] axi_r_data_i		,
@@ -79,6 +79,9 @@ module ysyx_22041071_axi_r(
 	assign ar_handshake		= axi_ar_valid_o_ & axi_ar_ready_i	;
 	assign r_handshake		= axi_r_valid_i   & axi_r_ready_o_	;
 	assign r_done			= r_handshake	  & axi_r_last_i	;
+	assign cpu_ar_ready		= ar_ready_			;
+	assign axi_r_ready_o	= axi_r_ready_o_		;
+
 
 	always@(*)begin
 		case(cpu_size)
@@ -148,7 +151,6 @@ module ysyx_22041071_axi_r(
 //=========================其他信号时序输出=============================//
 	always@(posedge clk)begin
 		if(~reset_n)begin
-			cpu_ar_ready	<= 1'b0											;
 		    cpu_r_resp	    <= {`ysyx_22041071_AXI_RESP_TYPE_WIDTH 	 {1'b0}};
 			axi_ar_valid_o	<= 1'b0											;
             axi_ar_id_o		<= {`ysyx_22041071_AXI_ID_WIDTH		 	 {1'b0}};
@@ -162,10 +164,7 @@ module ysyx_22041071_axi_r(
             axi_ar_cache_o	<= {`ysyx_22041071_AXI_AXCACHE_WIDTH	 {1'b0}};
             axi_ar_qos_o	<= {`ysyx_22041071_AXI_QOS_WIDTH		 {1'b0}};	
 			axi_ar_region_o	<= {`ysyx_22041071_AXI_REGION_WIDTH		 {1'b0}};
-			axi_r_ready_o	<= 1'b0											;
 		end else begin
-			cpu_ar_ready	<= ar_ready_			;
-			axi_r_ready_o	<= axi_r_ready_o_		;
 			axi_ar_valid_o	<= axi_ar_valid_o_		;
 			if(ar_handshake)begin
             	axi_ar_id_o		<= axi_ar_id_o_		;
