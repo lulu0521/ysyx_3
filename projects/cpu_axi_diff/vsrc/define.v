@@ -84,7 +84,7 @@
 
 
 //slaver
-`define AXI_ADDR_WIDTH        7'd64
-`define AXI_DATA_WIDTH        7'd64
-`define AXI_ID_WIDTH          3'd4
-`define AXI_USER_WIDTH        1'd1
+`define AXI_ADDR_WIDTH    64
+`define AXI_DATA_WIDTH    64
+`define AXI_ID_WIDTH      4
+`define AXI_USER_WIDTH    1
