@@ -101,12 +101,18 @@ module ysyx_22041071_axi_r(
 			READ_IDLE:
 				if(cpu_ar_valid)
 					n_state = READ_ADDR;
+				else 
+					n_state = READ_IDLE;
 			READ_ADDR:
 				if(ar_handshake)
 					n_state = READ_DATA;
+				else 
+					n_state = READ_ADDR;
 			READ_DATA:
 				if(r_done)
 					n_state = READ_IDLE;
+				else 
+					n_state = READ_DATA;
 			default:
 				n_state = READ_IDLE;
 		endcase
