@@ -73,7 +73,7 @@ module ysyx_22041071_axi_r(
 	assign axi_ar_len_o_	= cpu_len							;
 
 	
-	assign axi_ar_valid_o_	= c_state == READ_ADDR ;
+	assign axi_ar_valid_o_	= c_state == READ_ADDR || c_state == READ_DATA;
 	assign axi_r_ready_o_	= c_state == READ_DATA				;
 	assign ar_handshake		= axi_ar_valid_o_ & axi_ar_ready_i	;
 	assign r_handshake		= axi_r_valid_i   & axi_r_ready_o_	;
@@ -165,7 +165,7 @@ module ysyx_22041071_axi_r(
 		end else begin
 			axi_ar_valid_o	<= axi_ar_valid_o_	;
 			$display("=================================reset_n		=%x",reset_n		);
-			$monitor("======================22222222222****************ar_handshake		=%x",ar_handshake		);
+			$monitor("======================22222222222****************ar_handshake		=%x",ar_handshake	);
 			$display("======================22222222222===========axi_ar_addr_o_	=%x",axi_ar_addr_o_		);
 			$display("======================22222222222===========axi_ar_len_o_		=%d",axi_ar_len_o_		);
 			$display("======================22222222222===========axi_ar_size_o_	=%d",axi_ar_size_o_		);
@@ -182,7 +182,6 @@ module ysyx_22041071_axi_r(
             	axi_ar_cache_o	<= axi_ar_cache_o_	;
             	axi_ar_qos_o	<= axi_ar_qos_o_	;	
 				axi_ar_region_o	<= axi_ar_region_o_	;
-				
 			end
 			if(r_handshake)begin
 				cpu_r_resp	    <= resp_			;
