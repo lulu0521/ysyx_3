@@ -183,9 +183,9 @@ module ysyx_22041071_axi_r(
             	axi_ar_qos_o	<= axi_ar_qos_o_	;	
 				axi_ar_region_o	<= axi_ar_region_o_	;
 			//end
-			if(r_handshake)begin
+			//if(r_handshake)begin
 				cpu_r_resp	    <= resp_			;
-			end
+			//end
 		end
 	end
 	
