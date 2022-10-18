@@ -8,7 +8,7 @@ module ysyx_22041071_axi_w(
 			input		[`ysyx_22041071_DATA_BUS					] cpu_data			,
 			input		[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len			,
 			input  		[1:0	  									] cpu_size	 		,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
-			output reg 							  				  	  cpu_aw_ready		,
+			output  							  				  	  cpu_aw_ready		,
 			output reg 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_w_resp	 	,
 			input  												  	  axi_aw_ready_i	,//AW
 			output reg 												  axi_aw_valid_o	,
@@ -34,7 +34,7 @@ module ysyx_22041071_axi_w(
 			input  		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0  	] axi_bw_resp_i		,
 			input  		[`ysyx_22041071_AXI_USER_WIDTH-1:0			] axi_bw_user_i		,	
 			input		                           				  	  axi_bw_valid_i	,
-			output reg												  axi_bw_ready_o	);
+			output 													  axi_bw_ready_o	);
 			
 	parameter [1:0]								W_IDLE = 2'b00	;
 	parameter [1:0]								W_ADDR = 2'b01	;
@@ -97,7 +97,8 @@ module ysyx_22041071_axi_w(
 	assign w_done		   = w_handshake && axi_w_last_o_						;
 	assign axi_bw_ready_o_ = c_state == W_DONE									;
 	assign bw_handshake    = axi_bw_ready_o_ && axi_bw_valid_i					;
-	
+	assign cpu_aw_ready	   = aw_ready_											;
+	assign axi_bw_ready_o  = axi_bw_ready_o_									;   
 	always@(*)begin
 		case(cpu_size)
 			2'b00:axi_aw_size_o_ = 3'b000;//1 BYTE
@@ -181,8 +182,7 @@ module ysyx_22041071_axi_w(
 	
 //==============输出===============//
 	always@(posedge clk)begin
-		if(~reset_n)begin
-			cpu_aw_ready	<= 1'b0											;	
+		if(~reset_n)begin	
 			cpu_w_resp      <= {`ysyx_22041071_AXI_RESP_TYPE_WIDTH 	 {1'b0}};
 			axi_aw_valid_o	<= 1'b0											;
             axi_aw_id_o		<= {`ysyx_22041071_AXI_ID_WIDTH		 	 {1'b0}};
@@ -202,9 +202,8 @@ module ysyx_22041071_axi_w(
             axi_w_last_o	<= 1'b0											;	
             axi_w_user_o	<= {`ysyx_22041071_AXI_USER_WIDTH		 {1'b0}};	
 			axi_w_valid_o	<= 1'b0											;
-			axi_bw_ready_o	<= 1'b0											;
 		end else begin
-			cpu_aw_ready	<= aw_ready_		;
+			
 			cpu_w_resp      <= resp_			;
 			axi_aw_valid_o	<= axi_aw_valid_o_	;
 			axi_aw_id_o		<= axi_aw_id_o_		;
@@ -224,7 +223,7 @@ module ysyx_22041071_axi_w(
 			axi_w_last_o	<= axi_w_last_o_	;
 			axi_w_user_o	<= axi_w_user_o_	;
 			axi_w_valid_o	<= axi_w_valid_o_	;
-			axi_bw_ready_o	<= axi_bw_ready_o_	;                 
+              
 		end                    	
 	end                        	                          
 endmodule                      	

@@ -165,8 +165,9 @@ module ysyx_22041071_axi_r(
             axi_ar_qos_o	<= {`ysyx_22041071_AXI_QOS_WIDTH		 {1'b0}};	
 			axi_ar_region_o	<= {`ysyx_22041071_AXI_REGION_WIDTH		 {1'b0}};
 		end else begin
-			axi_ar_valid_o	<= axi_ar_valid_o_		;
+			
 			if(ar_handshake)begin
+				axi_ar_valid_o	<= axi_ar_valid_o_	;
             	axi_ar_id_o		<= axi_ar_id_o_		;
             	axi_ar_addr_o	<= axi_ar_addr_o_	;	
             	axi_ar_len_o	<= axi_ar_len_o_	;	
