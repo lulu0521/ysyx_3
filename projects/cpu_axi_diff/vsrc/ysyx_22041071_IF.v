@@ -75,13 +75,14 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 				Ins	   <= 32'b0		 ;
 			end else begin
 				if(handshake1)begin
-					$display("======================0000000===========%x",cpu_addr	);
-					$display("======================0000000===========%d",cpu_len	);
-					$display("======================0000000===========%d",cpu_size	);
+					
 					cpu_ar_valid <= 1'b1								;	
 					cpu_addr	 <= PC1									;	
 					cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
 					cpu_size	 <= `ysyx_22041071_SIZE_D				;	
+					$display("======================0000000===========%x",cpu_addr	);
+					$display("======================0000000===========%d",cpu_len	);
+					$display("======================0000000===========%d",cpu_size	);
 				end
 				if(handshake2)begin
 					valid2 <= cpu_r_valid;
