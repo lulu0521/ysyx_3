@@ -59,7 +59,7 @@ module ysyx_22041071_axi_r(
 	reg [1:0] c_state		;
 	reg [1:0] n_state		;
 	
-	assign ar_ready_		= c_state == READ_IDLE && n_state == READ_IDLE || n_state == READ_DATA&&n_state == READ_IDLE;
+	assign ar_ready_		= c_state == READ_IDLE ;
 	assign resp_			= axi_r_resp_i						;
 	assign axi_ar_prot_o_	= 3'd0								;		
 	assign axi_ar_user_o_	= 1'b0								;	
