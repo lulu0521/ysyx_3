@@ -144,18 +144,23 @@ wire  [ 4:0 ]					rdest4	     ;
 wire  [`ysyx_22041071_DATA_BUS] WB_data2	 ;
 
 
-ysyx_22041071_PC MY_PC(	.clk	  (clock      ),
-						.reset    (reset      ),
-						.Brch_sel (Brch_sel1  ),	//B指令跳转控制
-						.JPC_sel  (JPC_sel    ),   //JAL指令跳转控制
-						.JRPC_sel2(JRPC_sel2  ),   //JALR指令跳转控制
-						.BPC	  (BPC1       ),   //B指令跳转目的地址
-						.JPC	  (JPC1       ),   //JAL指令跳转目的地址
-						.JRPC	  (JRPC1      ),   //JALR指令跳转目的地址
-						.SNPC	  (SNPC       ),   //PC+4
-						.ready1   (ready1     ),
-						.valid1	  (valid1     ),
-						.PC		  (PC		  ));  //输出PC
+ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
+						.reset    		(reset      	),
+						.Brch_sel 		(Brch_sel1  	),//B指令跳转控制
+						.JPC_sel  		(JPC_sel    	),//JAL指令跳转控制
+						.JRPC_sel2		(JRPC_sel2  	),//JALR指令跳转控制
+						.BPC	  		(BPC1       	),//B指令跳转目的地址
+						.JPC	  		(JPC1       	),//JAL指令跳转目的地址
+						.JRPC	  		(JRPC1      	),//JALR指令跳转目的地址
+						.SNPC	  		(SNPC       	),//PC+4
+						.ready1   		(cpu_ar_ready	),
+						.cpu_ar_valid	(cpu_ar_valid	),	
+						.cpu_addr	 	(cpu_addr	 	),	
+						.cpu_len	 	(cpu_len		),	
+						.cpu_size	 	(cpu_size	 	),
+						.PC		  		(PC		  		));  //输出PC	
+						//.valid1	  (valid1     ),
+						
 
 ysyx_22041071_IF IF(.clk	   	  (clock      		),
 				    .reset	   	  (reset      		),
@@ -168,16 +173,10 @@ ysyx_22041071_IF IF(.clk	   	  (clock      		),
 					.PC3	   	  (PC3		  		),
 					.bubble4   	  (bubble4	  		),
 				    .valid1	   	  (valid1     		),
-				    .ready2	   	  (ready2     		),
-					.cpu_ar_ready (cpu_ar_ready  	),	
+				    .ready2	   	  (ready2     		),	
 					.cpu_r_valid  (cpu_r_valid   	),
 					.cpu_r_data   (cpu_r_data    	),
 					.cpu_resp	  (cpu_resp	   		),
-					.cpu_ar_valid (cpu_ar_valid		),
-					.cpu_addr	  (cpu_addr	 		),
-					.cpu_len	  (cpu_len			),
-					.cpu_size	  (cpu_size	 		),
-				    .ready1	   	  (ready1	  		),
 				    .valid2	   	  (valid2	  		),
 				    .PC2	   	  (PC2		  		),
 				    .Ins	   	  (Ins		  		),

@@ -165,15 +165,15 @@ module ysyx_22041071_axi_r(
 		end else begin
 			axi_ar_valid_o	<= axi_ar_valid_o_	;
             axi_ar_id_o		<= axi_ar_id_o_		;
-            axi_ar_addr_o	<= axi_ar_addr_o_	;	
-            axi_ar_len_o	<= axi_ar_len_o_	;	
-            axi_ar_size_o	<= axi_ar_size_o_	;	
+            axi_ar_addr_o	<= axi_ar_addr_o_	;
+            axi_ar_len_o	<= axi_ar_len_o_	;
+            axi_ar_size_o	<= axi_ar_size_o_	;
             axi_ar_burst_o	<= axi_ar_burst_o_	;
-            axi_ar_prot_o	<= axi_ar_prot_o_	;	
-            axi_ar_user_o	<= axi_ar_user_o_	;	
-            axi_ar_lock_o	<= axi_ar_lock_o_	;	
+            axi_ar_prot_o	<= axi_ar_prot_o_	;
+            axi_ar_user_o	<= axi_ar_user_o_	;
+            axi_ar_lock_o	<= axi_ar_lock_o_	;
             axi_ar_cache_o	<= axi_ar_cache_o_	;
-            axi_ar_qos_o	<= axi_ar_qos_o_	;	
+            axi_ar_qos_o	<= axi_ar_qos_o_	;
 			axi_ar_region_o	<= axi_ar_region_o_	;
 			cpu_r_resp	    <= resp_			;
 		end

@@ -11,15 +11,11 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 						input  wire												  bubble4		,
 						input  wire												  valid1		,
 						input  wire												  ready2		,
-						input 													  cpu_ar_ready	,//AXI_S
+						//input 													  cpu_ar_ready	,//AXI_S
 						input													  cpu_r_valid	,
 						input 		[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 	,
-						input 		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_resp	 	,	
-						output reg											  	  cpu_ar_valid	,
-						output reg  [`ysyx_22041071_ADDR_BUS					] cpu_addr	 	,
-						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len		,
-						output reg  [1:0	  									] cpu_size	 	,//axi_E
-						output reg												  ready1		,
+						input 		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_resp	 	,//axi_E
+						//output reg												  ready1		,
 						output reg												  valid2		,
 						output reg  [`ysyx_22041071_ADDR_BUS					] PC2			,
 						output reg  [`ysyx_22041071_INS_BUS 					] Ins			,
@@ -38,12 +34,12 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 
 	reg [63:0					] Ins_	;
 	reg [`ysyx_22041071_INS_BUS ] Ins_32;
-	reg handshake1;			 
+	//reg handshake1;			 
 	reg handshake2;
 	
 	always@(*)begin
-		ready1	   = cpu_ar_ready & ready2		;
-		handshake1 = valid1  	  & cpu_ar_ready;
+		//ready1	   = cpu_ar_ready & ready2		;
+		//handshake1 = valid1  	  & cpu_ar_ready;
 		handshake2 = cpu_r_valid  & ready2  	;
 	end
 	always@(*)begin	
@@ -74,15 +70,6 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 				PC2	   <= PC1		 ;
 				Ins	   <= 32'b0		 ;
 			end else begin
-				if(handshake1)begin
-					cpu_ar_valid <= 1'b1								;	
-					cpu_addr	 <= PC1									;	
-					cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
-					cpu_size	 <= `ysyx_22041071_SIZE_D				;	
-					$display("======================0000000===========%x",cpu_addr	);
-					$display("======================0000000===========%d",cpu_len	);
-					$display("======================0000000===========%d",cpu_size	);
-				end
 				if(handshake2)begin
 					valid2 <= cpu_r_valid;
 					PC2	   <= PC1		;
@@ -90,10 +77,5 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 				end
 			end
 		end
-	end
-	always@(*)begin
-		$display("======================111111===========%x",cpu_addr	);
-		$display("======================111111===========%d",cpu_len	);
-		$display("======================111111===========%d",cpu_size	);
 	end
 endmodule
