@@ -23,7 +23,11 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 	assign sel = {Brch_sel,JPC_sel,JRPC_sel2}	;
 	
 	always@(*)begin
-		valid = 1'b1;
+		if(PC>=64'h0000_0000_8000_0000)
+			valid = 1'b0;
+		else
+			valid = 1'b1;
+
 		handshake = valid & ready1;
 		case(sel)
 			3'b000: DNPC = SNPC 	;
@@ -43,7 +47,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 			if(handshake)begin
 				//valid1 <= valid;
 				cpu_ar_valid <= valid								;	
-				cpu_addr	 <= DNPC								;
+				cpu_addr	 <= PC									;
 				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
 				cpu_size	 <= `ysyx_22041071_SIZE_D				;
 				PC	   <= DNPC ;
