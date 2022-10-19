@@ -46,7 +46,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 				cpu_addr	 <= DNPC								;
 				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
 				cpu_size	 <= `ysyx_22041071_SIZE_D				;
-				PC	  		 <= DNPC ;
+				PC	  		 <= DNPC 								;
 			end
 		end
 	end
