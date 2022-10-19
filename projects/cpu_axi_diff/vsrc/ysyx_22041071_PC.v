@@ -14,7 +14,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 						output reg  [`ysyx_22041071_ADDR_BUS		 	] cpu_addr	 	,
 						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0 	] cpu_len		,
 						output reg  [1:0	  						 	] cpu_size	 	,
-						output reg  [`ysyx_22041071_ADDR_BUS		 	] PC	 		);  //输出PC
+						output reg	[`ysyx_22041071_ADDR_BUS			] PC			);  //输出PC
 						
 	reg  [`ysyx_22041071_ADDR_BUS]	DNPC 		;
 	reg								valid		;
@@ -46,7 +46,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 				cpu_addr	 <= DNPC								;
 				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
 				cpu_size	 <= `ysyx_22041071_SIZE_D				;
-				PC	   		 <= DNPC ;
+				PC	   <= DNPC ;
 			end
 		end
 	end
