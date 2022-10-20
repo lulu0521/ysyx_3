@@ -143,9 +143,9 @@ module ysyx_22041071_axi_r(
 			cpu_r_addr <= cpu_addr								;
 		end else begin
 			if(r_handshake)begin
-					cpu_r_data  <= data_l	;
-					cpu_r_valid <= 1'b1		;
-					cpu_r_addr <= cpu_addr	;
+					cpu_r_data  <= data_l		;
+					cpu_r_valid <= axi_r_valid_i;
+					cpu_r_addr <= cpu_addr		;
 			end
 		end
 	end
