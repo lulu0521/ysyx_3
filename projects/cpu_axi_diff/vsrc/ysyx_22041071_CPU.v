@@ -155,12 +155,12 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.JRPC	  		(JRPC1      	),//JALR指令跳转目的地址
 						.SNPC	  		(SNPC       	),//PC+4
 						.ready1   		(cpu_ar_ready	),
+						.valid1	  		(valid1     	),
 						.cpu_ar_valid	(cpu_ar_valid	),	
 						.cpu_addr	 	(cpu_addr	 	),	
 						.cpu_len	 	(cpu_len		),	
 						.cpu_size	 	(cpu_size	 	),
-						.PC		  		(PC		  		),
-						.valid1	  		(valid1     	));  //输出PC	
+						.PC		  		(PC		  		));  //输出PC	
 						
 
 ysyx_22041071_IF IF(.clk	   	  (clock      		),

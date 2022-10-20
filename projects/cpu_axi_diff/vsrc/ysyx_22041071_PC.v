@@ -41,7 +41,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 			PC		<= `START_ADDR	;
 		end else begin
 			if(handshake)begin
-				//valid1 <= valid;
+				valid1 <= valid;
 				cpu_ar_valid <= valid								;	
 				cpu_addr	 <= DNPC								;
 				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
