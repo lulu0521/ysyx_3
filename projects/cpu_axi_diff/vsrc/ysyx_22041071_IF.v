@@ -66,21 +66,21 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			valid2 <= 1'b0	;
 			Ins	   <= 32'b0 ;
 		end else begin
-			if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
-				valid2 <= 1'b1		 	;
-				PC2	   <= cpu_r_addr	;
-				Ins	   <= 32'b0		 	;
-			end else begin
-				if(handshake1)begin
-					if(cpu_r_valid)begin
+			if(handshake1)begin
+				if(cpu_r_valid)begin
+					if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
+						valid2 <= 1'b1		 	;
+						PC2	   <= cpu_r_addr	;
+						Ins	   <= 32'b0		 	;
+					end else begin
 						valid2 <= cpu_r_valid	;
 						PC2	   <= cpu_r_addr	;
 						Ins	   <= Ins_32		;
-					end else begin
-						valid2 <= valid1		;
-						PC2	   <= cpu_r_addr	;
-						Ins	   <= 32'h0			;
 					end
+				end else begin
+					valid2 <= valid1		;
+					PC2	   <= cpu_r_addr	;
+					Ins	   <= 32'h0			;
 				end
 			end
 		end
