@@ -75,7 +75,7 @@ module ysyx_22041071_axi_r(
 
 	
 	assign axi_ar_valid_o_	= c_state == READ_ADDR 				;
-	assign axi_r_ready_o_	= c_state == READ_DATA	|| c_state == READ_IDLE;
+	assign axi_r_ready_o_	= c_state == READ_DATA	;//|| c_state == READ_IDLE
 	assign ar_handshake		= axi_ar_valid_o_ & axi_ar_ready_i	;
 	assign r_handshake		= axi_r_valid_i   & axi_r_ready_o_	;
 	assign r_done			= r_handshake	  & axi_r_last_i	;
