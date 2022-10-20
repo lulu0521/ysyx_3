@@ -8,6 +8,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] JPC	  		,//JAL指令跳转目的地址
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] JRPC			,//JALR指令跳转目的地址
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] SNPC			,//PC+4
+						input  wire										  bubble1		,
 						input  wire							 			  ready1		,
 						output reg							 			  valid1		,
 						output reg										  cpu_ar_valid	,
@@ -18,12 +19,18 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 						
 	reg  [`ysyx_22041071_ADDR_BUS]	DNPC 		;
 	reg								valid		;
+	reg								valid_to_axi;
 	reg								handshake	;
 	wire [2:0					 ]	sel	 		;
 	assign sel = {Brch_sel,JPC_sel,JRPC_sel2}	;
 	
 	always@(*)begin
 		valid = 1'b1;
+		if(bubble1)begin
+			valid_to_axi = 1'b0;
+		end else begin
+			valid_to_axi = valid;
+		end
 		handshake = valid & ready1;
 		case(sel)
 			3'b000: DNPC = SNPC 	;
@@ -41,8 +48,8 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 			PC		<= `START_ADDR	;
 		end else begin
 			if(handshake)begin
-				valid1 <= valid;
-				cpu_ar_valid <= valid								;	
+				valid1		 <= valid;
+				cpu_ar_valid <= valid_to_axi						;	
 				cpu_addr	 <= DNPC								;
 				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
 				cpu_size	 <= `ysyx_22041071_SIZE_D				;
