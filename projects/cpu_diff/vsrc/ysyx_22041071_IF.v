@@ -55,12 +55,12 @@ RAMHelper IRAMHelper(.clk   (clk						),
 			valid2 <= 1'b0	;
 			Ins	   <= 32'b0 ;
 		end else begin
-			if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
-				valid2 <= 1'b1		 ;
-				PC2	   <= PC1		 ;
-				Ins	   <= 32'b0		 ;
-			end else begin
-				if(handshake)begin
+			if(handshake)begin
+				if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
+					valid2 <= 1'b1		 ;
+					PC2	   <= PC1		 ;
+					Ins	   <= 32'b0		 ;
+				end else begin
 					valid2 <= valid1	;
 					PC2	   <= PC1		;
 					Ins	   <= Ins_32	;
