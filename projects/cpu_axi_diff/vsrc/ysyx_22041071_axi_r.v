@@ -11,6 +11,7 @@ module ysyx_22041071_axi_r(
 			output  							  				  	  cpu_ar_ready		,
 			output reg 												  cpu_r_valid		,
 			output reg 	[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 		,
+			output reg	[`ysyx_22041071_ADDR_BUS					] cpu_r_addr	 	,
 			output reg 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_r_resp	 	,
 			input  												  	  axi_ar_ready_i	,//AR
 			output reg 												  axi_ar_valid_o	,
@@ -139,10 +140,12 @@ module ysyx_22041071_axi_r(
 		if(~reset_n)begin
 			cpu_r_data <= {`ysyx_22041071_AXI_DATA_WIDTH{1'b0}}	;
 			cpu_r_valid<= 1'b0									;
+			cpu_r_addr <= cpu_addr								;
 		end else begin
 			if(r_handshake)begin
-					cpu_r_data  <= data_l;
-					cpu_r_valid <= 1'b1	;
+					cpu_r_data  <= data_l	;
+					cpu_r_valid <= 1'b1		;
+					cpu_r_addr <= cpu_addr	;
 			end
 		end
 	end

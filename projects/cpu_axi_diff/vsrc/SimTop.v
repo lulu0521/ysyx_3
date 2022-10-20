@@ -64,7 +64,8 @@ module SimTop(
     wire [`ysyx_22041071_DATA_BUS			        ] cpu_data		;
     wire     						  			      cpu_ar_ready  ;//input cpu	
     wire 										      cpu_r_valid   ;		
-    wire [`ysyx_22041071_AXI_DATA_WIDTH-1:0		    ] cpu_r_data    ;		
+    wire [`ysyx_22041071_AXI_DATA_WIDTH-1:0		    ] cpu_r_data    ;
+    wire [`ysyx_22041071_ADDR_BUS					] cpu_r_addr	;		
     wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0    ] cpu_resp	    ;		
 	wire					  				  	      cpu_aw_ready  ;	
     wire 										  	  ar_ready      ;//AR	
@@ -146,6 +147,7 @@ module SimTop(
 			.cpu_ar_ready		(cpu_ar_ready   ),
 			.cpu_r_valid		(cpu_r_valid    ),
 			.cpu_r_data 		(cpu_r_data     ),
+            .cpu_r_addr         (cpu_r_addr     ),
 			.cpu_resp	 		(cpu_resp	    ),
 			.cpu_aw_ready		(cpu_aw_ready   ),
 			.axi_ar_ready_i		(ar_ready       ),//AR
@@ -200,6 +202,7 @@ module SimTop(
 			.cpu_ar_ready	(cpu_ar_ready   ),
 			.cpu_r_valid	(cpu_r_valid    ),
 			.cpu_r_data 	(cpu_r_data     ),
+            .cpu_r_addr     (cpu_r_addr     ),
 			.cpu_resp	 	(cpu_resp	    ),
 			.cpu_aw_ready	(cpu_aw_ready   ),		
 			.cpu_ar_valid	(cpu_ar_valid	),

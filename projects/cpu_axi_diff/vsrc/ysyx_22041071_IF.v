@@ -14,6 +14,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 						//input 													  cpu_ar_ready	,//AXI_S
 						input													  cpu_r_valid	,
 						input 		[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 	,
+						input		[`ysyx_22041071_ADDR_BUS					] cpu_r_addr	,
 						input 		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_resp	 	,//axi_E
 						//output reg												  ready1		,
 						output reg												  valid2		,
@@ -53,7 +54,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 	end
 	always@(*)begin	
 			Ins_ = cpu_r_data;
-		if(PC1[2])begin
+		if(cpu_r_addr[2])begin
 			Ins_32 = Ins_[63:32];
 		end else begin
 			Ins_32 = Ins_[31:0 ];

@@ -11,6 +11,7 @@ module ysyx_22041071_AXI_RW(
 			output reg 							  				  	  cpu_ar_ready		,
 			output reg 												  cpu_r_valid		,
 			output reg 	[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 		,
+			output reg	[`ysyx_22041071_ADDR_BUS					] cpu_r_addr	 	,
 			output reg 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_resp	 		,
 			output reg 							  				  	  cpu_aw_ready		,
 			input  												  	  axi_ar_ready_i	,//AR
@@ -74,6 +75,7 @@ module ysyx_22041071_AXI_RW(
 			.cpu_ar_ready		(cpu_ar_ready						),
 			.cpu_r_valid		(cpu_r_valid						),
 			.cpu_r_data 		(cpu_r_data 						),
+			.cpu_r_addr			(cpu_r_addr							),
 			.cpu_r_resp	 		(cpu_resp							),
 			.axi_ar_ready_i		(axi_ar_ready_i						),//AR
 			.axi_ar_valid_o		(axi_ar_valid_o						),
