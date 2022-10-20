@@ -32,16 +32,16 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
   					 .wmask (0							),
   					 .wen   (0							));*/
 	
-
+	
 	reg [63:0					] Ins_	;
 	reg [`ysyx_22041071_INS_BUS ] Ins_32;
-	//reg handshake1;			 
-	reg handshake2;
+	reg handshake1;			 
+	//reg handshake2;
 	
 	always@(*)begin
 		//ready1	   = cpu_ar_ready & ready2		;
-		//handshake1 = valid1  	  & cpu_ar_ready;
-		handshake2 = cpu_r_valid  & ready2  	;
+		handshake1 = valid1 & ready2;
+		//handshake2 = cpu_r_valid  & ready2  	;
 	end
 	always@(*)begin	
 		if(bubble23==1'b1 && Brch_sel1==0)begin
@@ -71,10 +71,16 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 				PC2	   <= cpu_r_addr	;
 				Ins	   <= 32'b0		 	;
 			end else begin
-				if(handshake2)begin
-					valid2 <= cpu_r_valid	;
-					PC2	   <= cpu_r_addr	;
-					Ins	   <= Ins_32		;
+				if(handshake1)begin
+					if(cpu_r_valid)begin
+						valid2 <= cpu_r_valid	;
+						PC2	   <= cpu_r_addr	;
+						Ins	   <= Ins_32		;
+					end else begin
+						valid2 <= valid1		;
+						PC2	   <= cpu_r_addr	;
+						Ins	   <= 32'h0			;
+					end
 				end
 			end
 		end

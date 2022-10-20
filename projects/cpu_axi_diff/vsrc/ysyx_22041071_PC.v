@@ -9,7 +9,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] JRPC			,//JALR指令跳转目的地址
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] SNPC			,//PC+4
 						input  wire							 			  ready1		,
-						//output reg							 			  valid1		,
+						output reg							 			  valid1		,
 						output reg										  cpu_ar_valid	,
 						output reg  [`ysyx_22041071_ADDR_BUS		 	] cpu_addr	 	,
 						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0 	] cpu_len		,

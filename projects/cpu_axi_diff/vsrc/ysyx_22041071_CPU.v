@@ -159,8 +159,8 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.cpu_addr	 	(cpu_addr	 	),	
 						.cpu_len	 	(cpu_len		),	
 						.cpu_size	 	(cpu_size	 	),
-						.PC		  		(PC		  		));  //输出PC	
-						//.valid1	  (valid1     ),
+						.PC		  		(PC		  		),
+						.valid1	  		(valid1     	));  //输出PC	
 						
 
 ysyx_22041071_IF IF(.clk	   	  (clock      		),
