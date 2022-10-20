@@ -49,7 +49,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 		end else if(bubble4==1'b1) begin
 			SNPC = PC3 + 64'd12;
 		end else begin
-			SNPC = cpu_r_addr + 64'h4;
+			SNPC = PC1 + 64'h4;
 		end
 	end
 	always@(*)begin	
