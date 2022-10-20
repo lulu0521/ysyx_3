@@ -20,8 +20,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 						output reg												  valid2		,
 						output reg  [`ysyx_22041071_ADDR_BUS					] PC2			,
 						output reg  [`ysyx_22041071_INS_BUS 					] Ins			,
-						output reg  [`ysyx_22041071_ADDR_BUS					] SNPC			,
-						output 		reg											  bubble1		);
+						output reg  [`ysyx_22041071_ADDR_BUS					] SNPC			);
 	
 
 /*RAMHelper IRAMHelper(.clk   (clk						),
@@ -44,11 +43,6 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 		//ready1	   = cpu_ar_ready & ready2		;
 		handshake1 = valid1 & ready2;
 		//handshake2 = cpu_r_valid  & ready2  	;
-		if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
-			bubble1 = 1'b1;
-		end else begin
-			bubble1 = 1'b0;
-		end
 	end
 	always@(*)begin	
 		if(bubble23==1'b1 && Brch_sel1==0)begin

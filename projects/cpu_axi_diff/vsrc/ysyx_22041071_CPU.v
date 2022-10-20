@@ -25,7 +25,7 @@ wire						   valid2	  ;
 wire [`ysyx_22041071_ADDR_BUS] PC2		  ;
 wire [`ysyx_22041071_INS_BUS ] Ins		  ;
 wire [`ysyx_22041071_ADDR_BUS] SNPC		  ;
-wire						   bubble1	  ;
+
 
 //ID
 wire							  ready2	;
@@ -155,7 +155,6 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.JPC	  		(JPC1       	),//JAL指令跳转目的地址
 						.JRPC	  		(JRPC1      	),//JALR指令跳转目的地址
 						.SNPC	  		(SNPC       	),//PC+4
-						.bubble1		(bubble1		),
 						.ready1   		(cpu_ar_ready	),
 						.valid1	  		(valid1     	),
 						.cpu_ar_valid	(cpu_ar_valid	),	
@@ -184,8 +183,7 @@ ysyx_22041071_IF IF(.clk	   	  (clock      		),
 				    .valid2	   	  (valid2	  		),
 				    .PC2	   	  (PC2		  		),
 				    .Ins	   	  (Ins		  		),
-				    .SNPC	   	  (SNPC	  			),
-					.bubble1	  (bubble1			));
+				    .SNPC	   	  (SNPC	  			));
 
 ysyx_22041071_ID ID(.clk	   (clock     ),
 					.reset     (reset     ),
