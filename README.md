@@ -128,7 +128,7 @@ Enter the test cycle:
 ```shell
 ./build.sh -e cpu_axi_diff -d -s -a "-i inst_diff.bin --dump-wave -b 0" -m "EMU_TRACE=1 WITH_DRAMSIM3=1" -b
 ```
-./build.sh -e cpu_axi_diff -d -s -a -b "-i inst_diff.bin "
+./build.sh -e cpu_axi_diff -d -s -a "-i inst_diff.bin --dump-wave -b 0 -e 1" -m "EMU_TRACE=1 WITH_DRAMSIM3=1" -b
 
 ### chisel_cpu_diff
 
