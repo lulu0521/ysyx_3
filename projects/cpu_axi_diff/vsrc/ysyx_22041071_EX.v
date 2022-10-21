@@ -18,7 +18,9 @@ module ysyx_22041071_EX(
 						input wire							 ready5		  ,
 						output reg							 ready4		  ,
 						output reg							 valid5		  ,
-						output reg							 bubble23	  ,
+						output reg							 bubble43	  ,
+						output reg							 bubble42	  ,
+						output reg							 bubble41	  ,
 						output reg  [`ysyx_22041071_ADDR_BUS]PC5	      ,
                         output reg  [`ysyx_22041071_INS_BUS ]Ins4	      ,
 						output reg  						 MEM_W_en3    ,
@@ -146,10 +148,14 @@ module ysyx_22041071_EX(
 	
 		
 	always@(*)begin	
-		if((Ins3[6:0]==7'b110_0011) && (handshake == 1'b1))begin//B
-			bubble23 = 1'b1;
+		if(Brch_sel1 && (handshake == 1'b1))begin//B
+			bubble43 = 1'b1;
+			bubble42 = 1'b1;
+			bubble41 = 1'b1;
 		end else begin
-			bubble23 = 1'b0;
+			bubble43 = 1'b0;
+			bubble42 = 1'b0;
+			bubble41 = 1'b0;
 		end
 	end	
 

@@ -32,11 +32,13 @@ module ysyx_22041071_ID2(
 						input  wire							  reg_w_en4_	,
 						input  wire [ 4:0					] rdest2		,//MEM阶段寄存器
 						input  wire [`ysyx_22041071_DATA_BUS] WB_data   	,//MEM得到的结果
+						input  wire							  bubble43		,
 						input  wire							  valid3		,
 						input  wire							  ready4		,
 						output reg							  ready3		,
 						output reg							  valid4		,
-						output reg							  bubble22  	,
+						output reg							  bubble32		,
+						output reg							  bubble31		,
 						output reg  [`ysyx_22041071_ADDR_BUS] PC4	    	,
 						output reg  [`ysyx_22041071_INS_BUS ] Ins3	    	,
 						output reg  						  JRPC_sel2 	,
@@ -161,15 +163,20 @@ module ysyx_22041071_ID2(
 			JRPC1 = WB_data2 + {{52{Imm1[11]}},Imm1};
 		else 
 			JRPC1 = reg_file[rs1] + {{52{Imm1[11]}},Imm1};
-
-/*=========================JALR and B need  bubble==================================*/			
-		if((opcode1==7'b110_0111 || opcode1==7'b110_0011) && (handshake == 1'b1))begin//jalr and B
-			bubble22 = 1'b1;
+	end
+/*=========================JALR and B need  bubble==================================*/
+	always@(*)begin			
+		if(JRPC_sel2 && (handshake == 1'b1))begin//jalr jump
+			bubble32 = 1'b1;
+			bubble31 = 1'b1;
 		end else begin
-			bubble22 = 1'b0;
+			bubble32 = 1'b0;
+			bubble31 = 1'b0;
 		end
-
-/*=========================ld write reg is needed by other instruction==================================*/				
+	end
+	
+/*=========================ld write reg is needed by other instruction==================================*/		
+	always@(*)begin		
 		if(Ins31[6:0]==7'b000_0011 && ((opcode1==7'b011_0011 || opcode1==7'b011_1011)&&(rs1==rdest1_ || rt1==rdest1_)
 		|| (opcode1==7'b110_0111 || opcode1==7'b000_0011 || opcode1==7'b001_1011 || opcode1==7'b001_0011)&&rs1==rdest1_
 		|| opcode1==7'b010_0011 && (rs1==rdest1_ || rt1==rdest1_)
@@ -307,7 +314,7 @@ module ysyx_22041071_ID2(
 			reg_file[30] <= 64'h0;
 			reg_file[31] <= 64'h0;
 		end else begin
-			if(bubble4)begin
+			if(bubble4 || bubble43)begin
 				valid4	   <= 1'b1 ;
 				PC4	  	   <= PC3  ;
 				Ins3	   <= 32'b0;

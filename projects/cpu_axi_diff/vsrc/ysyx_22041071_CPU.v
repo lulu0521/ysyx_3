@@ -57,7 +57,8 @@ wire 	[ 4:0 ]					  ALU_ctrl1 ; //ALU控制信号
 //ID2
 wire							  ready3	;
 wire							  valid4	;
-wire							  bubble22  ;
+wire							  bubble32	;
+wire							  bubble31	;
 wire  [`ysyx_22041071_ADDR_BUS]   PC4	    ;
 wire  [`ysyx_22041071_INS_BUS ]   Ins3	  	;
 wire  						      JRPC_sel2 ;
@@ -109,7 +110,9 @@ wire  [`ysyx_22041071_DATA_BUS] reg_file31	;
 //EX
 wire							  ready4	 ; 
 wire							  valid5	 ; 
-wire							  bubble23   ; 
+wire							  bubble43	 ;
+wire							  bubble42	 ;
+wire							  bubble41	 ; 
 wire  [`ysyx_22041071_ADDR_BUS]   PC5	     ;
 wire  [`ysyx_22041071_INS_BUS ]   Ins4	   	 ; 
 wire  						      MEM_W_en3  ;  
@@ -170,8 +173,8 @@ ysyx_22041071_IF IF(.clk	   	  (clock      		),
 					.Brch_sel1 	  (Brch_sel1  		), 
 					.PC4	   	  (PC4		   		),	
 				    .bubble21  	  (bubble21   		),
-				    .bubble22  	  (bubble22   		),
-				    .bubble23  	  (bubble23   		),
+				    .bubble31  	  (bubble31   		),
+				    .bubble41  	  (bubble41   		),
 					.PC3	   	  (PC3		  		),
 					.bubble4   	  (bubble4	  		),
 				    .valid1	   	  (valid1     		),
@@ -189,6 +192,8 @@ ysyx_22041071_ID ID(.clk	   (clock     ),
 					.reset     (reset     ),
 					.PC2	   (PC2       ),
 					.Ins1	   (Ins       ),
+					.bubble32  (bubble32  ),
+					.bubble42  (bubble42  ),
 					.valid2	   (valid2    ),
 					.ready3	   (ready3    ),
 					.ready2	   (ready2	  ),
@@ -250,11 +255,13 @@ ysyx_22041071_ID2 ID2(
 					.reg_w_en4_ (reg_w_en4_	 ),
 					.rdest2	  	(rdest3_	 ),//MEM阶段寄存器
 					.WB_data  	(WB_data1_	 ),//MEM得到的结果
+					.bubble43	(bubble43	 ),
 					.valid3	  	(valid3	 	 ),
 					.ready4	  	(ready4	 	 ),
 					.ready3	  	(ready3	 	 ),
 					.valid4	  	(valid4	 	 ),
-					.bubble22 	(bubble22  	 ),
+					.bubble32	(bubble32	 ),
+					.bubble31	(bubble31	 ),
 					.PC4	  	(PC4	     ),
 					.Ins3	  	(Ins3	     ),
 					.JRPC_sel2	(JRPC_sel2 	 ),
@@ -321,7 +328,9 @@ ysyx_22041071_EX EX(.clk	   	(clock		 ),
 					.ready5		(ready5		 ),
 					.ready4		(ready4		 ),
 					.valid5		(valid5		 ),
-					.bubble23	(bubble23	 ),
+					.bubble43	(bubble43	 ),
+					.bubble42	(bubble42	 ),
+					.bubble41	(bubble41	 ),
 					.PC5	    (PC5	     ),
                     .Ins4	    (Ins4	     ),
 					.MEM_W_en3  (MEM_W_en3   ),

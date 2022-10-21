@@ -5,8 +5,8 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 						input  wire												  Brch_sel1 	,
 						input  wire [`ysyx_22041071_ADDR_BUS					] PC4			,
 						input  wire												  bubble21		,
-						input  wire												  bubble22		,
-						input  wire												  bubble23		,
+						input  wire												  bubble31		,
+						input  wire												  bubble41		,
 						input  wire [`ysyx_22041071_ADDR_BUS					] PC3			,
 						input  wire												  bubble4		,
 						input  wire												  valid1		,
@@ -48,9 +48,9 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 		//handshake2 = cpu_r_valid  & ready2  	;
 	end
 	always@(*)begin	
-		if(bubble23==1'b1 && Brch_sel1==0)begin
-			SNPC = PC4 + 64'h4;
-		end else if(bubble4==1'b1) begin
+		//if(bubble23==1'b1 && Brch_sel1==0)begin
+			//SNPC = PC4 + 64'h4;
+		if(bubble4==1'b1) begin
 			SNPC = PC3 + 64'd12;
 		end else begin
 			SNPC = PC1 + 64'h4;
@@ -66,7 +66,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 	end
 	
 	assign cnt_rst = cpu_r_valid;
-	assign cnt_en = bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1;
+	assign cnt_en = bubble21==1'b1 || bubble31==1'b1 ||bubble41;
 	always@(posedge clk)begin
 		if(cnt_rst)begin
 			cnt <= 4'h0;
@@ -81,22 +81,28 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			valid2 <= 1'b0	;
 			Ins	   <= 32'b0 ;
 		end else begin
-			if(handshake1)begin
-				if(cpu_r_valid && cnt != 0)begin
-					//if(bubble21==1'b1 || bubble22==1'b1 || bubble23==1'b1)begin
-					//	valid2 <= 1'b1		 	;
-					//	PC2	   <= cpu_r_addr	;
-					//	Ins	   <= 32'b0		 	;
-					//end else begin
-						valid2 <= cpu_r_valid	;
+			if(cnt==0)begin
+				if(handshake1)begin
+					if(bubble21==1'b1 || bubble31==1'b1 ||bubble41)begin
+						valid2 <= 1'b1		 	;
 						PC2	   <= cpu_r_addr	;
-						Ins	   <= Ins_32		;
-					//end
-				end else begin
-					valid2 <= valid1		;
-					PC2	   <= cpu_r_addr	;
-					Ins	   <= 32'h0			;
+						Ins	   <= 32'b0		 	;
+					end else begin
+						if(cpu_r_valid)begin
+							valid2 <= cpu_r_valid	;
+							PC2	   <= cpu_r_addr	;
+							Ins	   <= Ins_32		;
+						end else begin
+							valid2 <= valid1		;
+							PC2	   <= cpu_r_addr	;
+							Ins	   <= 32'h0			;
+						end
+					end
 				end
+			end else begin
+				valid2 <= valid1		;
+				PC2	   <= cpu_r_addr	;
+				Ins	   <= 32'h0			;
 			end
 		end
 	end

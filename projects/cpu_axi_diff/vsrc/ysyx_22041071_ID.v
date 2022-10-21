@@ -4,6 +4,8 @@ module ysyx_22041071_ID(
 						input									reset    ,
 						input  wire [`ysyx_22041071_ADDR_BUS]	PC2		 ,
 						input  wire [`ysyx_22041071_INS_BUS ]	Ins1	 ,
+						input  wire								bubble32 ,
+						input  wire								bubble42 ,
 						input  wire								valid2	 ,
 						input  wire								ready3	 ,
 						output reg								ready2	 ,
@@ -74,13 +76,17 @@ module ysyx_22041071_ID(
 		ready2	  = ready3								;
 		handshake = valid2 & ready3						;
 		JPC1 	  = PC2 + {{43{JImm[20]}},{JImm[20:1]},1'b0};
-		
-		if((opcode==7'b110_1111 || opcode==7'b110_0111 || opcode==7'b110_0011) && (handshake == 1'b1))begin//Jal and jalr B
-			bubble21 = 1'b1;
+	end	
+
+	always@(*)begin
+		if(JPC_sel && handshake)begin
+			bubble21 = 1'b1	;
 		end else begin
 			bubble21 = 1'b0	;
 		end
+	end
 /*====================================R TYPE============================================*/
+	always@(*)begin
 		if(opcode==7'b011_0011 || opcode==7'b011_1011)begin
 			src1_sel = 3'd0;
 			src2_sel = 3'd0;
@@ -323,27 +329,52 @@ module ysyx_22041071_ID(
 			ALU_ctrl1 <= 5'd0	;
 		end else begin
 			if(handshake)begin
-				valid3	  <= valid2	 ;
-				Ins2	  <= Ins1	 ;	
-				PC3		  <= PC2	 ;
-				opcode1	  <= opcode	 ;
-				rs1		  <= rs		 ;
-				rt1		  <= rt		 ;
-				rd1		  <= rd		 ;
-				Imm1	  <= Imm	 ;
-				SImm1	  <= SImm	 ;
-				BImm1	  <= BImm	 ;
-				UImm1	  <= UImm	 ;
-				src1_sel1 <= src1_sel;
-				src2_sel1 <= src2_sel;
-				Imm_sel1  <= Imm_sel ;
-				JRPC_sel1 <= JRPC_sel;
-				Brch1	  <= Brch	 ;
-				MEM_W_en1 <= MEM_W_en;
-				WB_sel1	  <= WB_sel	 ;
-				reg_w_en1 <= reg_w_en;
-				dset_sel1 <= dset_sel;
-				ALU_ctrl1 <= ALU_ctrl;
+				if(bubble32 || bubble42)begin
+					valid3	  <= 1'b1 	;
+					Ins2	  <= 32'b0	;	 
+					PC3		  <= PC2	;
+					opcode1	  <= 7'd0	;
+					rs1		  <= 5'd0	;
+					rt1		  <= 5'd0	;
+					rd1		  <= 5'd0	;
+					Imm1	  <= 12'd0	;
+					SImm1	  <= 12'd0	;
+					BImm1	  <= 12'd0	;
+					UImm1	  <= 20'd0	;
+					src1_sel1 <= 3'd0	;
+					src2_sel1 <= 3'd0	;
+					Imm_sel1  <= 2'd0	;
+					JRPC_sel1 <= 1'd0	;
+					Brch1	  <= 1'd0	;
+					MEM_W_en1 <= 1'd0	;
+					WB_sel1	  <= 1'd0	;
+					reg_w_en1 <= 1'd0	;
+					dset_sel1 <= 1'd0	;
+					ALU_ctrl1 <= 5'd0	;
+				end else begin
+					valid3	  <= valid2	 ;
+					Ins2	  <= Ins1	 ;	
+					PC3		  <= PC2	 ;
+					opcode1	  <= opcode	 ;
+					rs1		  <= rs		 ;
+					rt1		  <= rt		 ;
+					rd1		  <= rd		 ;
+					Imm1	  <= Imm	 ;
+					SImm1	  <= SImm	 ;
+					BImm1	  <= BImm	 ;
+					UImm1	  <= UImm	 ;
+					src1_sel1 <= src1_sel;
+					src2_sel1 <= src2_sel;
+					Imm_sel1  <= Imm_sel ;
+					JRPC_sel1 <= JRPC_sel;
+					Brch1	  <= Brch	 ;
+					MEM_W_en1 <= MEM_W_en;
+					WB_sel1	  <= WB_sel	 ;
+					reg_w_en1 <= reg_w_en;
+					dset_sel1 <= dset_sel;
+					ALU_ctrl1 <= ALU_ctrl;
+				end
+				
 			end
 		end	
 	end
