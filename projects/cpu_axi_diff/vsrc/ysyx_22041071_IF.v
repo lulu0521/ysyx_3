@@ -66,7 +66,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 	end
 	
 	assign cnt_rst = cpu_r_valid;
-	assign cnt_en = bubble21==1'b1 || bubble31==1'b1 ||bubble41;
+	assign cnt_en = bubble21==1'b1 || bubble31==1'b1 ||bubble41==1'b1;
 	always@(posedge clk)begin
 		if(cnt_rst)begin
 			cnt <= 4'h0;
@@ -81,8 +81,8 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			valid2 <= 1'b0	;
 			Ins	   <= 32'b0 ;
 		end else begin
-			if(cnt==0)begin
-				if(handshake1)begin
+			if(handshake1)begin
+				if(cnt==0)begin
 					if(bubble21==1'b1 || bubble31==1'b1 ||bubble41)begin
 						valid2 <= 1'b1		 	;
 						PC2	   <= cpu_r_addr	;
@@ -98,11 +98,12 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 							Ins	   <= 32'h0			;
 						end
 					end
+				end else begin
+					valid2 <= valid1		;
+					PC2	   <= cpu_r_addr	;
+					Ins	   <= 32'h0			;
 				end
-			end else begin
-				valid2 <= valid1		;
-				PC2	   <= cpu_r_addr	;
-				Ins	   <= 32'h0			;
+				
 			end
 		end
 	end
