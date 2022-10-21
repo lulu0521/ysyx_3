@@ -81,7 +81,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			BPC_s		<= 64'h0;
 		end else begin
 			if(bubble21 || bubble31 || bubble41)begin
-				case({bubble21,bubble31,bubble41})
+				case({bubble41,bubble31,bubble21})
 					3'b001:begin
 						invalid		<= 1'b1	;
 						JPC_sel_s  	<= 1'b1	;
