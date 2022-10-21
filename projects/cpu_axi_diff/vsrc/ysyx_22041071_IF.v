@@ -2,8 +2,9 @@
 module ysyx_22041071_IF(input  wire 											  clk	  		,
 						input  wire												  reset	  		,
 						input  wire [`ysyx_22041071_ADDR_BUS					] PC1	  		,
-						input  wire												  Brch_sel1 	,
-						input  wire [`ysyx_22041071_ADDR_BUS					] PC4			,
+						input  wire [`ysyx_22041071_ADDR_BUS					] JPC 			,
+						input  wire [`ysyx_22041071_ADDR_BUS					] JRPC			,
+						input  wire [`ysyx_22041071_ADDR_BUS					] BPC			,
 						input  wire												  bubble21		,
 						input  wire												  bubble31		,
 						input  wire												  bubble41		,
@@ -20,7 +21,13 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 						output reg												  valid2		,
 						output reg  [`ysyx_22041071_ADDR_BUS					] PC2			,
 						output reg  [`ysyx_22041071_INS_BUS 					] Ins			,
-						output reg  [`ysyx_22041071_ADDR_BUS					] SNPC			);
+						output reg  [`ysyx_22041071_ADDR_BUS					] SNPC			,
+						output reg												  JPC_sel_s  	,	
+						output reg												  JRPC_sel_s 	,	
+						output reg												  Brch_sel_s 	,	
+						output reg  [`ysyx_22041071_ADDR_BUS					] JPC_s			,
+						output reg  [`ysyx_22041071_ADDR_BUS					] JRPC_s		,	
+						output reg  [`ysyx_22041071_ADDR_BUS					] BPC_s			);
 	
 
 /*RAMHelper IRAMHelper(.clk   (clk						),
@@ -36,9 +43,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 	reg [63:0					] Ins_	;
 	reg [`ysyx_22041071_INS_BUS ] Ins_32;
 	reg handshake1;		
-	wire cnt_rst;
-	wire cnt_en;
-	reg [3:0]cnt;
+	reg invalid;
 	//reg bubble1;	 
 	//reg handshake2;
 	
@@ -64,25 +69,67 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 			Ins_32 = Ins_[31:0 ];
 		end
 	end
-	
-	assign cnt_rst = cpu_r_valid;
-	assign cnt_en = bubble21==1'b1 || bubble31==1'b1 ||bubble41==1'b1;
+//save all jump parameter	
 	always@(posedge clk)begin
-		if(cnt_rst)begin
-			cnt <= 4'h0;
+		if(cpu_r_valid)begin
+			invalid    	<= 1'b0	;
+			JPC_sel_s  	<= 1'b0	;
+			JRPC_sel_s 	<= 1'b0	;
+			Brch_sel_s 	<= 1'b0	; 
+			JPC_s		<= 64'h0;
+			JRPC_s		<= 64'h0;
+			BPC_s		<= 64'h0;
 		end else begin
-			if(cnt_en)begin
-				cnt <= cnt +1;
+			if(bubble21 || bubble31 || bubble41)begin
+				case({bubble21,bubble31,bubble41})
+					3'b001:begin
+						invalid		<= 1'b1	;
+						JPC_sel_s  	<= 1'b1	;
+						JRPC_sel_s 	<= 1'b0	;
+						Brch_sel_s 	<= 1'b0	; 
+						JPC_s		<= JPC	;
+						JRPC_s		<= 64'h0;
+						BPC_s		<= 64'h0;
+					end
+					3'b010:begin
+						invalid <= 1'b1;
+						JPC_sel_s  	<= 1'b0	;
+						JRPC_sel_s 	<= 1'b1	;
+						Brch_sel_s 	<= 1'b0	; 
+						JPC_s		<= 64'h0;
+						JRPC_s		<= JRPC;
+						BPC_s		<= 64'h0;
+					end
+					3'b100:begin
+						invalid 	<= 1'b1;
+						JPC_sel_s  	<= 1'b0	;
+						JRPC_sel_s 	<= 1'b0	;
+						Brch_sel_s 	<= 1'b1	; 
+						JPC_s		<= 64'h0;
+						JRPC_s		<= 64'h0;
+						BPC_s		<= BPC	;
+					end
+					default:begin
+						invalid <= 1'b0;
+						JPC_sel_s  	<= 1'b0	;
+						JRPC_sel_s 	<= 1'b0	;
+						Brch_sel_s 	<= 1'b0	; 
+						JPC_s		<= 64'h0;
+						JRPC_s		<= 64'h0;
+						BPC_s		<= 64'h0;
+					end
+				endcase		
 			end
 		end
 	end
+
 	always@(posedge clk)begin
 		if(reset)begin
 			valid2 <= 1'b0	;
 			Ins	   <= 32'b0 ;
 		end else begin
 			if(handshake1)begin
-				if(cnt==0)begin
+				if(invalid==0)begin
 					if(bubble21==1'b1 || bubble31==1'b1 ||bubble41)begin
 						valid2 <= 1'b1		 	;
 						PC2	   <= cpu_r_addr	;

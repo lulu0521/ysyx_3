@@ -25,8 +25,13 @@ wire						   valid2	  ;
 wire [`ysyx_22041071_ADDR_BUS] PC2		  ;
 wire [`ysyx_22041071_INS_BUS ] Ins		  ;
 wire [`ysyx_22041071_ADDR_BUS] SNPC		  ;
-
-
+wire						   JPC_sel_s  ;	
+wire						   JRPC_sel_s ;	
+wire						   Brch_sel_s ;	
+wire [`ysyx_22041071_ADDR_BUS] JPC_s	  ;	
+wire [`ysyx_22041071_ADDR_BUS] JRPC_s	  ;	
+wire [`ysyx_22041071_ADDR_BUS] BPC_s	  ;	
+  
 //ID
 wire							  ready2	;
 wire							  valid3	;
@@ -151,12 +156,12 @@ wire  [`ysyx_22041071_DATA_BUS] WB_data2	 ;
 
 ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.reset    		(reset      	),
-						.Brch_sel 		(Brch_sel1  	),//B指令跳转控制
-						.JPC_sel  		(JPC_sel    	),//JAL指令跳转控制
-						.JRPC_sel2		(JRPC_sel2  	),//JALR指令跳转控制
-						.BPC	  		(BPC1       	),//B指令跳转目的地址
-						.JPC	  		(JPC1       	),//JAL指令跳转目的地址
-						.JRPC	  		(JRPC1      	),//JALR指令跳转目的地址
+						.Brch_sel 		(Brch_sel_s   	),//B指令跳转控制
+						.JPC_sel  		(JPC_sel_s  	),//JAL指令跳转控制
+						.JRPC_sel2		(JRPC_sel_s 	),//JALR指令跳转控制
+						.BPC	  		(BPC_s      	),//B指令跳转目的地址
+						.JPC	  		(JPC_s       	),//JAL指令跳转目的地址
+						.JRPC	  		(JRPC_s      	),//JALR指令跳转目的地址
 						.SNPC	  		(SNPC       	),//PC+4
 						.ready1   		(cpu_ar_ready	),
 						.valid1	  		(valid1     	),
@@ -170,8 +175,9 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 ysyx_22041071_IF IF(.clk	   	  (clock      		),
 				    .reset	   	  (reset      		),
 				    .PC1	   	  (PC         		),
-					.Brch_sel1 	  (Brch_sel1  		), 
-					.PC4	   	  (PC4		   		),	
+					.JPC 		  (BPC1  			),
+					.JRPC		  (JPC1  			),
+					.BPC		  (JRPC1 			),
 				    .bubble21  	  (bubble21   		),
 				    .bubble31  	  (bubble31   		),
 				    .bubble41  	  (bubble41   		),
@@ -186,7 +192,13 @@ ysyx_22041071_IF IF(.clk	   	  (clock      		),
 				    .valid2	   	  (valid2	  		),
 				    .PC2	   	  (PC2		  		),
 				    .Ins	   	  (Ins		  		),
-				    .SNPC	   	  (SNPC	  			));
+				    .SNPC	   	  (SNPC	  			),
+					.JPC_sel_s    (JPC_sel_s  		),	
+					.JRPC_sel_s   (JRPC_sel_s 		),	
+					.Brch_sel_s   (Brch_sel_s 		),	
+					.JPC_s		  (JPC_s			),	
+					.JRPC_s		  (JRPC_s			),
+					.BPC_s		  (BPC_s			));
 
 ysyx_22041071_ID ID(.clk	   (clock     ),
 					.reset     (reset     ),
