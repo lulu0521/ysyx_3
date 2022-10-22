@@ -133,7 +133,7 @@ module SimTop(
     assign r_last                             = `AXI_TOP_INTERFACE(r_bits_last    );
     assign r_id                               = `AXI_TOP_INTERFACE(r_bits_id      );
     assign r_user                             = `AXI_TOP_INTERFACE(r_bits_user    );
-    assign aw_ready	                          = `AXI_TOP_INTERFACE(aw_ready       );
+    //assign aw_ready	                          = `AXI_TOP_INTERFACE(aw_ready       );
     //assign `AXI_TOP_INTERFACE(aw_valid     )  = aw_valid	                       ;
     //assign `AXI_TOP_INTERFACE(aw_bits_id   )  = aw_id                              ;  
     //assign `AXI_TOP_INTERFACE(aw_bits_addr )  = aw_addr	                           ;
