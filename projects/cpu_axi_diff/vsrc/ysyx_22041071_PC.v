@@ -10,7 +10,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 						input  wire	 [`ysyx_22041071_ADDR_BUS			] SNPC			,//PC+4
 						input  wire							 			  ready1		,
 						output reg							 			  valid1		,
-						output reg										  cpu_ar_valid	,
+						output reg										  cpu_if_ar_valid,
 						output reg  [`ysyx_22041071_ADDR_BUS		 	] cpu_addr	 	,
 						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0 	] cpu_len		,
 						output reg  [1:0	  						 	] cpu_size	 	,
@@ -37,16 +37,16 @@ module ysyx_22041071_PC(input  wire 						 			  clk      		,
 /*====================时序控制===========================*/
 	always@(posedge clk)begin
 		if(reset)begin
-			cpu_ar_valid 	<= 1'b1	;
+			cpu_if_ar_valid 	<= 1'b1	;
 			PC		<= `START_ADDR	;
 		end else begin
 			if(handshake)begin
-				valid1		 <= valid								;
-				cpu_ar_valid <= valid								;	
-				cpu_addr	 <= DNPC								;
-				cpu_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}};
-				cpu_size	 <= `ysyx_22041071_SIZE_D				;
-				PC	  		 <= DNPC 								;
+				valid1		 	<= valid								;
+				cpu_if_ar_valid <= valid								;	
+				cpu_addr	 	<= DNPC									;
+				cpu_len		 	<= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
+				cpu_size	 	<= `ysyx_22041071_SIZE_D				;
+				PC	  		 	<= DNPC 								;
 			end
 		end
 	end

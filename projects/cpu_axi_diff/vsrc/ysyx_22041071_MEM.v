@@ -24,14 +24,14 @@ module ysyx_22041071_MEM(
 						output reg  [ 4:0 ]					  rdest3_	  ,
 						output reg  [`ysyx_22041071_DATA_BUS] WB_data1_	  );
 	
-RAMHelper IRAMHelper(.clk   (clk									),
+/*RAMHelper IRAMHelper(.clk   (clk									),
   					 .en    (1										),
   					 .rIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}),
   					 .rdata (MEM_data								),
   					 .wIdx  ({3'b000,{ALU_result1-64'h8000_0000}>>3}), //write addr
   					 .wdata (rt_data2_								), //write data
   					 .wmask (wmask									), //mask
-  					 .wen   (MEM_W_en3								));//write enable  
+  					 .wen   (MEM_W_en3								));//write enable  */
 
 	reg [`ysyx_22041071_DATA_BUS] MEM_data	;
 	reg [`ysyx_22041071_DATA_BUS] rt_data2_	;
@@ -45,9 +45,13 @@ RAMHelper IRAMHelper(.clk   (clk									),
 	always@(*)begin
 		ready5	  = ready6			;
 		handshake = valid5 & ready6	;
-
+	end
+	
+	always@(*)begin
+		
+	end
+	always@(*)begin
 		if(WB_sel3)begin//L type
-			if(Ins4[6:0]==7'b000_0011)begin
 				case(Ins4[14:12])
 					3'b000://lb
 						case(ALU_result1[2:0])
@@ -98,13 +102,12 @@ RAMHelper IRAMHelper(.clk   (clk									),
 						endcase 
 					default:WB_data1_ = 64'h0;
 				endcase
-			end else begin
-				WB_data1_ = 64'h0							  ;
-			end	
 		end else begin 
 			WB_data1_ = ALU_result1;
 		end
+	end
 
+	always@(*)begin
 		if(MEM_W_en3)begin //S type
 			case(Ins4[14:12])
 				3'b000:begin//sb

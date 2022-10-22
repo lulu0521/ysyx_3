@@ -15,6 +15,13 @@ module ysyx_22041071_CPU(
 			output reg												  cpu_aw_valid	,
 			output reg	[`ysyx_22041071_DATA_BUS					] cpu_data		);
 
+//AXI 仲裁
+//wire cpu_if_ar_valid;
+//wire cpu_if_ar_ready;
+//wire cpu_mem_ar_valid;
+//wire cpu_mem_ar_ready;
+
+
 //PC  
 wire						     valid1	  ;
 wire   [`ysyx_22041071_ADDR_BUS] PC	   	  ;
@@ -165,7 +172,7 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.SNPC	  		(SNPC       	),//PC+4
 						.ready1   		(cpu_ar_ready	),
 						.valid1	  		(valid1     	),
-						.cpu_ar_valid	(cpu_ar_valid	),	
+						.cpu_if_ar_valid(cpu_ar_valid	),	
 						.cpu_addr	 	(cpu_addr	 	),	
 						.cpu_len	 	(cpu_len		),	
 						.cpu_size	 	(cpu_size	 	),

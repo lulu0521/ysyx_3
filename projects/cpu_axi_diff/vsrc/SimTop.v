@@ -133,8 +133,31 @@ module SimTop(
     assign r_last                             = `AXI_TOP_INTERFACE(r_bits_last    );
     assign r_id                               = `AXI_TOP_INTERFACE(r_bits_id      );
     assign r_user                             = `AXI_TOP_INTERFACE(r_bits_user    );
+    assign aw_ready	                          = `AXI_TOP_INTERFACE(aw_ready       );
+    //assign `AXI_TOP_INTERFACE(aw_valid     )  = aw_valid	                       ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_id   )  = aw_id                              ;  
+    //assign `AXI_TOP_INTERFACE(aw_bits_addr )  = aw_addr	                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_len  )  = aw_len	                           ;    
+    //assign `AXI_TOP_INTERFACE(aw_bits_size )  = aw_size	                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_burst)  = aw_burst                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_prot )  = aw_prot	                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_user )  = aw_user	                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_lock )  = aw_lock	                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_cache)  = aw_cache                           ;
+    //assign `AXI_TOP_INTERFACE(aw_bits_qos  )  = aw_qos	                           ;    
+	////assign w_id  	;
+    ////assign w_user	;
+    //assign w_ready	                          = `AXI_TOP_INTERFACE(w_ready      )   ;
+    //assign `AXI_TOP_INTERFACE(w_bits_data  )  = w_data	                            ;
+    //assign `AXI_TOP_INTERFACE(w_bits_strb  )  = w_wstrb	                            ;
+    //assign `AXI_TOP_INTERFACE(w_bits_last  )  = w_last	                            ;
+    //assign `AXI_TOP_INTERFACE(w_valid      )  = w_valid	                            ;
+    //assign bw_id	                          = `AXI_TOP_INTERFACE(b_bits_id    )   ;
+    //assign bw_resp	                          = `AXI_TOP_INTERFACE(b_bits_resp  )   ;
+    //assign bw_user	                          = `AXI_TOP_INTERFACE(b_bits_user  )   ;
+    //assign bw_valid	                          = `AXI_TOP_INTERFACE(b_valid      )   ;
+    //assign `AXI_TOP_INTERFACE(b_ready      )  = bw_ready                            ;
 
-	
 	ysyx_22041071_AXI_RW AXI_RW(
 			.clk				(clock          ),
 			.reset_n			(~reset         ),
