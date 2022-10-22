@@ -52,6 +52,7 @@ module ysyx_22041071_MEM(
 	end
 	always@(*)begin
 		if(WB_sel3)begin//L type
+			if(Ins4[6:0]==7'b000_0011)begin
 				case(Ins4[14:12])
 					3'b000://lb
 						case(ALU_result1[2:0])
@@ -102,6 +103,9 @@ module ysyx_22041071_MEM(
 						endcase 
 					default:WB_data1_ = 64'h0;
 				endcase
+			end else begin
+				WB_data1_ = 64'h0							  ;
+			end	
 		end else begin 
 			WB_data1_ = ALU_result1;
 		end
