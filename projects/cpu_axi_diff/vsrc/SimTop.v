@@ -57,17 +57,21 @@ module SimTop(
     input  [`AXI_USER_WIDTH-1:0]        `AXI_TOP_INTERFACE(r_bits_user  ));
 
     wire                                              cpu_ar_valid	;//cpu output
-    wire [`ysyx_22041071_ADDR_BUS   			    ] cpu_addr	 	;
-    wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0	        ] cpu_len		;
-    wire [1:0	  							        ] cpu_size	 	;
-    wire 									          cpu_aw_valid	;
-    wire [`ysyx_22041071_DATA_BUS			        ] cpu_data		;
-    wire     						  			      cpu_ar_ready  ;//input cpu	
+    wire [`ysyx_22041071_ADDR_BUS   			    ] cpu_ar_addr	;
+    wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0	        ] cpu_ar_len	;
+    wire [1:0	  							        ] cpu_ar_size	;
+    wire     										  cpu_aw_valid	;
+    wire [`ysyx_22041071_ADDR_BUS					] cpu_aw_addr	;
+    wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_aw_len	;
+    wire [1:0	  									] cpu_aw_size	;
+    wire [`ysyx_22041071_DATA_BUS					] cpu_w_data	;//input cpu
+    wire     						  			      cpu_ar_ready  ;	
     wire 										      cpu_r_valid   ;		
     wire [`ysyx_22041071_AXI_DATA_WIDTH-1:0		    ] cpu_r_data    ;
     wire [`ysyx_22041071_ADDR_BUS					] cpu_r_addr	;		
-    wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0    ] cpu_resp	    ;		
-	wire					  				  	      cpu_aw_ready  ;	
+    wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0    ] cpu_r_resp	;		
+	wire					  				  	      cpu_aw_ready  ;
+    wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0	] cpu_w_resp	;	
     wire 										  	  ar_ready      ;//AR	
     wire 											  ar_valid      ;	
     wire [`ysyx_22041071_AXI_ID_WIDTH-1:0			] ar_id         ;	
@@ -133,46 +137,50 @@ module SimTop(
     assign r_last                             = `AXI_TOP_INTERFACE(r_bits_last    );
     assign r_id                               = `AXI_TOP_INTERFACE(r_bits_id      );
     assign r_user                             = `AXI_TOP_INTERFACE(r_bits_user    );
-    //assign aw_ready	                          = `AXI_TOP_INTERFACE(aw_ready       );
-    //assign `AXI_TOP_INTERFACE(aw_valid     )  = aw_valid	                       ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_id   )  = aw_id                              ;  
-    //assign `AXI_TOP_INTERFACE(aw_bits_addr )  = aw_addr	                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_len  )  = aw_len	                           ;    
-    //assign `AXI_TOP_INTERFACE(aw_bits_size )  = aw_size	                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_burst)  = aw_burst                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_prot )  = aw_prot	                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_user )  = aw_user	                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_lock )  = aw_lock	                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_cache)  = aw_cache                           ;
-    //assign `AXI_TOP_INTERFACE(aw_bits_qos  )  = aw_qos	                           ;    
-	////assign w_id  	;
-    ////assign w_user	;
-    //assign w_ready	                          = `AXI_TOP_INTERFACE(w_ready      )   ;
-    //assign `AXI_TOP_INTERFACE(w_bits_data  )  = w_data	                            ;
-    //assign `AXI_TOP_INTERFACE(w_bits_strb  )  = w_wstrb	                            ;
-    //assign `AXI_TOP_INTERFACE(w_bits_last  )  = w_last	                            ;
-    //assign `AXI_TOP_INTERFACE(w_valid      )  = w_valid	                            ;
-    //assign bw_id	                          = `AXI_TOP_INTERFACE(b_bits_id    )   ;
-    //assign bw_resp	                          = `AXI_TOP_INTERFACE(b_bits_resp  )   ;
-    //assign bw_user	                          = `AXI_TOP_INTERFACE(b_bits_user  )   ;
-    //assign bw_valid	                          = `AXI_TOP_INTERFACE(b_valid      )   ;
-    //assign `AXI_TOP_INTERFACE(b_ready      )  = bw_ready                            ;
+    assign aw_ready	                          = `AXI_TOP_INTERFACE(aw_ready       );
+    assign `AXI_TOP_INTERFACE(aw_valid     )  = aw_valid	                       ;
+    assign `AXI_TOP_INTERFACE(aw_bits_id   )  = aw_id                              ;  
+    assign `AXI_TOP_INTERFACE(aw_bits_addr )  = aw_addr	                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_len  )  = aw_len	                           ;    
+    assign `AXI_TOP_INTERFACE(aw_bits_size )  = aw_size	                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_burst)  = aw_burst                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_prot )  = aw_prot	                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_user )  = aw_user	                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_lock )  = aw_lock	                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_cache)  = aw_cache                           ;
+    assign `AXI_TOP_INTERFACE(aw_bits_qos  )  = aw_qos	                           ;    
+	//assign w_id  	;
+    //assign w_user	;
+    assign w_ready	                          = `AXI_TOP_INTERFACE(w_ready      )  ;
+    assign `AXI_TOP_INTERFACE(w_bits_data  )[0]= w_data	                           ;
+    assign `AXI_TOP_INTERFACE(w_bits_strb  )  = w_wstrb	                           ;
+    assign `AXI_TOP_INTERFACE(w_bits_last  )  = w_last	                           ;
+    assign `AXI_TOP_INTERFACE(w_valid      )  = w_valid	                           ;
+    assign bw_id	                          = `AXI_TOP_INTERFACE(b_bits_id    )  ;
+    assign bw_resp	                          = `AXI_TOP_INTERFACE(b_bits_resp  )  ;
+    assign bw_user	                          = `AXI_TOP_INTERFACE(b_bits_user  )  ;
+    assign bw_valid	                          = `AXI_TOP_INTERFACE(b_valid      )  ;
+    assign `AXI_TOP_INTERFACE(b_ready      )  = bw_ready                           ;
 
 	ysyx_22041071_AXI_RW AXI_RW(
 			.clk				(clock          ),
 			.reset_n			(~reset         ),
 			.cpu_ar_valid		(cpu_ar_valid	),
-			.cpu_addr	 		(cpu_addr	 	),
-			.cpu_len			(cpu_len		),
-			.cpu_size	 		(cpu_size	 	),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
-			.cpu_aw_valid		(cpu_aw_valid	),
-			.cpu_data			(cpu_data		),
+			.cpu_ar_addr	 	(cpu_ar_addr	),
+			.cpu_ar_len			(cpu_ar_len		),
+			.cpu_ar_size 		(cpu_ar_size	),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
+            .cpu_aw_valid	    (cpu_aw_valid	),
+            .cpu_aw_addr	    (cpu_aw_addr	),
+            .cpu_aw_len	        (cpu_aw_len	    ),
+            .cpu_aw_size	    (cpu_aw_size	),
+            .cpu_w_data	        (cpu_w_data	    ),
 			.cpu_ar_ready		(cpu_ar_ready   ),
 			.cpu_r_valid		(cpu_r_valid    ),
 			.cpu_r_data 		(cpu_r_data     ),
             .cpu_r_addr         (cpu_r_addr     ),
-			.cpu_resp	 		(cpu_resp	    ),
+			.cpu_r_resp	 		(cpu_r_resp	    ),
 			.cpu_aw_ready		(cpu_aw_ready   ),
+            .cpu_w_resp         (cpu_w_resp     ),
 			.axi_ar_ready_i		(ar_ready       ),//AR
 			.axi_ar_valid_o		(ar_valid       ),
 			.axi_ar_id_o		(ar_id          ),
@@ -226,12 +234,16 @@ module SimTop(
 			.cpu_r_valid	(cpu_r_valid    ),
 			.cpu_r_data 	(cpu_r_data     ),
             .cpu_r_addr     (cpu_r_addr     ),
-			.cpu_resp	 	(cpu_resp	    ),
-			.cpu_aw_ready	(cpu_aw_ready   ),		
+			.cpu_r_resp	 	(cpu_r_resp	    ),
+			.cpu_aw_ready	(cpu_aw_ready   ),	
+            .cpu_w_resp     (cpu_w_resp     ),	
 			.cpu_ar_valid	(cpu_ar_valid	),
-			.cpu_addr	 	(cpu_addr	 	),
-			.cpu_len		(cpu_len		),
-			.cpu_size	 	(cpu_size	 	),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
-			.cpu_aw_valid	(cpu_aw_valid	),
-			.cpu_data		(cpu_data		));
+			.cpu_ar_addr	(cpu_ar_addr	),
+			.cpu_ar_len		(cpu_ar_len		),
+			.cpu_ar_size	(cpu_ar_size	),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
+            .cpu_aw_valid	(cpu_aw_valid	),
+            .cpu_aw_addr	(cpu_aw_addr	),
+            .cpu_aw_len	    (cpu_aw_len	    ),
+            .cpu_aw_size	(cpu_aw_size	),
+            .cpu_w_data	    (cpu_w_data	    ));
 endmodule

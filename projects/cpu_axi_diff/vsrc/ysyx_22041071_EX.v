@@ -1,56 +1,82 @@
 `include "define.v"
 module ysyx_22041071_EX(
-						input wire							 clk		  ,
-						input wire							 reset		  ,
-						input wire  [`ysyx_22041071_ADDR_BUS]PC4	      ,
-						input wire  [`ysyx_22041071_INS_BUS ]Ins3	      ,
-						input wire  						 Brch2	      ,
-						input wire							 MEM_W_en2    ,
-						input wire							 WB_sel2      ,
-						input wire	[ 4:0 ]					 ALU_ctrl2    ,
-						input wire	[`ysyx_22041071_DATA_BUS]rt_data1     ,
-						input wire							 reg_w_en2    ,
-						input wire  [ 4:0 ]					 rdest1	      ,
-						input wire  [`ysyx_22041071_DATA_BUS]src_a	      ,
-						input wire	[`ysyx_22041071_DATA_BUS]src_b	      ,
-						input wire  [12:1 ]					 BImm2	      ,
-						input wire							 valid4		  ,
-						input wire							 ready5		  ,
-						output reg							 ready4		  ,
-						output reg							 valid5		  ,
-						output reg							 bubble43	  ,
-						output reg							 bubble42	  ,
-						output reg							 bubble41	  ,
-						output reg  [`ysyx_22041071_ADDR_BUS]PC5	      ,
-                        output reg  [`ysyx_22041071_INS_BUS ]Ins4	      ,
-						output reg  						 MEM_W_en3    ,
-						output reg 							 WB_sel3      ,//0-result;1-MEM_data
-						output reg  						 reg_w_en3    ,
-						output reg  [`ysyx_22041071_DATA_BUS]rt_data2     ,
-						output reg  [ 4:0 ]					 rdest2	      ,
-						output reg  [`ysyx_22041071_DATA_BUS]ALU_result1  ,
-						output reg							 reg_w_en3_	  ,
-						output reg  [ 4:0 ]					 rdest2_	  ,
-						output reg  [`ysyx_22041071_DATA_BUS]ALU_result   ,
-						output reg							 Brch_sel1	  ,
-						output reg  [`ysyx_22041071_ADDR_BUS]BPC1		  );
+						input wire									   clk		  		,
+						input wire									   reset		  	,
+						input wire  [`ysyx_22041071_ADDR_BUS		 ] PC4	      		,
+						input wire  [`ysyx_22041071_INS_BUS 		 ] Ins3	      		,
+						input wire  								   Brch2	      	,
+						input wire									   MEM_W_en2    	,
+						input wire									   WB_sel2      	,
+						input wire	[ 4:0 ]							   ALU_ctrl2    	,
+						input wire	[`ysyx_22041071_DATA_BUS		 ] rt_data1     	,
+						input wire									   reg_w_en2    	,
+						input wire  [ 4:0 ]							   rdest1	    	,
+						input wire  [`ysyx_22041071_DATA_BUS		 ] src_a	      	,
+						input wire	[`ysyx_22041071_DATA_BUS		 ] src_b	      	,
+						input wire  [12:1 ]							   BImm2	      	,
+						input wire									   valid4			,
+						input wire									   ready5			,
+						input wire									   cpu_mem_ar_ready	,
+						input wire									   cpu_aw_ready		,
+						output reg									   ready4			,
+						output reg									   valid5			,
+						output reg									   bubble43	  		,
+						output reg									   bubble42	  		,
+						output reg									   bubble41	  		,
+						output reg  [`ysyx_22041071_ADDR_BUS		 ] PC5	      		,
+                        output reg  [`ysyx_22041071_INS_BUS 		 ] Ins4	      		,
+						output reg  								   MEM_W_en3    	,
+						output reg 									   WB_sel3      	,//0-result;1-MEM_data
+						output reg  								   reg_w_en3    	,
+						output reg  [`ysyx_22041071_DATA_BUS		 ] rt_data2     	,
+						output reg  [ 4:0 ]							   rdest2	    	,
+						output reg  [`ysyx_22041071_DATA_BUS		 ] ALU_result1   	,
+						output reg									   reg_w_en3_		,
+						output reg  [ 4:0 ]							   rdest2_	    	,
+						output reg  [`ysyx_22041071_DATA_BUS		 ] ALU_result    	,
+						output reg									   Brch_sel1	    ,
+						output reg  [`ysyx_22041071_ADDR_BUS		 ] BPC1		    	,
+						output reg									   cpu_mem_ar_valid	,	
+						output reg  [`ysyx_22041071_ADDR_BUS		 ] cpu_mem_ar_addr 	,	 	
+						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0] cpu_mem_ar_len	,		
+						output reg  [1:0	  						 ] cpu_mem_ar_size	,
+						output reg									   cpu_aw_valid		,
+						output reg  [`ysyx_22041071_ADDR_BUS		 ] cpu_aw_addr		,
+						output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0] cpu_aw_len		,
+						output reg  [1:0	  						 ] cpu_aw_size		,
+						output reg	[`ysyx_22041071_DATA_BUS		 ] cpu_w_data		);
 	
-	wire [`ysyx_22041071_ADDR_BUS]	PC	       	;
-	wire [`ysyx_22041071_INS_BUS ]	Ins	   		;
-	wire 						 	MEM_W_en 	;
-	wire 						 	WB_sel   	;
-	wire [`ysyx_22041071_DATA_BUS]	rt_data   	;
-	reg								valid		;
+	wire [`ysyx_22041071_ADDR_BUS			] PC				;
+	wire [`ysyx_22041071_ADDR_BUS		 	] cpu_aw_addr_		;
+	wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0	] cpu_aw_len_		;
+	reg  [1:0	  						 	] cpu_aw_size_		;
+	wire [`ysyx_22041071_DATA_BUS		 	] cpu_w_data_		;
+	wire [`ysyx_22041071_ADDR_BUS			] cpu_mem_ar_addr_	;
+	wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0	] cpu_mem_ar_len_	;
+	wire [1:0	  						 	] cpu_mem_ar_size_	;
+	wire [`ysyx_22041071_INS_BUS 			] Ins	   			;
+	wire 						 			  MEM_W_en 			;
+	wire 						 			  WB_sel   			;
+	wire [`ysyx_22041071_DATA_BUS			] rt_data   		;
+	//reg								valid		;
+	reg								ready		;
 	reg								handshake	;
 	reg  [31:0]						result		;
-	assign PC 		 = PC4							;
-	assign Ins 		 = Ins3						  	;
-	assign MEM_W_en  = MEM_W_en2				  	;
-	assign WB_sel	 = WB_sel2						;
-	assign reg_w_en3_= reg_w_en2				  	;
-	assign rt_data	 = rt_data1				  		;
-	assign rdest2_	 = rdest1					  	;
-	assign Brch_sel1 = ALU_result && Brch2			; 
+
+	assign PC				 	= PC4									;
+	assign cpu_mem_ar_addr_	 	= ALU_result							;
+	assign cpu_mem_ar_len_		= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
+	assign cpu_mem_ar_size_		= 2'b11									;
+	assign cpu_aw_addr_			= ALU_result							;
+	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;	
+	assign cpu_w_data_			= rt_data2								;
+	assign Ins 		 		 	= Ins3						  			;
+	assign MEM_W_en  		 	= MEM_W_en2				  				;
+	assign WB_sel	 		 	= WB_sel2								;
+	assign reg_w_en3_		 	= reg_w_en2				  				;
+	assign rt_data	 		 	= rt_data1				  				;
+	assign rdest2_	 		 	= rdest1					  			;
+	assign Brch_sel1 		 	= ALU_result && Brch2					; 
 //div
 	reg							  div_valid ;//为高表示输入数据有效
 	reg						 	  div_signed;//为高表示有符号除法
@@ -128,7 +154,7 @@ module ysyx_22041071_EX(
 			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin//div and mul make stop 
 				ready4 = 1'b0;
 			end else begin
-				ready4 = ready5;
+				ready4 = ready ;
 			end
 		end	
 	`else 
@@ -136,19 +162,65 @@ module ysyx_22041071_EX(
 			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop 
 				ready4 = 1'b0;
 			end else begin
-				ready4 = ready5;
+				ready4 = ready ;
 			end
 		end	
 	`endif	
 
 	always@(*)begin
-		handshake 	= valid4 & ready5				;
+		if(MEM_W_en2)begin
+			case(Ins3[14:12])
+				3'b000:begin//sb
+					cpu_aw_size_ = 2'b00;
+				end
+				3'b001: begin//sh
+					cpu_aw_size_ = 2'b01;
+				end
+				3'b010: begin//sw
+					cpu_aw_size_ = 2'b10;
+				end
+				3'b011: begin//sd
+					cpu_aw_size_ = 2'b11;
+				end
+				default:begin
+					cpu_aw_size_ = 2'b11;
+				end
+			endcase
+		end else begin
+			cpu_aw_size_ = 2'b11;
+		end
+	end
+
+	always@(*)begin
+		if(MEM_W_en2)begin//write MEM
+			ready = cpu_aw_ready;
+		end else begin
+			if(WB_sel2)begin//read MEM
+				ready = cpu_mem_ar_ready;
+			end else begin 
+				ready = ready5			;
+			end
+		end
+		handshake 	= valid4 & ready 					;
 		BPC1		= PC4 + {{51{BImm2[12]}},BImm2,1'b0};
+	end
+
+	always@(*)begin
+		if(MEM_W_en2)begin//write MEM
+			cpu_aw_valid = valid4;	
+		end else begin
+			cpu_aw_valid = 1'b0	 ;
+		end
+		if(WB_sel2)begin//read MEM
+			cpu_mem_ar_valid = valid4;	
+		end else begin
+			cpu_mem_ar_valid = 1'b0	 ;
+		end
 	end
 	
 		
 	always@(*)begin	
-		if(Brch_sel1 && (handshake == 1'b1))begin//B
+		if(Brch_sel1 && (handshake == 1'b1))begin//B jump 
 			bubble43 = 1'b1;
 			bubble42 = 1'b1;
 			bubble41 = 1'b1;
@@ -552,20 +624,104 @@ module ysyx_22041071_EX(
 			ALU_result1  <= 64'd0	;
 		`endif	
 			end else begin
-				if(handshake)begin
-					valid5		 <= valid4		;
-					PC5	      	 <= PC			;
-					Ins4	     <= Ins			;
-					MEM_W_en3    <= MEM_W_en	;
-					WB_sel3      <= WB_sel		;
-					reg_w_en3    <= reg_w_en2	;
-					rt_data2     <= rt_data		;
-					rdest2	     <= rdest1		;
-					ALU_result1  <= ALU_result	;
+				if(MEM_W_en2)begin//write MEM
+					if(handshake)begin	
+						cpu_aw_addr		 <= cpu_aw_addr_	 ;
+						cpu_aw_len		 <= cpu_aw_len_		 ;
+						cpu_aw_size		 <= cpu_aw_size_	 ;
+						cpu_w_data		 <= cpu_w_data_		 ;
+						cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+						cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+						cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+						valid5		 	 <= valid4			 ;
+						PC5	      	 	 <= PC				 ;
+						Ins4	     	 <= Ins				 ;
+						MEM_W_en3    	 <= MEM_W_en		 ;
+						WB_sel3      	 <= WB_sel			 ;
+						reg_w_en3    	 <= reg_w_en2		 ;
+						rt_data2     	 <= rt_data			 ;
+						rdest2	     	 <= rdest1			 ;
+						ALU_result1  	 <= ALU_result		 ;
+					end else begin
+						if(ready5)begin
+							cpu_aw_addr		 <= cpu_aw_addr_	 ;
+							cpu_aw_len		 <= cpu_aw_len_		 ;
+							cpu_aw_size		 <= cpu_aw_size_	 ;
+							cpu_w_data		 <= cpu_w_data_		 ;
+							cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+							cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+							cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+							valid5		 	 <= valid4			 ;
+							Ins4	     	 <= 32'b0			 ;
+							MEM_W_en3    	 <= 1'd0			 ;
+							WB_sel3      	 <= 1'd0			 ;
+							reg_w_en3    	 <= 1'd0			 ;
+							rt_data2     	 <= 64'd0			 ;
+							rdest2	     	 <= 5'd0			 ;
+							ALU_result1  	 <= 64'd0			 ;
+						end
+					end
+				end else begin
+					if(WB_sel2)begin
+						if(handshake)begin//output to AXI 
+							cpu_aw_addr		 <= cpu_aw_addr_	 ;
+							cpu_aw_len		 <= cpu_aw_len_		 ;
+							cpu_aw_size		 <= cpu_aw_size_	 ;
+							cpu_w_data		 <= cpu_w_data_		 ;
+							cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+							cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+							cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+							valid5		 	 <= valid4			 ;
+							PC5	      	 	 <= PC				 ;
+							Ins4	     	 <= Ins				 ;
+							MEM_W_en3    	 <= MEM_W_en		 ;
+							WB_sel3      	 <= WB_sel			 ;
+							reg_w_en3    	 <= reg_w_en2		 ;
+							rt_data2     	 <= rt_data			 ;
+							rdest2	     	 <= rdest1			 ;
+							ALU_result1  	 <= ALU_result		 ;
+						end else begin
+							if(ready5)begin
+								cpu_aw_addr		 <= cpu_aw_addr_	 ;
+								cpu_aw_len		 <= cpu_aw_len_		 ;
+								cpu_aw_size		 <= cpu_aw_size_	 ;
+								cpu_w_data		 <= cpu_w_data_		 ;
+								cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+								cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+								cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+								valid5		 	 <= valid4			 ;
+								PC5	      	 	 <= PC				 ;
+								Ins4	     	 <= 32'b0			 ;
+								MEM_W_en3    	 <= 1'd0			 ;
+								WB_sel3      	 <= 1'd0			 ;
+								reg_w_en3    	 <= 1'd0			 ;
+								rt_data2     	 <= 64'd0			 ;
+								rdest2	     	 <= 5'd0			 ;
+								ALU_result1  	 <= 64'd0			 ;
+							end
+						end
+					end else begin
+						if(handshake)begin
+							cpu_aw_addr		 <= cpu_aw_addr_	 ;
+							cpu_aw_len		 <= cpu_aw_len_		 ;
+							cpu_aw_size		 <= cpu_aw_size_	 ;
+							cpu_w_data		 <= cpu_w_data_		 ;
+							cpu_mem_ar_addr  <= cpu_mem_ar_addr_;	
+							cpu_mem_ar_len	 <= cpu_mem_ar_len_	;
+							cpu_mem_ar_size	 <= cpu_mem_ar_size_;	
+							valid5		 	 <= valid4			;
+							PC5	      	 	 <= PC				;
+							Ins4	     	 <= Ins				;
+							MEM_W_en3    	 <= MEM_W_en		;
+							WB_sel3      	 <= WB_sel			;
+							reg_w_en3    	 <= reg_w_en2		;
+							rt_data2     	 <= rt_data			;
+							rdest2	     	 <= rdest1			;
+							ALU_result1  	 <= ALU_result		;
+						end
+					end
 				end
 			end	
 		end
-	
 	end
-
 endmodule

@@ -120,7 +120,7 @@ module ysyx_22041071_axi_r(
 		endcase
 	end
 	
-//=============================非对齐的数据输出===============================//
+/*//=============================非对齐的数据输出===============================//
 	wire [OFFSET_WIDTH-1:0	 					]	offset_l	;
 	reg [`ysyx_22041071_AXI_DATA_WIDTH-1:0	 	]	mask_l		;
 	wire [`ysyx_22041071_AXI_DATA_WIDTH-1:0	 	]	data_l		;
@@ -134,7 +134,7 @@ module ysyx_22041071_axi_r(
 			2'b10:mask_l = {{`ysyx_22041071_AXI_DATA_WIDTH-32{1'b0}},{32'hffff_ffff		   	 }} << offset_l;
 			2'b11:mask_l = {{`ysyx_22041071_AXI_DATA_WIDTH-64{1'b0}},{64'hffff_ffff_ffff_ffff}} << offset_l;
 		endcase
-	end
+	end*/
 //================数据输出=================//
 	always@(posedge clk)begin
 		if(~reset_n)begin
@@ -143,7 +143,7 @@ module ysyx_22041071_axi_r(
 			cpu_r_addr <= cpu_addr								;
 		end else begin
 			//if(r_handshake)begin
-					cpu_r_data  <= data_l		;
+					cpu_r_data  <= axi_r_data_i		;
 					cpu_r_valid <= axi_r_valid_i && c_state == READ_DATA;
 					cpu_r_addr <= cpu_addr		;
 			//end

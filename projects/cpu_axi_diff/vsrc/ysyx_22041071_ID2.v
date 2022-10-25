@@ -314,37 +314,37 @@ module ysyx_22041071_ID2(
 			reg_file[30] <= 64'h0;
 			reg_file[31] <= 64'h0;
 		end else begin
-			if(bubble4 || bubble43)begin
-				valid4	   <= 1'b1 ;
-				PC4	  	   <= PC3  ;
-				Ins3	   <= 32'b0;
-				Brch2	   <= 1'd0 ;
-				MEM_W_en2  <= 1'd0 ;
-				WB_sel2    <= 1'd0 ;
-				ALU_ctrl2  <= 5'd0 ;
-				reg_w_en2  <= 1'd0 ;
-				rt_data1   <= 64'd0;
-				rdest1	   <= 5'd0 ;
-				src_a	   <= 64'd0;
-				src_b	   <= 64'd0;
-				BImm2	   <= 12'd0;
-			end else begin
 				if(handshake)begin
-					valid4	   <= valid3	  ;		
-					PC4	  	   <= PC	  	  ;
-					Ins3	   <= Ins2	 	  ;
-					Brch2	   <= Brch		  ;
-					MEM_W_en2  <= MEM_W_en	  ;
-					WB_sel2    <= WB_sel  	  ;
-					ALU_ctrl2  <= ALU_ctrl	  ;
-					rt_data1   <= rt_data	  ;
-					reg_w_en2  <= reg_w_en	  ;
-					rdest1	   <= rdest		  ;
-					src_a	   <= src_1		  ;
-					src_b	   <= src_2		  ;
-					BImm2	   <= BImm		  ;	
-				end	  	
-			end  
+					if(bubble4 || bubble43)begin
+						valid4	   <= 1'b1 ;
+						PC4	  	   <= PC3  ;
+						Ins3	   <= 32'b0;
+						Brch2	   <= 1'd0 ;
+						MEM_W_en2  <= 1'd0 ;
+						WB_sel2    <= 1'd0 ;
+						ALU_ctrl2  <= 5'd0 ;
+						reg_w_en2  <= 1'd0 ;
+						rt_data1   <= 64'd0;
+						rdest1	   <= 5'd0 ;
+						src_a	   <= 64'd0;
+						src_b	   <= 64'd0;
+						BImm2	   <= 12'd0;
+					end else begin
+						valid4	   <= valid3	  ;		
+						PC4	  	   <= PC	  	  ;
+						Ins3	   <= Ins2	 	  ;
+						Brch2	   <= Brch		  ;
+						MEM_W_en2  <= MEM_W_en	  ;
+						WB_sel2    <= WB_sel  	  ;
+						ALU_ctrl2  <= ALU_ctrl	  ;
+						rt_data1   <= rt_data	  ;
+						reg_w_en2  <= reg_w_en	  ;
+						rdest1	   <= rdest		  ;
+						src_a	   <= src_1		  ;
+						src_b	   <= src_2		  ;
+						BImm2	   <= BImm		  ;	
+					end	  	
+				end  
 		end 
 		if(reg_w_en5 && rdest4 !=5'd0)begin 
 			reg_file[rdest4] <= WB_data2; 

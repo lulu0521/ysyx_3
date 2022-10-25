@@ -6,25 +6,38 @@ module ysyx_22041071_CPU(
 			input 													  cpu_r_valid	,
 			input 		[`ysyx_22041071_AXI_DATA_WIDTH-1:0			] cpu_r_data 	,
 			input		[`ysyx_22041071_ADDR_BUS					] cpu_r_addr	,
-			input 		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_resp	 	,
-			input 								  				  	  cpu_aw_ready	,		
+			input 		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_r_resp	,
+			input 								  				  	  cpu_aw_ready	,
+			input		[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_w_resp	,		
 			output reg											  	  cpu_ar_valid	,
-			output reg  [`ysyx_22041071_ADDR_BUS					] cpu_addr	 	,
-			output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len		,
-			output reg  [1:0	  									] cpu_size	 	,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
+			output reg  [`ysyx_22041071_ADDR_BUS					] cpu_ar_addr	,
+			output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_ar_len	,
+			output reg  [1:0	  									] cpu_ar_size	,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
 			output reg												  cpu_aw_valid	,
-			output reg	[`ysyx_22041071_DATA_BUS					] cpu_data		);
+			output reg  [`ysyx_22041071_ADDR_BUS					] cpu_aw_addr	,
+			output reg	[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_aw_len	,
+			output reg  [1:0	  									] cpu_aw_size	,
+			output reg	[`ysyx_22041071_DATA_BUS					] cpu_w_data	);
 
 //AXI 仲裁
-//wire cpu_if_ar_valid;
-//wire cpu_if_ar_ready;
-//wire cpu_mem_ar_valid;
-//wire cpu_mem_ar_ready;
-
+wire 										  cpu_mem_ar_ready	;
+wire 						 				  cpu_mem_r_valid	;	
+wire [`ysyx_22041071_DATA_BUS				] cpu_mem_r_data 	;	
+wire [`ysyx_22041071_ADDR_BUS				] cpu_mem_r_addr 	;
+wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0] cpu_mem_r_resp	;
+wire										  cpu_if_ar_ready	;
+wire 						 				  cpu_if_r_valid	;	
+wire [`ysyx_22041071_DATA_BUS				] cpu_if_r_data 	;	
+wire [`ysyx_22041071_ADDR_BUS				] cpu_if_r_addr 	;
+wire [`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0] cpu_if_r_resp		;	
 
 //PC  
-wire						     valid1	  ;
-wire   [`ysyx_22041071_ADDR_BUS] PC	   	  ;
+wire						     		  valid1	  	 ;
+wire [`ysyx_22041071_ADDR_BUS			] PC	   	  	 ;
+wire									  cpu_if_ar_valid;	
+wire [`ysyx_22041071_ADDR_BUS		 	] cpu_if_ar_addr ;	
+wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0 	] cpu_if_ar_len	 ;	
+wire [1:0	  						 	] cpu_if_ar_size ;	
 
 //IF
 wire						   ready1	  ;
@@ -120,36 +133,42 @@ wire  [`ysyx_22041071_DATA_BUS] reg_file30	;
 wire  [`ysyx_22041071_DATA_BUS] reg_file31	;
 
 //EX
-wire							  ready4	 ; 
-wire							  valid5	 ; 
-wire							  bubble43	 ;
-wire							  bubble42	 ;
-wire							  bubble41	 ; 
-wire  [`ysyx_22041071_ADDR_BUS]   PC5	     ;
-wire  [`ysyx_22041071_INS_BUS ]   Ins4	   	 ; 
-wire  						      MEM_W_en3  ;  
-wire 							  WB_sel3    ;  
-wire  						      reg_w_en3  ;  
-wire  [`ysyx_22041071_DATA_BUS]   rt_data2   ;  
-wire  [ 4:0 ]					  rdest2	 ;   
-wire  [`ysyx_22041071_DATA_BUS]   ALU_result1; 
-wire						 	  reg_w_en3_ ;
-wire  [ 4:0 ]					  rdest2_	 ;
-wire  [`ysyx_22041071_DATA_BUS]	  ALU_result ; 
-wire							  Brch_sel1  ; 
-wire  [`ysyx_22041071_ADDR_BUS]   BPC1	   	 ; 
+wire							  			ready4	 		; 
+wire							  			valid5	 		; 
+wire							  			bubble43	 	;
+wire							  			bubble42	 	;
+wire							  			bubble41	 	; 
+wire  [`ysyx_22041071_ADDR_BUS			]   PC5	    		;
+wire  [`ysyx_22041071_INS_BUS 			]   Ins4	   		; 
+wire  						  			    MEM_W_en3  		;  
+wire 										WB_sel3    		;  
+wire  						  			    reg_w_en3  		;  
+wire  [`ysyx_22041071_DATA_BUS			]   rt_data2   		;  
+wire  [ 4:0 							]	rdest2	 		;   
+wire  [`ysyx_22041071_DATA_BUS			]   ALU_result1		; 
+wire						 	  			reg_w_en3_ 		;
+wire  [ 4:0 							]	rdest2_	 		;
+wire  [`ysyx_22041071_DATA_BUS			]	ALU_result 		; 
+wire							 			Brch_sel1  		; 
+wire  [`ysyx_22041071_ADDR_BUS			]   BPC1	   	 	; 
+wire 								  		cpu_mem_ar_valid;	
+wire [`ysyx_22041071_ADDR_BUS		  	]	cpu_mem_ar_addr ;	
+wire [`ysyx_22041071_AXI_LEN_WIDTH-1:0	]	cpu_mem_ar_len	;
+wire [1:0	  						  	]	cpu_mem_ar_size	;	
+
 
 //MEM
-wire							  ready5	 ;  
-wire							  valid6	 ; 
-wire  [`ysyx_22041071_ADDR_BUS]   PC6		 ;
-wire  [`ysyx_22041071_INS_BUS ]   Ins5		 ; 
-wire  						      reg_w_en4  ;   
-wire  [ 4:0 ]					  rdest3	 ;    
-wire  [`ysyx_22041071_DATA_BUS]   WB_data1   ; 
-wire  						 	  reg_w_en4_ ;
-wire  [ 4:0 ]					  rdest3_	 ;
-wire  [`ysyx_22041071_DATA_BUS]	  WB_data1_  ; 
+wire							  ready5	 		;  
+wire							  valid6	 		; 
+wire  [`ysyx_22041071_ADDR_BUS]   PC6		 		;
+wire  [`ysyx_22041071_INS_BUS ]   Ins5		 		; 
+wire  						      reg_w_en4  		;   
+wire  [ 4:0 ]					  rdest3	 		;    
+wire  [`ysyx_22041071_DATA_BUS]   WB_data1   		; 
+wire  						 	  reg_w_en4_ 		;
+wire  [ 4:0 ]					  rdest3_	 		;
+wire  [`ysyx_22041071_DATA_BUS]	  WB_data1_  		; 
+
 
 //WB
 wire							ready6		 ;
@@ -160,6 +179,36 @@ wire  						    reg_w_en5	 ;
 wire  [ 4:0 ]					rdest4	     ;	
 wire  [`ysyx_22041071_DATA_BUS] WB_data2	 ;
 
+ysyx_22041071_AXI_ARBI MY_AXI_ARBI(
+				.cpu_ar_ready		(cpu_ar_ready		),
+				.WB_sel2			(WB_sel2			),
+				.WB_sel3			(WB_sel3			),
+				.cpu_r_valid		(cpu_r_valid		),
+				.cpu_r_data 		(cpu_r_data 		),
+				.cpu_r_addr			(cpu_r_addr			),
+				.cpu_r_resp	 		(cpu_r_resp			),
+				.cpu_if_ar_valid 	(cpu_if_ar_valid	),
+				.cpu_if_ar_addr  	(cpu_if_ar_addr 	), 
+				.cpu_if_ar_len   	(cpu_if_ar_len		),
+				.cpu_if_ar_size  	(cpu_if_ar_size 	), 	
+				.cpu_mem_ar_valid	(cpu_mem_ar_valid	),	
+				.cpu_mem_ar_addr	(cpu_mem_ar_addr 	),
+				.cpu_mem_ar_len		(cpu_mem_ar_len		),
+				.cpu_mem_ar_size	(cpu_mem_ar_size	),
+				.cpu_ar_valid		(cpu_ar_valid		),
+				.cpu_ar_addr	 	(cpu_ar_addr		),
+				.cpu_ar_len			(cpu_ar_len			),
+				.cpu_ar_size	 	(cpu_ar_size		),
+				.cpu_if_ar_ready	(cpu_if_ar_ready	),
+				.cpu_if_r_valid		(cpu_if_r_valid		),
+				.cpu_if_r_data 		(cpu_if_r_data 		),
+				.cpu_if_r_addr 		(cpu_if_r_addr 		),
+				.cpu_if_r_resp		(cpu_if_r_resp		),
+				.cpu_mem_ar_ready	(cpu_mem_ar_ready	),
+				.cpu_mem_r_valid	(cpu_mem_r_valid	),
+				.cpu_mem_r_data 	(cpu_mem_r_data 	),
+				.cpu_mem_r_addr 	(cpu_mem_r_addr 	),
+				.cpu_mem_r_resp		(cpu_mem_r_resp		));		
 
 ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.reset    		(reset      	),
@@ -170,44 +219,46 @@ ysyx_22041071_PC MY_PC(	.clk	  		(clock      	),
 						.JPC	  		(JPC_s       	),//JAL指令跳转目的地址
 						.JRPC	  		(JRPC_s      	),//JALR指令跳转目的地址
 						.SNPC	  		(SNPC       	),//PC+4
-						.ready1   		(cpu_ar_ready	),
+						.ready1   		(ready1			),
 						.valid1	  		(valid1     	),
-						.cpu_if_ar_valid(cpu_ar_valid	),	
-						.cpu_addr	 	(cpu_addr	 	),	
-						.cpu_len	 	(cpu_len		),	
-						.cpu_size	 	(cpu_size	 	),
+						.cpu_if_ar_valid(cpu_if_ar_valid),	
+						.cpu_if_ar_addr	(cpu_if_ar_addr	),	
+						.cpu_if_ar_len	(cpu_if_ar_len	),	
+						.cpu_if_ar_size	(cpu_if_ar_size	),
 						.PC		  		(PC		  		));  //输出PC	
 						
 
-ysyx_22041071_IF IF(.clk	   	  (clock      		),
-				    .reset	   	  (reset      		),
-				    .PC1	   	  (PC         		),
-					.JPC 		  (JPC1  			),
-					.JRPC		  (JRPC1  			),
-					.BPC		  (BPC1 			),
-				    .bubble21  	  (bubble21   		),
-				    .bubble31  	  (bubble31   		),
-				    .bubble41  	  (bubble41   		),
-					.PC3	   	  (PC3		  		),
-					.bubble4   	  (bubble4	  		),
-				    .valid1	   	  (valid1     		),
-				    .ready2	   	  (ready2     		),	
-					.cpu_r_valid  (cpu_r_valid   	),
-					.cpu_r_data   (cpu_r_data    	),
-					.cpu_r_addr	  (cpu_r_addr		),
-					.cpu_resp	  (cpu_resp	   		),
-				    .valid2	   	  (valid2	  		),
-				    .PC2	   	  (PC2		  		),
-				    .Ins	   	  (Ins		  		),
-				    .SNPC	   	  (SNPC	  			),
-					.JPC_sel_s    (JPC_sel_s  		),	
-					.JRPC_sel_s   (JRPC_sel_s 		),	
-					.Brch_sel_s   (Brch_sel_s 		),	
-					.JPC_s		  (JPC_s			),	
-					.JRPC_s		  (JRPC_s			),
-					.BPC_s		  (BPC_s			));
+ysyx_22041071_IF IF	(.clk	   	  	(clock      		),
+				    .reset	   	  	(reset      		),
+				    .PC1	   	  	(PC         		),
+					.JPC 		  	(JPC1  				),
+					.JRPC		  	(JRPC1  			),
+					.BPC		  	(BPC1 				),
+				    .bubble21  	  	(bubble21   		),
+				    .bubble31  	  	(bubble31   		),
+				    .bubble41  	  	(bubble41   		),
+					.PC3	   	  	(PC3		  		),
+					.bubble4   	  	(bubble4	  		),
+				    .valid1	   	  	(valid1     		),
+				    .ready2	   	  	(ready2     		),
+					.cpu_if_ar_ready(cpu_if_ar_ready	),	
+					.cpu_if_r_valid	(cpu_if_r_valid  	),
+					.cpu_if_r_data 	(cpu_if_r_data   	),
+					.cpu_if_r_addr 	(cpu_if_r_addr		),
+					.cpu_if_r_resp 	(cpu_if_r_resp	   	),
+					.ready1			(ready1				),
+				    .valid2	   	  	(valid2	  			),
+				    .PC2	   	  	(PC2		  		),
+				    .Ins	   	  	(Ins		  		),
+				    .SNPC	   	  	(SNPC	  			),
+					.JPC_sel_s    	(JPC_sel_s  		),	
+					.JRPC_sel_s   	(JRPC_sel_s 		),	
+					.Brch_sel_s   	(Brch_sel_s 		),	
+					.JPC_s		  	(JPC_s				),	
+					.JRPC_s		  	(JRPC_s				),
+					.BPC_s		  	(BPC_s				));
 
-ysyx_22041071_ID ID(.clk	   (clock     ),
+ysyx_22041071_ID ID	(.clk	   (clock     ),
 					.reset     (reset     ),
 					.PC2	   (PC2       ),
 					.Ins1	   (Ins       ),
@@ -329,64 +380,80 @@ ysyx_22041071_ID2 ID2(
 					.reg_file30 (reg_file30	 ),
 					.reg_file31 (reg_file31	 ));
 
-ysyx_22041071_EX EX(.clk	   	(clock		 ),
-					.reset	   	(reset		 ),
-					.PC4	   	(PC4	     ),
-					.Ins3	   	(Ins3	     ),
-					.Brch2	   	(Brch2	 	 ),
-					.MEM_W_en2 	(MEM_W_en2 	 ),
-					.WB_sel2   	(WB_sel2   	 ),
-					.ALU_ctrl2 	(ALU_ctrl2   ),
-					.rt_data1  	(rt_data1    ),
-					.reg_w_en2 	(reg_w_en2   ),
-					.rdest1	   	(rdest1	 	 ),
-					.src_a	   	(src_a	 	 ),
-					.src_b	   	(src_b	 	 ),
-					.BImm2	   	(BImm2	 	 ),
-					.valid4		(valid4		 ),
-					.ready5		(ready5		 ),
-					.ready4		(ready4		 ),
-					.valid5		(valid5		 ),
-					.bubble43	(bubble43	 ),
-					.bubble42	(bubble42	 ),
-					.bubble41	(bubble41	 ),
-					.PC5	    (PC5	     ),
-                    .Ins4	    (Ins4	     ),
-					.MEM_W_en3  (MEM_W_en3   ),
-					.WB_sel3    (WB_sel3     ),
-					.reg_w_en3  (reg_w_en3   ),
-					.rt_data2   (rt_data2    ),
-					.rdest2	    (rdest2	     ),
-					.ALU_result1(ALU_result1 ),
-					.reg_w_en3_ (reg_w_en3_  ),
-					.rdest2_	(rdest2_	 ),
-					.ALU_result	(ALU_result	 ),
-					.Brch_sel1	(Brch_sel1	 ),
-					.BPC1		(BPC1		 ));
+ysyx_22041071_EX EX(.clk	   			(clock		 		),
+					.reset	   			(reset		 		),
+					.PC4	   			(PC4	     		),
+					.Ins3	   			(Ins3	     		),
+					.Brch2	   			(Brch2	 	 		),
+					.MEM_W_en2 			(MEM_W_en2 	 		),
+					.WB_sel2   			(WB_sel2   	 		),
+					.ALU_ctrl2 			(ALU_ctrl2   		),
+					.rt_data1  			(rt_data1    		),
+					.reg_w_en2 			(reg_w_en2   		),
+					.rdest1	   			(rdest1	 	 		),
+					.src_a	   			(src_a	 	 		),
+					.src_b	   			(src_b	 	 		),
+					.BImm2	   			(BImm2	 	 		),
+					.valid4				(valid4		 		),
+					.ready5				(ready5		 		),
+					.cpu_mem_ar_ready	(cpu_mem_ar_ready	),
+					.cpu_aw_ready		(cpu_aw_ready		),
+					.ready4				(ready4		 		),
+					.valid5				(valid5		 		),
+					.bubble43			(bubble43	 		),
+					.bubble42			(bubble42	 		),
+					.bubble41			(bubble41	 		),
+					.PC5	    		(PC5	     		),
+                    .Ins4	    		(Ins4	     		),
+					.MEM_W_en3  		(MEM_W_en3   		),
+					.WB_sel3    		(WB_sel3     		),
+					.reg_w_en3  		(reg_w_en3   		),
+					.rt_data2   		(rt_data2    		),
+					.rdest2	    		(rdest2	     		),
+					.ALU_result1		(ALU_result1 		),
+					.reg_w_en3_ 		(reg_w_en3_  		),
+					.rdest2_			(rdest2_	 		),
+					.ALU_result			(ALU_result	 		),
+					.Brch_sel1			(Brch_sel1	 		),
+					.BPC1				(BPC1		 		),
+					.cpu_mem_ar_valid	(cpu_mem_ar_valid	),	
+					.cpu_mem_ar_addr 	(cpu_mem_ar_addr 	),	
+					.cpu_mem_ar_len		(cpu_mem_ar_len		),	
+					.cpu_mem_ar_size	(cpu_mem_ar_size	),
+					.cpu_aw_valid		(cpu_aw_valid		),	
+					.cpu_aw_addr		(cpu_aw_addr		),	
+					.cpu_aw_len			(cpu_aw_len			),
+					.cpu_aw_size		(cpu_aw_size		),	
+					.cpu_w_data			(cpu_w_data			));
 
-ysyx_22041071_MEM MEM(.clk		  (clock		),
-					  .reset	  (reset		),
-					  .PC5	      (PC5	 	    ),
-                      .Ins4	      (Ins4	 	    ),
-					  .Ins5_	  (Ins5			), 
-					  .MEM_W_en3  (MEM_W_en3   	),
-					  .WB_sel3    (WB_sel3     	),
-					  .reg_w_en3  (reg_w_en3   	),
-					  .rt_data2   (rt_data2    	),
-					  .rdest2	  (rdest2	    ),
-					  .ALU_result1(ALU_result1  ),
-					  .valid5	  (valid5		),
-					  .ready6	  (ready6		),
-					  .ready5	  (ready5		),
-					  .valid6	  (valid6		),
-					  .PC6		  (PC6			),
-					  .Ins5		  (Ins5			),
-					  .reg_w_en4  (reg_w_en4	),
-					  .rdest3	  (rdest3	  	),
-					  .WB_data1	  (WB_data1		),
-					  .reg_w_en4_ (reg_w_en4_   ),
-					  .rdest3_	  (rdest3_		),
-					  .WB_data1_  (WB_data1_	));
+ysyx_22041071_MEM MEM(.clk		  		(clock			),
+					  .reset	  		(reset			),
+					  .PC5	      		(PC5	 	    ),
+                      .Ins4	      		(Ins4	 	    ),
+					  .MEM_W_en3  		(MEM_W_en3   	),
+					  .WB_sel3    		(WB_sel3     	),
+					  .reg_w_en3  		(reg_w_en3   	),
+					  .rt_data2   		(rt_data2    	),
+					  .rdest2	  		(rdest2	    	),
+					  .ALU_result1		(ALU_result1  	),
+					  .valid5	  		(valid5			),
+					  .ready6	  		(ready6			),
+					  .cpu_mem_ar_ready	(cpu_mem_ar_ready),
+					  .cpu_mem_r_valid	(cpu_mem_r_valid), 
+					  .cpu_mem_r_data 	(cpu_mem_r_data ), 
+					  .cpu_mem_r_addr 	(cpu_mem_r_addr ), 
+					  .cpu_mem_r_resp	(cpu_mem_r_resp	),
+					  .cpu_aw_ready		(cpu_aw_ready	),
+					  .ready5	  		(ready5			),
+					  .valid6	  		(valid6			),
+					  .PC6		  		(PC6			),
+					  .Ins5		  		(Ins5			),
+					  .reg_w_en4  		(reg_w_en4		),
+					  .rdest3	  		(rdest3	  		),
+					  .WB_data1	  		(WB_data1		),
+					  .reg_w_en4_ 		(reg_w_en4_   	),
+					  .rdest3_	  		(rdest3_		),
+					  .WB_data1_  		(WB_data1_		));
 
 ysyx_22041071_WB WB(.clk		(clock		),
 					.reset		(reset		),

@@ -5,9 +5,9 @@ module ysyx_22041071_axi_w(
 			input											  		  cpu_aw_valid		,
 			input  		[`ysyx_22041071_AXI_ID_WIDTH-1:0			] cpu_id	 		,
 			input  		[`ysyx_22041071_ADDR_BUS					] cpu_addr	 		,
-			input		[`ysyx_22041071_DATA_BUS					] cpu_data			,
 			input		[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len			,
 			input  		[1:0	  									] cpu_size	 		,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
+			input		[`ysyx_22041071_DATA_BUS					] cpu_w_data		,
 			output  							  				  	  cpu_aw_ready		,
 			output reg 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] cpu_w_resp	 	,
 			input  												  	  axi_aw_ready_i	,//AW
@@ -84,7 +84,7 @@ module ysyx_22041071_axi_w(
 	assign axi_aw_qos_o_   = 4'd0												;	
 	assign axi_aw_region_o_= 4'd0												;
 	assign axi_w_id_o_	   = cpu_id												;
-	assign axi_w_data_o_   = cpu_data											;
+	assign axi_w_data_o_   = cpu_w_data										;
 	assign axi_w_user_o_   = 1'b0												;
 	assign axi_aw_addr_o_  = {addr_[`ysyx_22041071_AXI_ADDR_WIDTH-1:3],{3{1'b0}}};
 	assign axi_w_last_o_   = len_ == cpu_len									;
