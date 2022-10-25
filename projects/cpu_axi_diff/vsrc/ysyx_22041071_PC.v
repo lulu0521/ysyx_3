@@ -38,7 +38,7 @@ module ysyx_22041071_PC(input  wire 						 			  clk      			,
 /*====================时序控制===========================*/
 	always@(posedge clk)begin
 		if(reset)begin
-			valid = 1'b0;
+			valid = 1'b1;
 			PC		<= `START_ADDR	;
 		end else begin
 			if(handshake)begin
