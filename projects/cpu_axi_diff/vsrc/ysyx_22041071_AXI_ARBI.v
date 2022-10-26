@@ -31,7 +31,6 @@ module ysyx_22041071_AXI_ARBI(
 				output reg	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0 ] cpu_mem_r_resp	);		
 	//reg where;//0-if,1-mem
 	always@(*)begin
-		if(cpu_ar_ready)begin
 			if(WB_sel2 || WB_sel3)begin
 				cpu_ar_valid 	= cpu_mem_ar_valid	;
 				cpu_mem_ar_ready= cpu_ar_ready		;
@@ -41,17 +40,6 @@ module ysyx_22041071_AXI_ARBI(
 				cpu_mem_ar_ready = 1'b0				;
 				cpu_if_ar_ready = cpu_ar_ready		;
 			end
-		end else begin
-			if(WB_sel2 || WB_sel3)begin
-				cpu_ar_valid 	 = cpu_mem_ar_valid	;
-				cpu_mem_ar_ready = cpu_ar_ready		;
-				cpu_if_ar_ready  = 1'b0				;
-			end else begin
-				cpu_ar_valid 	 = cpu_if_ar_valid	;
-				cpu_mem_ar_ready = 1'b0				;
-				cpu_if_ar_ready = cpu_ar_ready		;
-			end
-		end
 	end
 
 	/*always@(*)begin
