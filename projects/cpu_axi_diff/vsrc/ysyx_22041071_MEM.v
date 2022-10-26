@@ -196,14 +196,15 @@ module ysyx_22041071_MEM(
 					reg_w_en4   <= reg_w_en3		;
 					rdest3	    <= rdest2			;
 					WB_data1	<= WB_data1_		;
-				end 
-				if(ready6) begin
-					valid6 		<= valid5			;
-					PC6			<= PC5				;
-					Ins5		<= 32'h0			;
-					reg_w_en4   <= 1'd0				;
-					rdest3	    <= 5'd0				;
-					WB_data1	<= 64'd0			;
+				end else begin
+					if(ready6) begin
+						valid6 		<= valid5			;
+						PC6			<= PC5				;
+						Ins5		<= 32'h0			;
+						reg_w_en4   <= 1'd0				;
+						rdest3	    <= 5'd0				;
+						WB_data1	<= 64'd0			;
+					end
 				end
 			end else begin
 				if(MEM_W_en3)begin
