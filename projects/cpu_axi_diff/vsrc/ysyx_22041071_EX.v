@@ -69,7 +69,7 @@ module ysyx_22041071_EX(
 	assign cpu_mem_ar_size_		= 2'b11									;
 	assign cpu_aw_addr_			= ALU_result							;
 	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;	
-	assign cpu_w_data_			= rt_data2								;
+	assign cpu_w_data_			= rt_data1								;
 	assign Ins 		 		 	= Ins3						  			;
 	assign MEM_W_en  		 	= MEM_W_en2				  				;
 	assign WB_sel	 		 	= WB_sel2								;
