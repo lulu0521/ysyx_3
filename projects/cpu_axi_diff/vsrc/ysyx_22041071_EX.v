@@ -176,7 +176,7 @@ module ysyx_22041071_EX(
 				3'b001: begin//sh
 					cpu_aw_size_ = 2'b01;
 				end
-				3'b010: begin//sw
+				3'b010: begin//sw{gtkwave NET OFF} {netBus TOP SimTop CPU MY_AXI_ARBI cpu_mem_r_addr} {netBusValue 0x0000000000000000 TOP SimTop CPU MY_AXI_ARBI cpu_mem_r_addr} {gtkwave SAVELIST @22\nTOP.SimTop.CPU.MY_AXI_ARBI.cpu_mem_r_addr\[63:0\]\n} 
 					cpu_aw_size_ = 2'b10;
 				end
 				3'b011: begin//sd

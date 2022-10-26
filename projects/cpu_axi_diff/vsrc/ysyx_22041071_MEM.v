@@ -42,27 +42,26 @@ module ysyx_22041071_MEM(
 	wire [`ysyx_22041071_DATA_BUS] MEM_data	;
 	reg [`ysyx_22041071_DATA_BUS] rt_data2_	;
 	reg							  valid		;
+	//reg							  ready		;
 	reg							  handshake	;
-	reg [`ysyx_22041071_DATA_BUS] wmask		;
+	//reg [`ysyx_22041071_DATA_BUS] wmask		;
 	
 	assign reg_w_en4_ = reg_w_en3;
 	assign rdest3_	  = rdest2	 ;
 	assign MEM_data   = cpu_mem_r_data; 
 
 	always@(*)begin//need read MEM
-		if(WB_sel3)begin
-			ready5 	  = cpu_mem_ar_ready		;
-			handshake = cpu_mem_r_valid & ready6;
-		end else begin
-			ready5 = ready6						;
-			handshake = valid5 & ready6			;
-		end
 		if(MEM_W_en3)begin
 			ready5 	  = cpu_aw_ready			;
-			handshake = 1'b0					;/////
+			handshake = 1'b0					;
 		end else begin
-			ready5 = ready6						;
-			handshake = valid5 & ready6			;
+			if(WB_sel3)begin
+				ready5 	  = cpu_mem_ar_ready		;
+				handshake = cpu_mem_r_valid & ready6;
+			end else begin
+				ready5 = ready6						;
+				handshake = valid5 & ready6			;
+			end
 		end
 	end
 	
