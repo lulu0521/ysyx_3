@@ -45,7 +45,7 @@ module ysyx_22041071_AXI_ARBI(
 				cpu_mem_ar_ready = 1'b0			;
 				cpu_if_ar_ready = cpu_ar_ready	;
 			end
-		end
+	end
 
 	always@(*)begin
 		if(WB_sel2)begin
