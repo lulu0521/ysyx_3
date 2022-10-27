@@ -181,6 +181,8 @@ wire  [`ysyx_22041071_DATA_BUS] WB_data2	 ;
 
 ysyx_22041071_AXI_ARBI MY_AXI_ARBI(
 				.cpu_ar_ready		(cpu_ar_ready		),
+				.cpu_aw_ready		(cpu_aw_ready		),
+				.MEM_W_en3			(MEM_W_en3			),
 				.WB_sel2			(WB_sel2			),
 				.WB_sel3			(WB_sel3			),
 				.cpu_r_valid		(cpu_r_valid		),
