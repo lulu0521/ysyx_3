@@ -42,8 +42,8 @@ module ysyx_22041071_AXI_ARBI(
 				cpu_if_ar_ready = 1'b0			;
 			end
 			end else begin
-				cpu_mem_ar_ready = 1'b0				;
-				cpu_if_ar_ready = cpu_ar_ready		;
+				cpu_mem_ar_ready = 1'b0			;
+				cpu_if_ar_ready = cpu_ar_ready	;
 			end
 		end
 
