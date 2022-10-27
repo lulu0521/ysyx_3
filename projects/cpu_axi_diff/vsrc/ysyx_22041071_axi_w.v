@@ -92,8 +92,8 @@ module ysyx_22041071_axi_w(
 	assign aw_ready_	   = c_state == W_IDLE									;
 	assign axi_aw_valid_o_ = c_state == W_ADDR									;
 	assign aw_handshake	   = axi_aw_valid_o_ && axi_aw_ready_i					;
-	assign axi_w_valid_o_  = c_state == W_ADDR									;	//////////
-	assign w_handshake	   = c_state == W_DATA &&  axi_w_ready_i				;
+	assign axi_w_valid_o_  = c_state == W_DATA									;	//////////
+	assign w_handshake	   = axi_w_valid_o_ &&  axi_w_ready_i					;
 	assign w_done		   = w_handshake && axi_w_last_o_						;
 	assign axi_bw_ready_o_ = c_state == W_DONE									;
 	assign bw_handshake    = axi_bw_ready_o_ && axi_bw_valid_i					;
