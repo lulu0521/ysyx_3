@@ -6,7 +6,7 @@ module ysyx_22041071_axi_r(
 			input											  		  cpu_ar_valid		,
 			input  		[`ysyx_22041071_AXI_ID_WIDTH-1:0			] cpu_id	 		,
 			input  		[`ysyx_22041071_ADDR_BUS					] cpu_addr	 		,
-			input		[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_len			,
+			input		[`ysyx_22041071_AXI_LEN_WIDTH-1:0			] cpu_ar_len			,
 			input  		[1:0	  									] cpu_size	 		,//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
 			output  							  				  	  cpu_ar_ready		,
 			output reg 												  cpu_r_valid		,
@@ -71,7 +71,7 @@ module ysyx_22041071_axi_r(
 	assign axi_ar_id_o_		= cpu_id							;
 	assign axi_ar_addr_o_	= {cpu_addr[63:3],{3{1'b0}}}		;
 	assign axi_ar_burst_o_	= `ysyx_22041071_AXI_BURST_TYPE_INCR;
-	assign axi_ar_len_o_	= cpu_len							;
+	assign axi_ar_len_o_	= cpu_ar_len						;
 
 	
 	assign axi_ar_valid_o_	= c_state == READ_ADDR 				;

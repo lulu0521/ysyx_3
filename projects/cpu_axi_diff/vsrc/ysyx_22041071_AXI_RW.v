@@ -74,7 +74,7 @@ module ysyx_22041071_AXI_RW(
 			.cpu_ar_valid		(cpu_ar_valid						),
 			.cpu_id	 			({`ysyx_22041071_AXI_ID_WIDTH{1'b0}}),
 			.cpu_addr	 		(cpu_ar_addr 	 					),
-			.cpu_len			(cpu_ar_len							),
+			.cpu_ar_len			(cpu_ar_len							),
 			.cpu_size	 		(cpu_ar_size 	 					),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
 			.cpu_ar_ready		(cpu_ar_ready						),
 			.cpu_r_valid		(cpu_r_valid						),
@@ -108,7 +108,7 @@ module ysyx_22041071_AXI_RW(
 			.cpu_aw_valid		(cpu_aw_valid						),
 			.cpu_id	 			({`ysyx_22041071_AXI_ID_WIDTH{1'b0}}),
 			.cpu_addr	 		(cpu_aw_addr						),
-			.cpu_len			(cpu_aw_len							),
+			.cpu_aw_len			(cpu_aw_len							),
 			.cpu_size	 		(cpu_aw_size	 					),//00:1BYTE;01:2BYTE;10:4BYTE;11:8BYTE
 			.cpu_w_data			(cpu_w_data							),
 			.cpu_aw_ready		(cpu_aw_ready						),
