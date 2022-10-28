@@ -85,7 +85,7 @@ module ysyx_22041071_axi_w(
 	assign axi_aw_qos_o_   = 4'd0												;	
 	assign axi_aw_region_o_= 4'd0												;
 	assign axi_w_id_o_	   = cpu_id												;
-	//assign axi_w_data_o_   = cpu_w_data											;
+	assign axi_w_data_o_   = cpu_w_data	<< addr_[2:0]*8							;
 	assign axi_w_user_o_   = 1'b0												;
 	assign axi_aw_addr_o_  = {addr_[`ysyx_22041071_AXI_ADDR_WIDTH-1:3],{3{1'b0}}};
 	assign axi_w_last_o_   = len_ == cpu_aw_len									;
@@ -100,14 +100,14 @@ module ysyx_22041071_axi_w(
 	assign bw_handshake    = axi_bw_ready_o_ && axi_bw_valid_i					;
 	assign cpu_aw_ready	   = aw_ready_											;
 	assign axi_bw_ready_o  = axi_bw_ready_o_									;   
-	always@(*)begin
+	/*always@(*)begin
 		case(cpu_size)
 			2'b00:axi_w_data_o_ = cpu_w_data << addr_[2:0];//1 BYTE
 			2'b01:axi_w_data_o_ = cpu_w_data << addr_[2:0];//2 BYTE
 			2'b10:axi_w_data_o_ = cpu_w_data << addr_[2:0];//4 BYTE
 			2'b11:axi_w_data_o_ = cpu_w_data << addr_[2:0];//8 BYTE
 		endcase
-	end
+	end*/
 //========================AXI总线状态转化===========================//
 	always@(posedge clk)begin
 		if(~reset_n)begin
