@@ -5,7 +5,7 @@
 `define START_ADDR  64'h0000_0000_7fff_fffc
 //`define START_ADDR  64'h0000_0000_8000_0000
 
-`define BOOTH_WALLOC 0
+//`define BOOTH_WALLOC 0
 `define RISCV_PRIV_MODE_U   0
 `define RISCV_PRIV_MODE_S   1
 `define RISCV_PRIV_MODE_M   3
