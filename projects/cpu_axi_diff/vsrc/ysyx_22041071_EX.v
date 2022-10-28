@@ -168,7 +168,7 @@ module ysyx_22041071_EX(
 		end	
 	`endif	
 
-	always@(*)begin
+	/*always@(*)begin
 		if(MEM_W_en2)begin
 			case(Ins3[14:12])
 				3'b000:begin//sb
@@ -190,7 +190,7 @@ module ysyx_22041071_EX(
 		end else begin
 			cpu_aw_size_ = 2'b11;
 		end
-	end
+	end*/
 
 	always@(*)begin
 		if(MEM_W_en2)begin//write MEM
