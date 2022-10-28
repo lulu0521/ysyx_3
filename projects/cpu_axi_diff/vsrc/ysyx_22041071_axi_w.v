@@ -50,6 +50,7 @@ module ysyx_22041071_axi_w(
 	wire										len_reset		;
 	wire										len_en	 		;
 	reg 	[`ysyx_22041071_AXI_ADDR_WIDTH-1:0] addr_			;
+	wire	[5:0							  ] shift			;
 
 	wire 							  				  	  aw_ready_			;						
 	wire 	[`ysyx_22041071_AXI_RESP_TYPE_WIDTH-1:0		] resp_				;
@@ -73,6 +74,7 @@ module ysyx_22041071_axi_w(
     wire                           				  	  	  axi_w_valid_o_	;
 	wire											  	  axi_bw_ready_o_	;//BW	
 	
+	assign shift		   = {{3'b0},addr_[2:0]	}								;
 	assign resp_		   = axi_bw_resp_i										;
 	assign axi_aw_id_o_    = cpu_id												;
 	assign axi_aw_len_o_   = cpu_aw_len											;
@@ -85,9 +87,9 @@ module ysyx_22041071_axi_w(
 	assign axi_aw_qos_o_   = 4'd0												;	
 	assign axi_aw_region_o_= 4'd0												;
 	assign axi_w_id_o_	   = cpu_id												;
-	assign axi_w_data_o_   = cpu_w_data	<< addr_[2:0]*8							;
 	assign axi_w_user_o_   = 1'b0												;
 	assign axi_aw_addr_o_  = {addr_[`ysyx_22041071_AXI_ADDR_WIDTH-1:3],{3{1'b0}}};
+	assign axi_w_data_o_   = cpu_w_data << (shift<<3);
 	assign axi_w_last_o_   = len_ == cpu_aw_len									;
 	
 	assign aw_ready_	   = c_state == W_IDLE									;
