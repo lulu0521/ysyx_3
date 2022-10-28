@@ -68,7 +68,8 @@ module ysyx_22041071_EX(
 	assign cpu_mem_ar_len_		= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
 	assign cpu_mem_ar_size_		= 2'b11									;
 	assign cpu_aw_addr_			= ALU_result							;
-	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;	
+	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
+	assign cpu_aw_size_			= 2'b11									;	
 	assign cpu_w_data_			= rt_data1								;
 	assign Ins 		 		 	= Ins3						  			;
 	assign MEM_W_en  		 	= MEM_W_en2				  				;
@@ -176,7 +177,7 @@ module ysyx_22041071_EX(
 				3'b001: begin//sh
 					cpu_aw_size_ = 2'b01;
 				end
-				3'b010: begin//sw{gtkwave NET OFF} {netBus TOP SimTop CPU MY_AXI_ARBI cpu_mem_r_addr} {netBusValue 0x0000000000000000 TOP SimTop CPU MY_AXI_ARBI cpu_mem_r_addr} {gtkwave SAVELIST @22\nTOP.SimTop.CPU.MY_AXI_ARBI.cpu_mem_r_addr\[63:0\]\n} 
+				3'b010: begin//sw
 					cpu_aw_size_ = 2'b10;
 				end
 				3'b011: begin//sd
@@ -601,7 +602,7 @@ module ysyx_22041071_EX(
 			ALU_result1 <= 64'd0		;
 		end else begin
 		`ifdef BOOTH_WALLOC
-			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin//
+			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
 			valid5		 <= 1'b1	;
 			PC5	      	 <= PC		;
 			Ins4	     <= 32'b0	;
