@@ -76,7 +76,7 @@ module ysyx_22041071_axi_w(
 	assign resp_		   = axi_bw_resp_i										;
 	assign axi_aw_id_o_    = cpu_id												;
 	assign axi_aw_len_o_   = cpu_aw_len											;
-	assign axi_aw_size_o_ = 3'b011												;
+	assign axi_aw_size_o_  = 3'b011												;
 	assign axi_aw_burst_o_ = `ysyx_22041071_AXI_BURST_TYPE_INCR					;
 	assign axi_aw_prot_o_  = 3'd0												;
 	assign axi_aw_user_o_  = 1'b0												;	
