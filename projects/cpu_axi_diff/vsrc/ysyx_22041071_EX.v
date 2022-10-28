@@ -69,7 +69,7 @@ module ysyx_22041071_EX(
 	assign cpu_mem_ar_size_		= 2'b11									;
 	assign cpu_aw_addr_			= ALU_result							;
 	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
-	assign cpu_aw_size_			= 2'b11									;	
+	//assign cpu_aw_size_			= 2'b11									;	
 	assign cpu_w_data_			= rt_data1								;
 	assign Ins 		 		 	= Ins3						  			;
 	assign MEM_W_en  		 	= MEM_W_en2				  				;
@@ -168,7 +168,7 @@ module ysyx_22041071_EX(
 		end	
 	`endif	
 
-	/*always@(*)begin
+	always@(*)begin
 		if(MEM_W_en2)begin
 			case(Ins3[14:12])
 				3'b000:begin//sb
@@ -190,7 +190,7 @@ module ysyx_22041071_EX(
 		end else begin
 			cpu_aw_size_ = 2'b11;
 		end
-	end*/
+	end
 
 	always@(*)begin
 		if(MEM_W_en2)begin//write MEM

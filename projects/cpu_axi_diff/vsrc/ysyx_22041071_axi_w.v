@@ -76,6 +76,7 @@ module ysyx_22041071_axi_w(
 	assign resp_		   = axi_bw_resp_i										;
 	assign axi_aw_id_o_    = cpu_id												;
 	assign axi_aw_len_o_   = cpu_aw_len											;
+	assign axi_aw_size_o_ = 3'b011												;
 	assign axi_aw_burst_o_ = `ysyx_22041071_AXI_BURST_TYPE_INCR					;
 	assign axi_aw_prot_o_  = 3'd0												;
 	assign axi_aw_user_o_  = 1'b0												;	
@@ -99,14 +100,14 @@ module ysyx_22041071_axi_w(
 	assign bw_handshake    = axi_bw_ready_o_ && axi_bw_valid_i					;
 	assign cpu_aw_ready	   = aw_ready_											;
 	assign axi_bw_ready_o  = axi_bw_ready_o_									;   
-	always@(*)begin
+	/*always@(*)begin
 		case(cpu_size)
 			2'b00:axi_aw_size_o_ = 3'b000;//1 BYTE
 			2'b01:axi_aw_size_o_ = 3'b001;//2 BYTE
 			2'b10:axi_aw_size_o_ = 3'b010;//4 BYTE
 			2'b11:axi_aw_size_o_ = 3'b011;//8 BYTE
 		endcase
-	end
+	end*/
 //========================AXI总线状态转化===========================//
 	always@(posedge clk)begin
 		if(~reset_n)begin
