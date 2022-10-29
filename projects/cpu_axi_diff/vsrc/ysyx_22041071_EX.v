@@ -69,7 +69,6 @@ module ysyx_22041071_EX(
 	assign cpu_mem_ar_size_		= 2'b11									;
 	assign cpu_aw_addr_			= ALU_result							;
 	assign cpu_aw_len_			= {`ysyx_22041071_AXI_LEN_WIDTH{1'b0}}	;
-	//assign cpu_aw_size_			= 2'b11									;	
 	assign cpu_w_data_			= rt_data1								;
 	assign Ins 		 		 	= Ins3						  			;
 	assign MEM_W_en  		 	= MEM_W_en2				  				;
@@ -591,18 +590,32 @@ module ysyx_22041071_EX(
 	
 	always@(posedge clk)begin
 		if(reset)begin
-			valid5		<= 1'b0			;			
-			PC5	     	<= PC			;
-			Ins4	    <= 32'b0		;
-			MEM_W_en3   <= 1'd0			;
-			WB_sel3     <= 1'd0			;
-			reg_w_en3   <= 1'd0			;
-			rt_data2    <= 64'd0		;
-			rdest2	    <= 5'd0			;
-			ALU_result1 <= 64'd0		;
+			cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
+			cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_aw_size		 <= 2'b0								   	;
+			cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
+			cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
+			cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_mem_ar_size	 <= 2'b0								   	;
+			valid5			 <= 1'b0									;			
+			PC5	     		 <= PC										;
+			Ins4	    	 <= 32'b0									;
+			MEM_W_en3   	 <= 1'd0									;
+			WB_sel3     	 <= 1'd0									;
+			reg_w_en3   	 <= 1'd0									;
+			rt_data2    	 <= 64'd0									;
+			rdest2	    	 <= 5'd0									;
+			ALU_result1 	 <= 64'd0									;
 		end else begin
 		`ifdef BOOTH_WALLOC
 			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
+			cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
+			cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_aw_size		 <= 2'b0								   	;
+			cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
+			cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
+			cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_mem_ar_size	 <= 2'b0								   	;
 			valid5		 <= 1'b1	;
 			PC5	      	 <= PC		;
 			Ins4	     <= 32'b0	;
@@ -614,6 +627,13 @@ module ysyx_22041071_EX(
 			ALU_result1  <= 64'd0	;
 		`else 
 			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//
+			cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
+			cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_aw_size		 <= 2'b0								   	;
+			cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
+			cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
+			cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+			cpu_mem_ar_size	 <= 2'b0								   	;
 			valid5		 <= 1'b1	;
 			PC5	      	 <= PC		;
 			Ins4	     <= 32'b0	;
