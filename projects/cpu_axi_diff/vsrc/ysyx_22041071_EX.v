@@ -154,7 +154,7 @@ module ysyx_22041071_EX(
 			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin//div and mul make stop 
 				ready4 = 1'b0;
 			end else begin
-				ready4 = ready ;
+				ready4 = ready5 ;
 			end
 		end	
 	`else 
@@ -162,7 +162,7 @@ module ysyx_22041071_EX(
 			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//div and mul make stop 
 				ready4 = 1'b0;
 			end else begin
-				ready4 = ready ;
+				ready4 = ready5 ;
 			end
 		end	
 	`endif	
