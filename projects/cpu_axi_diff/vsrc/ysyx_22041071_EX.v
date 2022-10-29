@@ -607,46 +607,46 @@ module ysyx_22041071_EX(
 			rdest2	    	 <= 5'd0									;
 			ALU_result1 	 <= 64'd0									;
 		end else begin
-		`ifdef BOOTH_WALLOC
-			if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
-			cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
-			cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
-			cpu_aw_size		 <= 2'b0								   	;
-			cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
-			cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
-			cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
-			cpu_mem_ar_size	 <= 2'b0								   	;
-			valid5		 <= 1'b1	;
-			PC5	      	 <= PC		;
-			Ins4	     <= 32'b0	;
-			MEM_W_en3    <= 1'd0	;
-			WB_sel3      <= 1'd0	;
-			reg_w_en3    <= 1'd0	;
-			rt_data2     <= 64'd0	;
-			rdest2	     <= 5'd0	;
-			ALU_result1  <= 64'd0	;
-		`else 
-			if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//
-			cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
-			cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
-			cpu_aw_size		 <= 2'b0								   	;
-			cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
-			cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
-			cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
-			cpu_mem_ar_size	 <= 2'b0								   	;
-			valid5		 <= 1'b1	;
-			PC5	      	 <= PC		;
-			Ins4	     <= 32'b0	;
-			MEM_W_en3    <= 1'd0	;
-			WB_sel3      <= 1'd0	;
-			reg_w_en3    <= 1'd0	;
-			rt_data2     <= 64'd0	;
-			rdest2	     <= 5'd0	;
-			ALU_result1  <= 64'd0	;
-		`endif	
+			if(MEM_W_en2)begin//write MEM
+				if(handshake)begin	
+					cpu_aw_addr		 <= cpu_aw_addr_	 ;
+					cpu_aw_len		 <= cpu_aw_len_		 ;
+					cpu_aw_size		 <= cpu_aw_size_	 ;
+					cpu_w_data		 <= cpu_w_data_		 ;
+					cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+					cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+					cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+					valid5		 	 <= valid4			 ;
+					PC5	      	 	 <= PC				 ;
+					Ins4	     	 <= Ins				 ;
+					MEM_W_en3    	 <= MEM_W_en		 ;
+					WB_sel3      	 <= WB_sel			 ;
+					reg_w_en3    	 <= reg_w_en2		 ;
+					rt_data2     	 <= rt_data			 ;
+					rdest2	     	 <= rdest1			 ;
+					ALU_result1  	 <= ALU_result		 ;
+				end else begin
+					if(ready5)begin
+						cpu_aw_addr		 <= cpu_aw_addr_	 ;
+						cpu_aw_len		 <= cpu_aw_len_		 ;
+						cpu_aw_size		 <= cpu_aw_size_	 ;
+						cpu_w_data		 <= cpu_w_data_		 ;
+						cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
+						cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
+						cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
+						valid5		 	 <= valid4			 ;
+						Ins4	     	 <= 32'b0			 ;
+						MEM_W_en3    	 <= 1'd0			 ;
+						WB_sel3      	 <= 1'd0			 ;
+						reg_w_en3    	 <= 1'd0			 ;
+						rt_data2     	 <= 64'd0			 ;
+						rdest2	     	 <= 5'd0			 ;
+						ALU_result1  	 <= 64'd0			 ;
+					end
+				end
 			end else begin
-				if(MEM_W_en2)begin//write MEM
-					if(handshake)begin	
+				if(WB_sel2)begin
+					if(handshake)begin//output to AXI 
 						cpu_aw_addr		 <= cpu_aw_addr_	 ;
 						cpu_aw_len		 <= cpu_aw_len_		 ;
 						cpu_aw_size		 <= cpu_aw_size_	 ;
@@ -673,6 +673,7 @@ module ysyx_22041071_EX(
 							cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
 							cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
 							valid5		 	 <= valid4			 ;
+							PC5	      	 	 <= PC				 ;
 							Ins4	     	 <= 32'b0			 ;
 							MEM_W_en3    	 <= 1'd0			 ;
 							WB_sel3      	 <= 1'd0			 ;
@@ -683,44 +684,43 @@ module ysyx_22041071_EX(
 						end
 					end
 				end else begin
-					if(WB_sel2)begin
-						if(handshake)begin//output to AXI 
-							cpu_aw_addr		 <= cpu_aw_addr_	 ;
-							cpu_aw_len		 <= cpu_aw_len_		 ;
-							cpu_aw_size		 <= cpu_aw_size_	 ;
-							cpu_w_data		 <= cpu_w_data_		 ;
-							cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
-							cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
-							cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
-							valid5		 	 <= valid4			 ;
-							PC5	      	 	 <= PC				 ;
-							Ins4	     	 <= Ins				 ;
-							MEM_W_en3    	 <= MEM_W_en		 ;
-							WB_sel3      	 <= WB_sel			 ;
-							reg_w_en3    	 <= reg_w_en2		 ;
-							rt_data2     	 <= rt_data			 ;
-							rdest2	     	 <= rdest1			 ;
-							ALU_result1  	 <= ALU_result		 ;
-						end else begin
-							if(ready5)begin
-								cpu_aw_addr		 <= cpu_aw_addr_	 ;
-								cpu_aw_len		 <= cpu_aw_len_		 ;
-								cpu_aw_size		 <= cpu_aw_size_	 ;
-								cpu_w_data		 <= cpu_w_data_		 ;
-								cpu_mem_ar_addr  <= cpu_mem_ar_addr_ ;	
-								cpu_mem_ar_len	 <= cpu_mem_ar_len_	 ;
-								cpu_mem_ar_size	 <= cpu_mem_ar_size_ ;	
-								valid5		 	 <= valid4			 ;
-								PC5	      	 	 <= PC				 ;
-								Ins4	     	 <= 32'b0			 ;
-								MEM_W_en3    	 <= 1'd0			 ;
-								WB_sel3      	 <= 1'd0			 ;
-								reg_w_en3    	 <= 1'd0			 ;
-								rt_data2     	 <= 64'd0			 ;
-								rdest2	     	 <= 5'd0			 ;
-								ALU_result1  	 <= 64'd0			 ;
-							end
-						end
+					`ifdef BOOTH_WALLOC
+						if(ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid)begin
+						cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
+						cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+						cpu_aw_size		 <= 2'b0								   	;
+						cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
+						cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
+						cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+						cpu_mem_ar_size	 <= 2'b0								   	;
+						valid5		 <= 1'b1	;
+						PC5	      	 <= PC		;
+						Ins4	     <= 32'b0	;
+						MEM_W_en3    <= 1'd0	;
+						WB_sel3      <= 1'd0	;
+						reg_w_en3    <= 1'd0	;
+						rt_data2     <= 64'd0	;
+						rdest2	     <= 5'd0	;
+						ALU_result1  <= 64'd0	;
+					`else 
+						if((ALU_ctrl2>=23 && ALU_ctrl2<=30 && ~out_valid) || (ALU_ctrl2>=19 && ALU_ctrl2<=22 && ~out_valid_m2))begin//
+						cpu_aw_addr		 <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;
+						cpu_aw_len		 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+						cpu_aw_size		 <= 2'b0								   	;
+						cpu_w_data		 <= {`ysyx_22041071_AXI_DATA_WIDTH	{1'b0}}	;
+						cpu_mem_ar_addr  <= {`ysyx_22041071_AXI_ADDR_WIDTH	{1'b0}}	;	
+						cpu_mem_ar_len	 <= {`ysyx_22041071_AXI_LEN_WIDTH	{1'b0}}	;
+						cpu_mem_ar_size	 <= 2'b0								   	;
+						valid5		 <= 1'b1	;
+						PC5	      	 <= PC		;
+						Ins4	     <= 32'b0	;
+						MEM_W_en3    <= 1'd0	;
+						WB_sel3      <= 1'd0	;
+						reg_w_en3    <= 1'd0	;
+						rt_data2     <= 64'd0	;
+						rdest2	     <= 5'd0	;
+						ALU_result1  <= 64'd0	;
+					`endif	
 					end else begin
 						if(handshake)begin
 							cpu_aw_addr		 <= cpu_aw_addr_	 ;
