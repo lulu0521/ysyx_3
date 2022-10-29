@@ -158,21 +158,22 @@ module ysyx_22041071_axi_w(
 	end
 //==================更新每次输出的地址=================//	
 	always@(*)begin
-			case(cpu_size)
-				2'b00:addr_ = cpu_addr + len_	;
-				2'b01:addr_ = cpu_addr + len_<<1;
-				2'b10:addr_ = cpu_addr + len_<<2;
-				2'b11:addr_ = cpu_addr + len_<<3;
-			endcase
+		addr_ = cpu_addr;
+		//case(cpu_size)
+		//	2'b00:addr_ = cpu_addr + len_	;
+		//	2'b01:addr_ = cpu_addr + len_<<1;
+		//	2'b10:addr_ = cpu_addr + len_<<2;
+		//	2'b11:addr_ = cpu_addr + len_<<3;
+		//endcase
 	end
 //===================写掩码=================//	
 	always@(*)begin
-			case(cpu_size)
-				2'b00: axi_w_wstrb_o_ = 8'b0000_0001 << addr_[2:0];
-				2'b01: axi_w_wstrb_o_ = 8'b0000_0011 << addr_[2:0];
-				2'b10: axi_w_wstrb_o_ = 8'b0000_1111 << addr_[2:0];
-				2'b11: axi_w_wstrb_o_ = 8'b1111_1111 << addr_[2:0];
-			endcase
+		case(cpu_size)
+			2'b00: axi_w_wstrb_o_ = 8'b0000_0001 << addr_[2:0];
+			2'b01: axi_w_wstrb_o_ = 8'b0000_0011 << addr_[2:0];
+			2'b10: axi_w_wstrb_o_ = 8'b0000_1111 << addr_[2:0];
+			2'b11: axi_w_wstrb_o_ = 8'b1111_1111 << addr_[2:0];
+		endcase
 	end
 	
 //==============输出===============//
