@@ -158,7 +158,17 @@ module ysyx_22041071_axi_w(
 	end
 //==================更新每次输出的地址=================//	
 	always@(*)begin
-		addr_ = cpu_addr;
+		//addr_ = cpu_addr;
+		if(w_handshake)begin
+			case(cpu_size)
+				2'b00:addr_ = cpu_addr + len_	;
+				2'b01:addr_ = cpu_addr + len_<<1;
+				2'b10:addr_ = cpu_addr + len_<<2;
+				2'b11:addr_ = cpu_addr + len_<<3;
+			endcase
+		end else begin
+			addr_ = cpu_addr;
+		end
 		//case(cpu_size)
 		//	2'b00:addr_ = cpu_addr + len_	;
 		//	2'b01:addr_ = cpu_addr + len_<<1;
