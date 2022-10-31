@@ -37,7 +37,7 @@ module ysyx_22041071_IF(input  wire 											  clk	  		,
 	reg invalid;
 
 	always@(*)begin
-		ready1     = cpu_if_ar_ready;
+		ready1     = cpu_if_ar_ready & ready2;
 		handshake1 = valid1 & ready2;
 	end
 
